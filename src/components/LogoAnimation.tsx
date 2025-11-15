@@ -2,6 +2,9 @@ import React, { useEffect, useRef } from 'react';
 
 const LogoAnimation: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
+    // Get base URL from Vite - defaults to '/' in dev, '/LaboratorySciencesAssociation/' in production
+    const baseUrl = import.meta.env.BASE_URL || '/';
+    const associationImageUrl = `${baseUrl}association.png`.replace(/\/\//g, '/');
     
     useEffect(() => {
         // Inject styles if not already present
@@ -69,7 +72,7 @@ const LogoAnimation: React.FC = () => {
                         <animate attributeName="stroke-dasharray" from="0 1500" to="1476 0" dur="2s" begin="1s" fill="freeze" />
                     </circle>
 
-                    <image id="centerImage" href="/association.png" x="175" y="175" width="350" height="350" 
+                    <image id="centerImage" href={associationImageUrl} x="175" y="175" width="350" height="350" 
                            opacity="0" preserveAspectRatio="xMidYMid meet">
                         <animate attributeName="opacity" from="0" to="1" dur="1.5s" begin="2.5s" fill="freeze" />
                     </image>

@@ -49,7 +49,7 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
                 <div className="flex items-center justify-between h-20">
                     <div className="flex-shrink-0 flex items-center gap-3 font-bold text-xl tracking-wider">
                         <img 
-                            src="/university.png" 
+                            src={`${import.meta.env.BASE_URL || '/'}university.png`.replace(/\/\//g, '/')}
                             alt="University Logo" 
                             className="h-12 w-auto object-contain"
                         />

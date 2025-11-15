@@ -18,8 +18,8 @@ const Hero: React.FC<HeroProps> = ({ translations, setCurrentPage }) => {
     const words = descriptionText.split(' ');
 
     return (
-        <section className="relative h-screen min-h-[600px] flex items-center justify-center text-center text-foreground overflow-visible">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-2 md:pt-0">
+        <section className="relative h-screen min-h-[600px] flex items-start justify-center text-center text-foreground overflow-visible pt-24 md:pt-20">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <LogoAnimation />
                 <h1 className="main-title-anim text-4xl md:text-6xl font-extrabold tracking-tight drop-shadow-lg" style={{textShadow: '0 0 30px hsla(var(--primary), 0.5)'}}>
                     {translations.heroTitle as string}
