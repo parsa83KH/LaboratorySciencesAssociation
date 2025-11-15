@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 // Import components that will be used
 import Hero from '../components/Hero';
 import InnovationSection from '../components/InnovationSection';
-import PlaceholderSection from '../components/PlaceholderSection';
 import JoinUsSection from '../components/JoinUsSection';
+import PopularCoursesSection from '../components/PopularCoursesSection';
 
 
 import type { Translation, PageKey, ContentItem } from '../types';
@@ -28,10 +28,10 @@ const HomePage: React.FC<HomePageProps> = ({ translations, setCurrentPage }) => 
         >
             <Hero translations={translations} setCurrentPage={setCurrentPage} />
             <InnovationSection translations={translations} />
-            <PlaceholderSection translations={translations} />
             <section className="h-screen relative">
               <JoinUsSection translations={translations} />
             </section>
+            <PopularCoursesSection translations={translations} setCurrentPage={setCurrentPage} />
         </motion.div>
     );
 };

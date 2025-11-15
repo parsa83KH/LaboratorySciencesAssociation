@@ -20,7 +20,7 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             if (swiperRef.current) {
                 swiperRef.current.slideNext();
             }
-        }, 5000);
+        }, 10000);
     }, []);
 
     const stopAutoplay = useCallback(() => {
@@ -70,24 +70,28 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
         };
     }, [startAutoplay, stopAutoplay]);
 
-    const handleViewportEnter = useCallback(() => {
-        inViewRef.current = true;
-        startAutoplay();
-    }, [startAutoplay]);
-
-    const handleViewportLeave = useCallback(() => {
-        inViewRef.current = false;
-        stopAutoplay();
-    }, [stopAutoplay]);
+    const handlePrevClick = useCallback(() => {
+        if (swiperRef.current) {
+            swiperRef.current.slidePrev();
+        }
+    }, []);
 
     const t = translations;
+
+    // Start autoplay when component mounts and keep it running while on page
+    useEffect(() => {
+        inViewRef.current = true;
+        startAutoplay();
+        
+        return () => {
+            inViewRef.current = false;
+            stopAutoplay();
+        };
+    }, [startAutoplay, stopAutoplay]);
 
     return (
         <motion.div
             className="w-full h-full"
-            onViewportEnter={handleViewportEnter}
-            onViewportLeave={handleViewportLeave}
-            viewport={{ amount: 0.75 }}
         >
             <div id="home-slider" className="w-full h-full relative">
                 <div className="swiper-container">
@@ -137,14 +141,28 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
                     </div>
                 </div>
 
+                {/* Scroll Up Button - Center Top */}
+                <motion.button
+                    onClick={handlePrevClick}
+                    className="group absolute top-16 left-1/2 -translate-x-1/2 z-10 w-16 h-16 flex items-center justify-center bg-background/50 backdrop-blur-xl rounded-full text-primary border-2 border-primary/30 shadow-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:bg-background/70 hover:border-primary/60"
+                    aria-label="Previous slide"
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 transition-transform duration-300 group-hover:-translate-y-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                    </svg>
+                </motion.button>
+
+                {/* Scroll Down Button - Center Bottom (on divider line) */}
                 <motion.button
                     onClick={handleNextClick}
-                    className="group absolute bottom-16 left-16 z-10 w-16 h-16 flex items-center justify-center bg-background/50 backdrop-blur-xl rounded-full text-primary border-2 border-primary/30 shadow-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:bg-background/70 hover:border-primary/60"
+                    className="group absolute bottom-16 left-1/2 -translate-x-1/2 z-10 w-16 h-16 flex items-center justify-center bg-background/50 backdrop-blur-xl rounded-full text-primary border-2 border-primary/30 shadow-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:bg-background/70 hover:border-primary/60"
                     aria-label="Next slide"
                     whileTap={{ scale: 0.95 }}
                     transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 >
-                    <svg xmlns="http://www.w.org/2000/svg" className="h-8 w-8 transition-transform duration-300 group-hover:translate-y-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 transition-transform duration-300 group-hover:translate-y-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
                 </motion.button>
