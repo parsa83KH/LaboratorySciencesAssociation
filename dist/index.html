@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>انجمن علوم آزمایشگاهی دانشگاه آزاد اسلامی تهران</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@3.4.2/dist/css/swiper.min.css">
+    <script>
+      // Set theme on initial load
+      (function() {
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'sans': ['Vazirmatn', 'sans-serif'],
+            },
+            colors: {
+              'primary': {
+                DEFAULT: 'hsl(var(--primary))',
+                foreground: 'hsl(var(--primary-foreground))',
+              },
+              'background': 'hsl(var(--background))',
+              'foreground': 'hsl(var(--foreground))',
+              'muted': {
+                DEFAULT: 'hsl(var(--muted))',
+                foreground: 'hsl(var(--muted-foreground))',
+              },
+              'card': {
+                DEFAULT: 'hsl(var(--card))',
+                foreground: 'hsl(var(--card-foreground))',
+              },
+              'border': 'hsl(var(--border))',
+              'input': 'hsl(var(--input))',
+              'ring': 'hsl(var(--ring))',
+            },
+            borderRadius: {
+              lg: `0.5rem`,
+              md: `calc(0.5rem - 2px)`,
+              sm: `calc(0.5rem - 4px)`,
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      :root {
+        --background: 0 0% 100%;
+        --foreground: 222 47% 11%;
+        --card: 0 0% 100%;
+        --card-foreground: 222 47% 11%;
+        --muted: 220 20% 96%;
+        --muted-foreground: 220 20% 45%;
+        --primary: 220 85% 55%;
+        --primary-foreground: 0 0% 100%;
+        --border: 220 20% 92%;
+        --input: 220 20% 92%;
+        --ring: 220 85% 55%;
+      }
+ 
+      .dark {
+        --background: 222 47% 11%;
+        --foreground: 210 40% 96%;
+        --card: 222 47% 14%;
+        --card-foreground: 210 40% 98%;
+        --muted: 222 47% 18%;
+        --muted-foreground: 215 20% 65%;
+        --primary: 220 95% 65%;
+        --primary-foreground: 222 47% 11%;
+        --border: 222 47% 22%;
+        --input: 222 47% 22%;
+        --ring: 220 95% 65%;
+      }
+      body {
+        color: hsl(var(--foreground));
+        font-family: 'Vazirmatn', sans-serif;
+      }
+    </style>
+    <style>
+      /* Text Animations from user request */
+      @keyframes slideInFromRight {
+          0% {
+              transform: translateX(100px);
+              opacity: 0;
+          }
+          100% {
+              transform: translateX(0);
+              opacity: 1;
+          }
+      }
+
+      @keyframes slideInFromLeft {
+          0% {
+              transform: translateX(-100px);
+              opacity: 0;
+          }
+          100% {
+              transform: translateX(0);
+              opacity: 1;
+          }
+      }
+
+      @keyframes fadeInUp {
+          0% {
+              transform: translateY(50px);
+              opacity: 0;
+          }
+          100% {
+              transform: translateY(0);
+              opacity: 1;
+          }
+      }
+
+      @keyframes wordAppear {
+          0% {
+              opacity: 0;
+              transform: translateY(20px) rotateX(90deg);
+          }
+          100% {
+              opacity: 1;
+              transform: translateY(0) rotateX(0deg);
+          }
+      }
+
+      .main-title-anim {
+        opacity: 0;
+        animation: slideInFromRight 1s ease-out 0.5s forwards;
+      }
+
+      .subtitle-anim {
+        opacity: 0;
+        animation: slideInFromLeft 1s ease-out 1s forwards;
+      }
+
+      .description-anim {
+        opacity: 0;
+        animation: fadeInUp 1.2s ease-out 1.5s forwards;
+        /* This is needed for the 3D effect of the words */
+        perspective: 400px;
+      }
+      
+      .description-anim span {
+          display: inline-block;
+          opacity: 0;
+          animation: wordAppear 0.5s ease-out forwards;
+      }
+    </style>
+    <style>
+      /* Join Us Section Swiper Styles */
+      #home-slider {
+        height: 100%;
+        width: 100%;
+        position: relative;
+      }
+      #home-slider .swiper-container {
+        height: 100%;
+        width: 100%;
+      }
+
+      .swiper-image-one { background-image: url(https://picsum.photos/seed/swiper1/800/1200); }
+      .swiper-image-two { background-image: url(https://picsum.photos/seed/swiper2/800/1200); }
+      .swiper-image-three { background-image: url(https://picsum.photos/seed/swiper3/800/1200); }
+      .swiper-image-four { background-image: url(https://picsum.photos/seed/swiper4/800/1200); }
+      .swiper-image-five { background-image: url(https://picsum.photos/seed/swiper5/800/1200); }
+      .swiper-image-six { background-image: url(https://picsum.photos/seed/swiper6/800/1200); }
+
+      #home-slider .swiper-slide {
+          overflow: hidden;
+          display: flex;
+      }
+      #home-slider .swiper-image {
+        width: 50%;
+        height: 100%;
+      }
+      #home-slider .swiper-image-inner {
+        background-size: cover;
+        background-position: center center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        background-color: hsla(0, 0%, 0%, 0.2);
+        background-blend-mode: overlay;
+      }
+      #home-slider .swiper-image-inner.swiper-image-left {
+        padding: 4rem;
+      }
+      #home-slider .swiper-image-left {
+        filter: sepia(100%);
+        transition: all 1s linear;
+        transition-delay: 1s;
+      }
+      #home-slider .swiper-slide-active .swiper-image-left {
+        filter: sepia(0%);
+      }
+      #home-slider .swiper-image-inner.swiper-image-right {
+        filter: hue-rotate(-60deg);
+        transition: all 1s linear;
+        transition-delay: 1s;
+        background-color: hsla(0, 0%, 0%, 0.5);
+        background-blend-mode: multiply;
+      }
+      #home-slider h1 {
+        font-weight: 800;
+        color: hsl(var(--foreground));
+        text-shadow: 0 2px 8px hsla(var(--background), 0.6);
+        align-self: flex-start;
+        margin: 0 0 auto 0;
+        font-size: 4.5rem;
+        line-height: 1;
+        transition: all .8s cubic-bezier(0.215, 0.61, 0.355, 1) 1.1s;
+        transform: translate3d(-20%, 0, 0);
+        opacity: 0;
+      }
+      #home-slider h1 span.emphasis {
+        font-weight: 900;
+        color: hsl(var(--primary));
+        opacity: 0;
+        transition: all .8s cubic-bezier(0.215, 0.61, 0.355, 1) 1.2s;
+        transform: translate3d(-20%, 0, 0);
+        display: inline-block;
+      }
+      #home-slider h1 span:not(.emphasis) {
+        font-size: 3.5rem;
+      }
+      #home-slider h1 + p {
+        font-size: 14px;
+        letter-spacing: 2px;
+        margin: 0;
+        line-height: 1;
+        margin-bottom: auto;
+        align-self: flex-end;
+        text-transform: uppercase;
+        transition: all .8s cubic-bezier(0.215, 0.61, 0.355, 1) 1.3s;
+        transform: translate3d(-20%, 0, 0);
+        opacity: 0;
+        font-weight: 500;
+        color: hsla(var(--foreground), 0.75);
+        text-shadow: 0 1px 4px hsla(var(--background), 0.5);
+        padding-right: 8rem;
+      }
+      #home-slider p.paragraph {
+        margin: 0;
+        color: hsl(var(--foreground));
+        width: 100%;
+        max-width: 350px;
+        text-align: justify;
+        font-size: 1.2rem;
+        font-weight: 500;
+        opacity: 0;
+        transition: all .6s cubic-bezier(0.215, 0.61, 0.355, 1) 1.4s;
+        transform: translate3d(-20%, 0, 0);
+        /* Glassmorphism for readability */
+        background-color: hsla(var(--background), 0.2);
+        backdrop-filter: blur(4px);
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid hsla(var(--foreground), 0.1);
+        text-shadow: 0 1px 3px hsla(var(--background), 0.5);
+      }
+      #home-slider .swiper-slide-active .swiper-image-right {
+        filter: hue-rotate(90deg);
+      }
+      #home-slider .swiper-slide-active h1,
+      #home-slider .swiper-slide-active p.paragraph,
+      #home-slider .swiper-slide-active h1 span.emphasis,
+      #home-slider .swiper-slide-active h1 + p {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+      }
+      #home-slider .swiper-pagination-bullet {
+        background: #fff;
+      }
+      @media screen and (max-width: 1280px) {
+        #home-slider h1 { font-size: 3.9rem; }
+        #home-slider h1 span:not(.emphasis) { font-size: 2.9rem; }
+        #home-slider h1 + p { font-size: 13px; }
+        #home-slider p.paragraph { font-size: 1rem; line-height: 1.3; }
+      }
+      @media screen and (max-width: 960px) {
+        #home-slider h1 { font-size: 3.5rem; }
+        #home-slider h1 span:not(.emphasis) { font-size: 2.5rem; }
+        #home-slider p.paragraph { max-width: 90%; }
+      }
+      @media screen and (max-width: 640px) {
+        #home-slider h1 { font-size: 3.2rem; align-self: center; }
+        #home-slider h1 span:not(.emphasis) { font-size: 2.1rem; }
+        #home-slider p.paragraph { max-width: 94%; }
+        #home-slider .swiper-slide { flex-direction: column; }
+        #home-slider .swiper-image { width: 100%; height: 50%; }
+        #home-slider .swiper-image-inner.swiper-image-left { padding: 2rem; }
+      }
+    </style>
+    <style>
+      .text-highlight {
+        background-image: linear-gradient(120deg, hsl(var(--primary) / 0.2), hsl(var(--primary) / 0.3));
+        background-repeat: no-repeat;
+        background-position: left center;
+        padding: 0.1em 0.2em;
+        margin: -0.1em -0.2em;
+        border-radius: 0.3em;
+        /* background-size is animated by Framer Motion */
+    }
+    </style>
+
+<link rel="stylesheet" href="/index.css">
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24"
+  }
+}
+</script>
+  <script type="module" crossorigin src="/assets/index-eWLxodSh.js"></script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/swiper@3.4.2/dist/js/swiper.min.js"></script>
+  </body>
+</html>
