@@ -47,8 +47,13 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
-                    <div className="flex-shrink-0 font-bold text-xl tracking-wider">
-                       {translations.appName as string}
+                    <div className="flex-shrink-0 flex items-center gap-3 font-bold text-xl tracking-wider">
+                        <img 
+                            src="/university.png" 
+                            alt="University Logo" 
+                            className="h-12 w-auto object-contain"
+                        />
+                        <span>{translations.appName as string}</span>
                     </div>
                     <nav className="hidden md:flex md:items-center md:space-x-8 rtl:space-x-reverse">
                         {navLinks.map((link) => (
