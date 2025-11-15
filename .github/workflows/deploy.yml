@@ -34,10 +34,8 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # Set base path if your repository name is not 'username.github.io'
-          # Replace 'LaboratorySciencesAssociation' with your actual repository name
-          # VITE_BASE_PATH: /LaboratorySciencesAssociation/
-          VITE_BASE_PATH: /
+          # Base path for GitHub Pages deployment
+          VITE_BASE_PATH: /LaboratorySciencesAssociation/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
