@@ -18,8 +18,11 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ theme }) => {
         let height = canvas.height = window.innerHeight;
 
         let particles: Particle[] = [];
-        const particleCount = Math.floor((width * height) / 14000);
-        const maxDistance = 220;
+        // Reduce particle count on mobile devices
+        const isMobile = width < 768;
+        const divisor = isMobile ? 28000 : 14000; // Half particles on mobile
+        const particleCount = Math.floor((width * height) / divisor);
+        const maxDistance = isMobile ? 150 : 220; // Shorter connection lines on mobile
         const mouseRadius = 150;
 
         let scrollSpeedBoost = 1.0;
@@ -100,21 +103,26 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ theme }) => {
 
         function init() {
             particles = [];
-            for (let i = 0; i < particleCount; i++) {
+            const isMobile = width < 768;
+            const divisor = isMobile ? 28000 : 14000;
+            const count = Math.floor((width * height) / divisor);
+            for (let i = 0; i < count; i++) {
                 particles.push(new Particle());
             }
         }
 
         function connect() {
             if (!ctx) return;
+            const isMobile = width < 768;
+            const distanceThreshold = isMobile ? 150 : 220;
             for (let a = 0; a < particles.length; a++) {
                 for (let b = a + 1; b < particles.length; b++) {
                     const dx = particles[a].x - particles[b].x;
                     const dy = particles[a].y - particles[b].y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
 
-                    if (distance < maxDistance) {
-                        const opacity = 1 - (distance / maxDistance);
+                    if (distance < distanceThreshold) {
+                        const opacity = 1 - (distance / distanceThreshold);
                         ctx.strokeStyle = `${particleColor}${opacity * 0.3})`;
                         ctx.lineWidth = 1;
                         ctx.beginPath();

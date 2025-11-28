@@ -82,22 +82,13 @@ const HighlightedText: React.FC<{ text: string }> = ({ text }) => {
         >
             {parts.map((part, index) => {
                 if (part.isKeyword) {
-                    const currentKeywordIndex = keywordIndex++;
                     return (
-                        <motion.span
+                        <span
                             key={index}
-                            className="relative inline-block text-white font-semibold"
+                            className="text-white font-semibold"
                         >
                             {part.text}
-                            <motion.span
-                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-red-600 dark:bg-red-400"
-                                initial={{ scaleX: 0 }}
-                                whileInView={{ scaleX: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.8, delay: 1 + currentKeywordIndex * 0.15, ease: "easeOut" }}
-                                style={{ transformOrigin: "left" }}
-                            />
-                        </motion.span>
+                        </span>
                     );
                 }
                 return <span key={index} className="text-white">{part.text}</span>;
@@ -154,7 +145,7 @@ const StatCard: React.FC<{ icon: React.ReactNode; value: string; label: string; 
     
     return (
     <motion.div
-        className="text-center p-8 rounded-2xl shadow-lg relative overflow-hidden group backdrop-blur-xl bg-white/10 dark:bg-black/10 border border-white/30 dark:border-white/20"
+        className="text-center p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg relative overflow-hidden group backdrop-blur-md bg-white/5 dark:bg-black/5 border border-white/20 dark:border-white/10"
         initial={{ opacity: 0, y: 50, scale: 0.9 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true, amount: 0.3 }}
@@ -184,7 +175,7 @@ const StatCard: React.FC<{ icon: React.ReactNode; value: string; label: string; 
         
         <div className="relative z-10">
             <motion.div 
-                className="text-primary mx-auto mb-4 w-16 h-16"
+                className="text-primary mx-auto mb-3 md:mb-4 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16"
                 initial={{ scale: 0, rotate: -180 }}
                 whileInView={{ scale: 1, rotate: 0 }}
                 viewport={{ once: true }}
@@ -194,30 +185,23 @@ const StatCard: React.FC<{ icon: React.ReactNode; value: string; label: string; 
                     type: "spring",
                     stiffness: 150
                 }}
-                whileHover={{ 
-                    rotate: 360,
-                    scale: 1.1,
-                    transition: { duration: 0.5 }
-                }}
             >
                 {icon}
             </motion.div>
             <motion.p 
-                className="text-4xl md:text-5xl font-extrabold text-foreground mb-2 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent"
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground mb-1 md:mb-2 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ 
-                    duration: 0.5, 
-                    delay: delay + 0.3,
-                    type: "spring",
-                    stiffness: 200
+                    duration: 0.3, 
+                    delay: delay + 0.3
                 }}
             >
                 {count}{suffix}
             </motion.p>
             <motion.p 
-                className="text-muted-foreground text-lg font-medium"
+                className="text-muted-foreground text-sm sm:text-base md:text-lg font-medium"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
@@ -241,28 +225,41 @@ const StatCard: React.FC<{ icon: React.ReactNode; value: string; label: string; 
 
 const InnovationSection: React.FC<InnovationSectionProps> = ({ translations: t }) => {
     return (
-        <section className="py-20 sm:py-28 innovation-parallax-section relative overflow-hidden" style={{ isolation: 'isolate' }}>
+        <section className="py-12 sm:py-16 md:py-20 lg:py-28 innovation-parallax-section relative overflow-hidden" style={{ isolation: 'isolate' }}>
             {/* Solid background to completely hide particles */}
             <div className="absolute inset-0 bg-background" style={{ zIndex: 0 }} />
             {/* Overlay to hide particle animation behind this section - matches parallax background */}
             <div className="absolute inset-0 pointer-events-none innovation-parallax-overlay" style={{ zIndex: 1 }} />
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative" style={{ zIndex: 10 }}>
                 <motion.div
-                    className="text-center max-w-3xl mx-auto mb-16"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 md:mb-16"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
                     viewport={{ once: true, amount: 0.5 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
                 >
-                    <h2 className="text-3xl md:text-4xl font-extrabold text-foreground mb-4">
+                    <motion.h2 
+                        className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-3 md:mb-4 px-2" 
+                        style={{ color: '#F37021' }}
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                    >
                         {t.innovationTitle as string}
-                    </h2>
-                    <p className="text-lg text-white font-medium leading-relaxed">
+                    </motion.h2>
+                    <motion.p 
+                        className="text-sm sm:text-base md:text-lg text-white font-medium leading-relaxed px-2"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                    >
                         <HighlightedText text={t.innovationDescription as string} />
-                    </p>
+                    </motion.p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto">
                     <StatCard
                         delay={0.2}
                         icon={

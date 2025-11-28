@@ -28,7 +28,7 @@ const HomePage: React.FC<HomePageProps> = ({ translations, setCurrentPage }) => 
         >
             <Hero translations={translations} setCurrentPage={setCurrentPage} />
             <InnovationSection translations={translations} />
-            <section className="h-screen relative">
+            <section className="h-[70vh] sm:h-[80vh] md:h-screen relative min-h-[500px]">
               <JoinUsSection translations={translations} />
             </section>
             <PopularCoursesSection translations={translations} setCurrentPage={setCurrentPage} />

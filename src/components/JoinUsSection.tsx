@@ -141,31 +141,32 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
                     </div>
                 </div>
 
-                {/* Scroll Up Button - Center Top */}
-                <motion.button
-                    onClick={handlePrevClick}
-                    className="group absolute top-16 left-1/2 -translate-x-1/2 z-10 w-16 h-16 flex items-center justify-center bg-background/50 backdrop-blur-xl rounded-full text-primary border-2 border-primary/30 shadow-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:bg-background/70 hover:border-primary/60"
-                    aria-label="Previous slide"
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 transition-transform duration-300 group-hover:-translate-y-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-                    </svg>
-                </motion.button>
+                {/* Navigation Buttons Container - Centered */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex items-center gap-1 sm:gap-2">
+                    <motion.button
+                        onClick={handlePrevClick}
+                        className="group w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center bg-background/50 backdrop-blur-xl rounded-full text-primary border-2 border-primary/30 shadow-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:bg-background/70 hover:border-primary/60"
+                        aria-label="Previous slide"
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 transition-transform duration-300 group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </motion.button>
 
-                {/* Scroll Down Button - Center Bottom (on divider line) */}
-                <motion.button
-                    onClick={handleNextClick}
-                    className="group absolute bottom-16 left-1/2 -translate-x-1/2 z-10 w-16 h-16 flex items-center justify-center bg-background/50 backdrop-blur-xl rounded-full text-primary border-2 border-primary/30 shadow-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:bg-background/70 hover:border-primary/60"
-                    aria-label="Next slide"
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 transition-transform duration-300 group-hover:translate-y-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </motion.button>
+                    <motion.button
+                        onClick={handleNextClick}
+                        className="group w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center bg-background/50 backdrop-blur-xl rounded-full text-primary border-2 border-primary/30 shadow-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:bg-background/70 hover:border-primary/60"
+                        aria-label="Next slide"
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 transition-transform duration-300 group-hover:-translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        </svg>
+                    </motion.button>
+                </div>
             </div>
         </motion.div>
     );

@@ -5,6 +5,7 @@ import type { Translation, ContentItem, PageKey } from '../types';
 import { mockData } from '../lib/data';
 
 import SectionParticleBackground from './SectionParticleBackground';
+import Button from './Button';
 
 interface PopularCoursesSectionProps {
 
@@ -134,16 +135,51 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
             }
         };
 
+        // Touch events for mobile
+        const handleTouchStart = (e: TouchEvent) => {
+            const target = e.target as HTMLElement;
+            if (target.closest('button')) return;
+            
+            isDraggingRef.current = true;
+            startXRef.current = e.touches[0].pageX - scrollContainer.offsetLeft;
+            scrollLeftRef.current = scrollContainer.scrollLeft;
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            if (!isDraggingRef.current) return;
+            const target = e.target as HTMLElement;
+            if (target.closest('button')) {
+                isDraggingRef.current = false;
+                return;
+            }
+            
+            const x = e.touches[0].pageX - scrollContainer.offsetLeft;
+            const walk = (x - startXRef.current) * 1.5;
+            scrollContainer.scrollLeft = scrollLeftRef.current - walk;
+        };
+
+        const handleTouchEnd = () => {
+            isDraggingRef.current = false;
+        };
+
         scrollContainer.addEventListener('mousedown', handleMouseDown);
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseup', handleMouseUp);
         scrollContainer.addEventListener('mouseleave', handleMouseLeave);
+        
+        // Touch events
+        scrollContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
+        scrollContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
+        scrollContainer.addEventListener('touchend', handleTouchEnd);
 
         return () => {
             scrollContainer.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
             scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
+            scrollContainer.removeEventListener('touchstart', handleTouchStart);
+            scrollContainer.removeEventListener('touchmove', handleTouchMove);
+            scrollContainer.removeEventListener('touchend', handleTouchEnd);
         };
     }, []);
 
@@ -291,9 +327,11 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
 
                                         </div>
 
-                                        <button 
+                                        <Button 
 
-                                            className="course-register-btn"
+                                            variant="primary"
+
+                                            className="w-full py-3 px-6 text-base"
 
                                             onClick={(e) => handleRegisterClick(e, item)}
 
@@ -301,7 +339,7 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
 
                                             مشاهده
 
-                                        </button>
+                                        </Button>
 
                                     </div>
 

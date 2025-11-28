@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Lenis from 'lenis';
 
 // Import components
 import Header from './components/Header';
@@ -35,6 +36,40 @@ const App: React.FC = () => {
     // State for filtering
     const [newsFilter, setNewsFilter] = useState<string>('all');
     const [coursesFilter, setCoursesFilter] = useState<string>('all');
+
+    const lenisRef = useRef<Lenis | null>(null);
+
+    useEffect(() => {
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            orientation: 'vertical',
+            gestureOrientation: 'vertical',
+            smoothWheel: true,
+            wheelMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        lenisRef.current = lenis;
+        (window as any).lenis = lenis;
+
+        document.documentElement.classList.add('lenis', 'lenis-smooth');
+
+        function raf(time: number) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        return () => {
+            lenis.destroy();
+            document.documentElement.classList.remove('lenis', 'lenis-smooth');
+            delete (window as any).lenis;
+        };
+    }, []);
 
     useEffect(() => {
         const root = window.document.documentElement;
@@ -76,28 +111,15 @@ const App: React.FC = () => {
                 return <HomePage key="home" translations={t} setCurrentPage={setCurrentPage} openModal={openModal} />;
             case 'newsAndAnnouncements':
                 return (
-                    <Page key="newsAndAnnouncements" title={t.newsAndAnnouncements as string}>
-                        <FilterControls filters={newsFilters as {key: string, label: string}[]} activeFilter={newsFilter} setActiveFilter={setNewsFilter} />
-                        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                           <AnimatePresence>
-                               {filteredNews.map(item => (
-                                    <ContentCard 
-                                        key={item.id} 
-                                        item={item} 
-                                        onImageClick={() => openModal('image', { src: item.image, title: item.title })}
-                                        onVideoClick={item.video ? () => openModal('video', { src: item.video, title: item.title }) : undefined}
-                                        translations={t}
-                                    />
-                                ))}
-                           </AnimatePresence>
-                        </motion.div>
+                    <Page key="newsAndAnnouncements" title={t.newsAndAnnouncements as string} isNewsPage={true} theme={theme}>
+                        <ContentCard />
                     </Page>
                 );
             case 'coursesAndWorkshops':
                  return (
                     <Page key="coursesAndWorkshops" title={t.coursesAndWorkshops as string}>
                          <FilterControls filters={coursesFilters as {key: string, label: string}[]} activeFilter={coursesFilter} setActiveFilter={setCoursesFilter} />
-                        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
                             <AnimatePresence>
                                 {filteredCourses.map(item => (
                                     <ContentCard 
@@ -141,17 +163,17 @@ const App: React.FC = () => {
                 {isModalOpen && (
                     <Modal onClose={closeModal}>
                         {modalContent.type === 'image' && modalContent.src && (
-                            <div className="p-4">
-                                <h3 className="text-xl font-bold mb-4 text-center">{modalContent.title}</h3>
-                                <img src={modalContent.src} alt={modalContent.title} className="max-w-full max-h-[80vh] mx-auto rounded-lg shadow-2xl" />
+                            <div className="p-2 sm:p-4">
+                                <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-center px-2">{modalContent.title}</h3>
+                                <img src={modalContent.src} alt={modalContent.title} className="max-w-full max-h-[70vh] sm:max-h-[80vh] mx-auto rounded-lg shadow-2xl" />
                             </div>
                         )}
                         {modalContent.type === 'video' && modalContent.src && (
-                             <div className="p-4 w-full">
-                                <h3 className="text-xl font-bold mb-4 text-center">{modalContent.title}</h3>
+                             <div className="p-2 sm:p-4 w-full">
+                                <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-center px-2">{modalContent.title}</h3>
                                 <div className="aspect-w-16 aspect-h-9">
                                     <iframe 
-                                      className="w-full h-full rounded-lg shadow-2xl min-h-[400px]"
+                                      className="w-full h-full rounded-lg shadow-2xl min-h-[250px] sm:min-h-[350px] md:min-h-[400px]"
                                       src={modalContent.src}
                                       title={modalContent.title}
                                       frameBorder="0" 

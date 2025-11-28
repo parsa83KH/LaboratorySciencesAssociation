@@ -18,12 +18,23 @@ const LogoAnimation: React.FC = () => {
                 }
                 .logo-animation-container svg {
                     filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.4));
-                    width: 200px;
-                    height: 200px;
+                    width: 120px;
+                    height: 120px;
                     max-width: 100%;
-                    height: auto;
+                }
+                @media (min-width: 640px) {
+                    .logo-animation-container svg {
+                        width: 160px;
+                        height: 160px;
+                    }
                 }
                 @media (min-width: 768px) {
+                    .logo-animation-container svg {
+                        width: 200px;
+                        height: 200px;
+                    }
+                }
+                @media (min-width: 1024px) {
                     .logo-animation-container svg {
                         width: 240px;
                         height: 240px;
@@ -35,7 +46,7 @@ const LogoAnimation: React.FC = () => {
     }, []);
     
     return (
-        <div className="flex justify-center items-center mb-12 md:mb-16">
+        <div className="flex justify-center items-center mb-4 md:mb-6">
             <div className="logo-animation-container" ref={containerRef}>
                 <svg id="logoSvg" width="700" height="700" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg">
                     <defs>

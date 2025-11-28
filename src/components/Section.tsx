@@ -1,12 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import SectionParticleBackground from './SectionParticleBackground';
 
 interface PageProps {
     title: string;
     children: React.ReactNode;
+    isNewsPage?: boolean;
+    theme?: 'light' | 'dark';
 }
 
-const Page: React.FC<PageProps> = ({ title, children }) => {
+const Page: React.FC<PageProps> = ({ title, children, isNewsPage = false, theme = 'dark' }) => {
     return (
         <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
@@ -14,25 +17,37 @@ const Page: React.FC<PageProps> = ({ title, children }) => {
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.4, ease: 'easeInOut' }}
         >
-            <section className="py-16 sm:py-24">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div 
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.5 }}
-                        transition={{ duration: 0.5 }}
-                        className="text-center mb-12"
-                    >
-                        <h2 
-                            className="text-3xl md:text-4xl font-bold tracking-tight inline-block relative pb-2"
-                        >
+            {isNewsPage ? (
+                <div className="news-page-container relative">
+                    <SectionParticleBackground theme={theme} />
+                    <div className="relative z-10">
+                        <h1 className="l-heading">
                             {title}
-                            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-1 bg-primary rounded-full"></span>
-                        </h2>
-                    </motion.div>
-                    {children}
+                        </h1>
+                        {children}
+                    </div>
                 </div>
-            </section>
+            ) : (
+                <section className="py-8 sm:py-12 md:py-16 lg:py-24">
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, amount: 0.5 }}
+                            transition={{ duration: 0.5 }}
+                            className="text-center mb-6 sm:mb-8 md:mb-12"
+                        >
+                            <h2 
+                                className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight inline-block relative pb-2 px-2"
+                            >
+                                {title}
+                                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-1 bg-primary rounded-full"></span>
+                            </h2>
+                        </motion.div>
+                        {children}
+                    </div>
+                </section>
+            )}
         </motion.div>
     );
 };
