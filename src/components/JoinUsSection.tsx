@@ -47,11 +47,9 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             autoplay: false,
             effect: 'slide',
             mousewheelControl: false,
-            touchRatio: isMobile ? 0 : 0, // Disable touch/swipe on all devices
+            touchRatio: 0, // Disable touch/swipe on all devices
             allowTouchMove: false, // Disable touch movement
             simulateTouch: false, // Disable touch simulation
-            // Allow vertical scroll on mobile
-            touchEventsTarget: isMobile ? 'container' : 'container',
             preventClicks: false,
             preventClicksPropagation: false,
             pagination: null,
@@ -94,8 +92,11 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
 
     // Allow vertical scroll on mobile when touching the slider
     useEffect(() => {
+        if (window.innerWidth >= 768) return; // Only for mobile
+        
         const sliderElement = document.getElementById('home-slider');
-        if (!sliderElement) return;
+        const swiperContainer = sliderElement?.querySelector('.swiper-container');
+        if (!sliderElement || !swiperContainer) return;
 
         let touchStartY = 0;
         let touchStartX = 0;
@@ -112,35 +113,43 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             
             const touchCurrentY = e.touches[0].clientY;
             const touchCurrentX = e.touches[0].clientX;
-            const deltaY = Math.abs(touchCurrentY - touchStartY);
-            const deltaX = Math.abs(touchCurrentX - touchStartX);
+            const deltaY = touchCurrentY - touchStartY;
+            const deltaX = touchCurrentX - touchStartX;
+            const absDeltaY = Math.abs(deltaY);
+            const absDeltaX = Math.abs(deltaX);
 
             // If vertical movement is greater than horizontal, allow page scroll
-            if (deltaY > deltaX && deltaY > 10) {
+            if (absDeltaY > absDeltaX && absDeltaY > 20) {
                 isVerticalScroll = true;
-                // Allow default scroll behavior
-                return;
+                // Disable swiper temporarily
+                if (swiperRef.current) {
+                    swiperRef.current.disable();
+                }
+                // Manually scroll the page
+                window.scrollBy(0, deltaY * 0.5);
+                e.preventDefault();
+                return false;
             }
         };
 
         const handleTouchEnd = () => {
+            if (swiperRef.current) {
+                swiperRef.current.enable();
+            }
             touchStartY = 0;
             touchStartX = 0;
             isVerticalScroll = false;
         };
 
-        if (window.innerWidth < 768) {
-            sliderElement.addEventListener('touchstart', handleTouchStart, { passive: true });
-            sliderElement.addEventListener('touchmove', handleTouchMove, { passive: true });
-            sliderElement.addEventListener('touchend', handleTouchEnd, { passive: true });
-        }
+        // Add listeners to the container, not the slider itself
+        swiperContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
+        swiperContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
+        swiperContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
 
         return () => {
-            if (window.innerWidth < 768) {
-                sliderElement.removeEventListener('touchstart', handleTouchStart);
-                sliderElement.removeEventListener('touchmove', handleTouchMove);
-                sliderElement.removeEventListener('touchend', handleTouchEnd);
-            }
+            swiperContainer.removeEventListener('touchstart', handleTouchStart);
+            swiperContainer.removeEventListener('touchmove', handleTouchMove);
+            swiperContainer.removeEventListener('touchend', handleTouchEnd);
         };
     }, []);
 

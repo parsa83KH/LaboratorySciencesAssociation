@@ -61,8 +61,8 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                             <span className="absolute bottom-0 right-0 w-full h-0.5 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                         </h3>
                         <div className="space-y-3 sm:space-y-3">
-                            {/* First Row - 3 links */}
-                            <div className="flex flex-col gap-2 sm:gap-3 items-center md:items-start">
+                            {/* First Row - 3 links: Instagram, Email, Telegram Channel (mobile: horizontal, desktop: wrap) */}
+                            <div className="flex flex-row flex-wrap gap-2 sm:gap-3 justify-center md:justify-start">
                                 <a href="https://instagram.com/scls.iautms" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-pink-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-pink-500/20 group-hover/link:scale-110 transition-all duration-300">
                                         <svg className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500 group-hover/link:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
@@ -70,33 +70,6 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                                         </svg>
                                     </div>
                                     <span className="font-medium group-hover/link:text-pink-500 transition-colors duration-300">پیج اینستاگرام</span>
-                                </a>
-                                <a href="https://t.me/scls_iautms" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
-                                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-blue-500/20 group-hover/link:scale-110 transition-all duration-300">
-                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 group-hover/link:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.13-.31-1.09-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
-                                        </svg>
-                                    </div>
-                                    <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">کانال تلگرام</span>
-                                </a>
-                                <a href="https://t.me/scls_iautms_admin" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
-                                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-blue-500/20 group-hover/link:scale-110 transition-all duration-300">
-                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 group-hover/link:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.13-.31-1.09-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
-                                        </svg>
-                                    </div>
-                                    <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">روابط عمومی</span>
-                                </a>
-                            </div>
-                            {/* Second Row - 3 links */}
-                            <div className="flex flex-col gap-2 sm:gap-3 items-center md:items-start">
-                                <a href="https://t.me/sclsiautms_bot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
-                                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-blue-500/20 group-hover/link:scale-110 transition-all duration-300">
-                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 group-hover/link:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.13-.31-1.09-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
-                                        </svg>
-                                    </div>
-                                    <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">دبیر</span>
                                 </a>
                                 <a href="mailto:labsciences.scls.iautms@gmail.com" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-red-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-red-500/20 group-hover/link:scale-110 transition-all duration-300">
@@ -106,6 +79,17 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                                     </div>
                                     <span className="font-medium group-hover/link:text-red-400 transition-colors duration-300">ایمیل</span>
                                 </a>
+                                <a href="https://t.me/scls_iautms" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
+                                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-blue-500/20 group-hover/link:scale-110 transition-all duration-300">
+                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 group-hover/link:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.13-.31-1.09-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                                        </svg>
+                                    </div>
+                                    <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">کانال تلگرام</span>
+                                </a>
+                            </div>
+                            {/* Second Row - 3 links: Location, Secretary, Public Relations (mobile: horizontal, desktop: wrap) */}
+                            <div className="flex flex-row flex-wrap gap-2 sm:gap-3 justify-center md:justify-start">
                                 <a href="https://share.google/iOCzViLBnLZTpeZp4" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-green-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-green-500/20 group-hover/link:scale-110 transition-all duration-300">
                                         <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-400 group-hover/link:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -114,6 +98,22 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                                         </svg>
                                     </div>
                                     <span className="font-medium group-hover/link:text-green-400 transition-colors duration-300">لوکیشن دانشگاه</span>
+                                </a>
+                                <a href="https://t.me/sclsiautms_bot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
+                                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-blue-500/20 group-hover/link:scale-110 transition-all duration-300">
+                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 group-hover/link:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.13-.31-1.09-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                                        </svg>
+                                    </div>
+                                    <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">دبیر</span>
+                                </a>
+                                <a href="https://t.me/scls_iautms_admin" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
+                                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-blue-500/20 group-hover/link:scale-110 transition-all duration-300">
+                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 group-hover/link:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.13-.31-1.09-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                                        </svg>
+                                    </div>
+                                    <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">روابط عمومی</span>
                                 </a>
                             </div>
                         </div>
