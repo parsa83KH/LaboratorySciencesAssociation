@@ -32,11 +32,12 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
 
     const handleNextClick = useCallback(() => {
         if (swiperRef.current) {
-            swiperRef.current.slideNext();
+            swiperRef.current.slidePrev(); // Reversed functionality
         }
     }, []);
 
     useEffect(() => {
+        const isMobile = window.innerWidth < 768;
         const swiperInstance = new Swiper('#home-slider .swiper-container', {
             direction: 'vertical',
             loop: true,
@@ -46,9 +47,13 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             autoplay: false,
             effect: 'slide',
             mousewheelControl: false,
-            touchRatio: 0, // Disable touch/swipe
+            touchRatio: isMobile ? 0 : 0, // Disable touch/swipe on all devices
             allowTouchMove: false, // Disable touch movement
             simulateTouch: false, // Disable touch simulation
+            // Allow vertical scroll on mobile
+            touchEventsTarget: isMobile ? 'container' : 'container',
+            preventClicks: false,
+            preventClicksPropagation: false,
             pagination: null,
             onSlideChangeEnd: () => {
                 if (inViewRef.current) {
@@ -70,7 +75,7 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
 
     const handlePrevClick = useCallback(() => {
         if (swiperRef.current) {
-            swiperRef.current.slidePrev();
+            swiperRef.current.slideNext(); // Reversed functionality
         }
     }, []);
 
@@ -86,6 +91,58 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             stopAutoplay();
         };
     }, [startAutoplay, stopAutoplay]);
+
+    // Allow vertical scroll on mobile when touching the slider
+    useEffect(() => {
+        const sliderElement = document.getElementById('home-slider');
+        if (!sliderElement) return;
+
+        let touchStartY = 0;
+        let touchStartX = 0;
+        let isVerticalScroll = false;
+
+        const handleTouchStart = (e: TouchEvent) => {
+            touchStartY = e.touches[0].clientY;
+            touchStartX = e.touches[0].clientX;
+            isVerticalScroll = false;
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            if (!touchStartY || !touchStartX) return;
+            
+            const touchCurrentY = e.touches[0].clientY;
+            const touchCurrentX = e.touches[0].clientX;
+            const deltaY = Math.abs(touchCurrentY - touchStartY);
+            const deltaX = Math.abs(touchCurrentX - touchStartX);
+
+            // If vertical movement is greater than horizontal, allow page scroll
+            if (deltaY > deltaX && deltaY > 10) {
+                isVerticalScroll = true;
+                // Allow default scroll behavior
+                return;
+            }
+        };
+
+        const handleTouchEnd = () => {
+            touchStartY = 0;
+            touchStartX = 0;
+            isVerticalScroll = false;
+        };
+
+        if (window.innerWidth < 768) {
+            sliderElement.addEventListener('touchstart', handleTouchStart, { passive: true });
+            sliderElement.addEventListener('touchmove', handleTouchMove, { passive: true });
+            sliderElement.addEventListener('touchend', handleTouchEnd, { passive: true });
+        }
+
+        return () => {
+            if (window.innerWidth < 768) {
+                sliderElement.removeEventListener('touchstart', handleTouchStart);
+                sliderElement.removeEventListener('touchmove', handleTouchMove);
+                sliderElement.removeEventListener('touchend', handleTouchEnd);
+            }
+        };
+    }, []);
 
     return (
         <motion.div
@@ -143,7 +200,7 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex items-center gap-1 sm:gap-2">
                     <motion.button
                         onClick={handlePrevClick}
-                        className="group w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center bg-background/50 backdrop-blur-xl rounded-full text-primary border-2 border-primary/30 shadow-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:bg-background/70 hover:border-primary/60"
+                        className="group w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center bg-background/50 backdrop-blur-xl rounded-full text-[#F37021] border-2 border-[#F37021]/30 shadow-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:bg-background/70 hover:border-[#F37021]/60"
                         aria-label="Previous slide"
                         whileTap={{ scale: 0.95 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 25 }}
@@ -155,7 +212,7 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
 
                     <motion.button
                         onClick={handleNextClick}
-                        className="group w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center bg-background/50 backdrop-blur-xl rounded-full text-primary border-2 border-primary/30 shadow-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:bg-background/70 hover:border-primary/60"
+                        className="group w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center bg-background/50 backdrop-blur-xl rounded-full text-[#F37021] border-2 border-[#F37021]/30 shadow-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:bg-background/70 hover:border-[#F37021]/60"
                         aria-label="Next slide"
                         whileTap={{ scale: 0.95 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 25 }}

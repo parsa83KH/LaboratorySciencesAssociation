@@ -56,13 +56,13 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
 
                     {/* Communication Channels - Second on mobile */}
                     <div className="group order-2 md:order-1">
-                        <h3 className="text-base sm:text-lg font-bold text-white mb-4 sm:mb-6 relative inline-block text-center md:text-right md:mr-auto rtl:md:ml-auto rtl:md:mr-0">
+                        <h3 className="text-base sm:text-lg font-bold text-white mb-4 sm:mb-6 relative inline-block text-center w-full md:text-right md:w-auto md:mr-auto rtl:md:ml-auto rtl:md:mr-0">
                             راه‌های ارتباطی
                             <span className="absolute bottom-0 right-0 w-full h-0.5 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                         </h3>
-                        <div className="space-y-2 sm:space-y-3">
+                        <div className="space-y-3 sm:space-y-3">
                             {/* First Row - 3 links */}
-                            <div className="flex flex-wrap gap-2 sm:gap-3 justify-center md:justify-start">
+                            <div className="flex flex-col gap-2 sm:gap-3 items-center md:items-start">
                                 <a href="https://instagram.com/scls.iautms" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-pink-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-pink-500/20 group-hover/link:scale-110 transition-all duration-300">
                                         <svg className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500 group-hover/link:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
@@ -89,7 +89,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                                 </a>
                             </div>
                             {/* Second Row - 3 links */}
-                            <div className="flex flex-wrap gap-2 sm:gap-3 justify-center md:justify-start">
+                            <div className="flex flex-col gap-2 sm:gap-3 items-center md:items-start">
                                 <a href="https://t.me/sclsiautms_bot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-blue-500/20 group-hover/link:scale-110 transition-all duration-300">
                                         <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 group-hover/link:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">

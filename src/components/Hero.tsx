@@ -73,7 +73,7 @@ const Hero: React.FC<HeroProps> = ({ translations, setCurrentPage }) => {
                             اخبار
                         </Button>
                     </div>
-                    <p className="text-xs sm:text-sm md:text-lg font-medium" style={{ color: '#2563eb' }}>حرکت کنید</p>
+                    <p className="text-xs sm:text-sm md:text-lg font-medium mt-2 md:mt-4" style={{ color: '#2563eb' }}>حرکت کنید</p>
                     <div className="scroll-indicator">
                         <div className="scroll-arrow"></div>
                     </div>

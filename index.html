@@ -288,6 +288,14 @@
         height: 100%;
         width: 100%;
       }
+      @media screen and (max-width: 768px) {
+        #home-slider {
+          touch-action: pan-y; /* Allow vertical scrolling on mobile */
+        }
+        #home-slider .swiper-container {
+          touch-action: pan-y; /* Allow vertical scrolling on mobile */
+        }
+      }
 
       .swiper-image-one { background-image: url("/Real-Time PCR.png"); }
       .swiper-image-two { background-image: url("/Real-Time PCR_2.png"); }
