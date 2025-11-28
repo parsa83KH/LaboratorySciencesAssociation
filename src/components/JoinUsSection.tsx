@@ -40,19 +40,17 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
         const swiperInstance = new Swiper('#home-slider .swiper-container', {
             direction: 'vertical',
             loop: true,
-            grabCursor: true,
+            grabCursor: false,
             speed: 1000,
             parallax: true,
             autoplay: false,
             effect: 'slide',
             mousewheelControl: false,
+            touchRatio: 0, // Disable touch/swipe
+            allowTouchMove: false, // Disable touch movement
+            simulateTouch: false, // Disable touch simulation
             pagination: null,
             onSlideChangeEnd: () => {
-                if (inViewRef.current) {
-                    startAutoplay();
-                }
-            },
-            onTouchEnd: () => {
                 if (inViewRef.current) {
                     startAutoplay();
                 }

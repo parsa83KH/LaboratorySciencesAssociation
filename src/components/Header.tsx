@@ -55,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
                             alt="University Logo" 
                             className="h-8 md:h-12 w-auto object-contain"
                         />
-                        <span className="hidden sm:inline">{translations.appName as string}</span>
+                        <span className="text-xs sm:text-base md:text-xl">{translations.appName as string}</span>
                     </div>
                     <nav className="hidden md:flex md:items-center md:space-x-8 rtl:space-x-reverse">
                         {navLinks.map((link) => (

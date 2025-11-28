@@ -30,9 +30,9 @@ const SectionParticleBackground: React.FC<SectionParticleBackgroundProps> = ({ t
         let height = canvas.height;
 
         let particles: Particle[] = [];
-        // Reduce particle count on mobile devices
+        // Reduce particle count on mobile devices (but not too much)
         const isMobile = width < 768;
-        const divisor = isMobile ? 28000 : 14000; // Half particles on mobile
+        const divisor = isMobile ? 16000 : 14000; // More particles on mobile
         const particleCount = Math.floor((width * height) / divisor);
         const maxDistance = isMobile ? 150 : 220; // Shorter connection lines on mobile
         const mouseRadius = 150;
@@ -115,7 +115,7 @@ const SectionParticleBackground: React.FC<SectionParticleBackgroundProps> = ({ t
         function init() {
             particles = [];
             const isMobile = width < 768;
-            const divisor = isMobile ? 28000 : 14000;
+            const divisor = isMobile ? 16000 : 14000;
             const count = Math.floor((width * height) / divisor);
             for (let i = 0; i < count; i++) {
                 particles.push(new Particle());

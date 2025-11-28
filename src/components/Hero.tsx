@@ -57,6 +57,22 @@ const Hero: React.FC<HeroProps> = ({ translations, setCurrentPage }) => {
                     >
                         ارتباط با ما
                     </Button>
+                    <div className="flex flex-col gap-3 w-full justify-center items-center md:hidden">
+                        <Button
+                            variant="primary"
+                            className="w-full py-2.5 px-5 text-sm max-w-xs"
+                            onClick={() => setCurrentPage('coursesAndWorkshops')}
+                        >
+                            دوره‌ها
+                        </Button>
+                        <Button
+                            variant="primary"
+                            className="w-full py-2.5 px-5 text-sm max-w-xs"
+                            onClick={() => setCurrentPage('newsAndAnnouncements')}
+                        >
+                            اخبار
+                        </Button>
+                    </div>
                     <p className="text-xs sm:text-sm md:text-lg font-medium" style={{ color: '#2563eb' }}>حرکت کنید</p>
                     <div className="scroll-indicator">
                         <div className="scroll-arrow"></div>
