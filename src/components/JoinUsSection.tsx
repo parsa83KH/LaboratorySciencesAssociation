@@ -95,20 +95,27 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
         if (window.innerWidth >= 768) return; // Only for mobile
         
         const sliderElement = document.getElementById('home-slider');
-        const swiperContainer = sliderElement?.querySelector('.swiper-container');
-        if (!sliderElement || !swiperContainer) return;
+        if (!sliderElement) return;
 
         let touchStartY = 0;
         let touchStartX = 0;
         let isVerticalScroll = false;
 
         const handleTouchStart = (e: TouchEvent) => {
+            // Don't interfere with button clicks
+            const target = e.target as HTMLElement;
+            if (target.closest('button')) return;
+            
             touchStartY = e.touches[0].clientY;
             touchStartX = e.touches[0].clientX;
             isVerticalScroll = false;
         };
 
         const handleTouchMove = (e: TouchEvent) => {
+            // Don't interfere with button clicks
+            const target = e.target as HTMLElement;
+            if (target.closest('button')) return;
+            
             if (!touchStartY || !touchStartX) return;
             
             const touchCurrentY = e.touches[0].clientY;
@@ -118,17 +125,18 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             const absDeltaY = Math.abs(deltaY);
             const absDeltaX = Math.abs(deltaX);
 
-            // If vertical movement is greater than horizontal, allow page scroll
-            if (absDeltaY > absDeltaX && absDeltaY > 20) {
+            // Determine if this is a vertical scroll gesture
+            if (absDeltaY > absDeltaX && absDeltaY > 10) {
                 isVerticalScroll = true;
-                // Disable swiper temporarily
+                // Disable swiper to allow page scroll
                 if (swiperRef.current) {
                     swiperRef.current.disable();
                 }
-                // Manually scroll the page
-                window.scrollBy(0, deltaY * 0.5);
-                e.preventDefault();
-                return false;
+                // Don't prevent default - let browser handle vertical scroll naturally
+                return;
+            } else if (absDeltaX > absDeltaY && absDeltaX > 10) {
+                // Horizontal swipe - keep swiper enabled
+                isVerticalScroll = false;
             }
         };
 
@@ -141,15 +149,15 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             isVerticalScroll = false;
         };
 
-        // Add listeners to the container, not the slider itself
-        swiperContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
-        swiperContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
-        swiperContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
+        // Use passive listeners to allow native scrolling
+        sliderElement.addEventListener('touchstart', handleTouchStart, { passive: true });
+        sliderElement.addEventListener('touchmove', handleTouchMove, { passive: true });
+        sliderElement.addEventListener('touchend', handleTouchEnd, { passive: true });
 
         return () => {
-            swiperContainer.removeEventListener('touchstart', handleTouchStart);
-            swiperContainer.removeEventListener('touchmove', handleTouchMove);
-            swiperContainer.removeEventListener('touchend', handleTouchEnd);
+            sliderElement.removeEventListener('touchstart', handleTouchStart);
+            sliderElement.removeEventListener('touchmove', handleTouchMove);
+            sliderElement.removeEventListener('touchend', handleTouchEnd);
         };
     }, []);
 

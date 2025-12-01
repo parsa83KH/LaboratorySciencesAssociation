@@ -91,11 +91,11 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
         if (!scrollContainer) return;
 
         const handleMouseDown = (e: MouseEvent) => {
-            // فقط کلیک چپ
+            // Only left click
             if (e.button !== 0) return;
             
             const target = e.target as HTMLElement;
-            // اگر روی دکمه کلیک شده، drag نکن
+            // If clicking on button, don't drag
             if (target.closest('button')) return;
 
             isDraggingRef.current = true;
@@ -104,7 +104,7 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
             scrollContainer.style.cursor = 'grabbing';
             scrollContainer.style.userSelect = 'none';
             
-            // جلوگیری از drag تصویر
+            // Prevent image drag
             if (target.closest('img')) {
                 e.preventDefault();
             }
@@ -115,7 +115,7 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
             e.preventDefault();
             
             const x = e.pageX - scrollContainer.offsetLeft;
-            const walk = (x - startXRef.current) * 1.5; // ضریب سرعت
+            const walk = (x - startXRef.current) * 1.5; // Speed multiplier
             scrollContainer.scrollLeft = scrollLeftRef.current - walk;
         };
 
