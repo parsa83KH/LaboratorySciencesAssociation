@@ -1,76 +1,26 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import type { ContentItem, Translation } from '../types';
-import Button from './Button';
+import React from 'react';
 
-interface ContentCardProps {
-    item: ContentItem;
-    onImageClick?: () => void;
-    onVideoClick?: () => void;
-    onRegisterClick?: () => void;
-    translations: Translation;
-}
-
-const ContentCard: React.FC<ContentCardProps> = ({ 
-    item, 
-    onImageClick, 
-    onVideoClick, 
-    onRegisterClick,
-    translations 
-}) => {
-    const [isHovered, setIsHovered] = useState(false);
-
+const ContentCard: React.FC = () => {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="course-card-page"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-        >
-            <div className="course-card-inner-page">
-                <div className="course-image-wrapper-page">
-                    <img
-                        src={item.image}
-                        alt={item.title}
-                        className="course-image-page"
-                        onClick={onImageClick}
-                    />
-                    {item.video && (
-                        <button
-                            onClick={onVideoClick}
-                            className="absolute top-4 right-4 bg-primary/80 hover:bg-primary text-primary-foreground rounded-full p-2 transition-colors z-10"
-                            aria-label="Play video"
-                        >
-                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z" />
-                            </svg>
-                        </button>
-                    )}
+        <div className="wrap animate pop">
+            <div className="overlay">
+                <div className="overlay-content animate slide-left delay-2">
+                    <h1 className="animate slide-left pop delay-4">به سوی آینده</h1>
+                    <p className="animate slide-left pop delay-5" style={{ color: 'white', marginBottom: '2.5rem' }}>شناسایی دقیق مسیر های مهاجرت</p>
                 </div>
-                <div className="course-text-content-page">
-                    <h3 className="course-title-page">{item.title}</h3>
-                    <p className="course-description-page">{item.description}</p>
-                    <div className="course-meta-page">
-                        <span className="course-type-page">
-                            {item.type === 'course' ? '📚 دوره' : item.type === 'workshop' ? '🔬 کارگاه' : item.type === 'news' ? '📰 خبر' : '📢 اطلاعیه'}
-                        </span>
-                        <span className="course-date-page">📅 {item.date}</span>
-                    </div>
-                    {onRegisterClick && (
-                        <Button
-                            variant="primary"
-                            className="w-full py-3 px-6 text-base"
-                            onClick={onRegisterClick}
-                        >
-                            مشاهده
-                        </Button>
-                    )}
+                <div className="image-content animate slide delay-5"></div>
+                <div className="dots animate">
+                    <div className="dot animate slide-up delay-6"></div>
+                    <div className="dot animate slide-up delay-7"></div>
+                    <div className="dot animate slide-up delay-8"></div>
                 </div>
             </div>
-        </motion.div>
+            <div className="text">
+                <p><img className="inset" src="/immagration.png" alt="" />در مسیر پیشرفت و تعالی، حرکت به سوی آینده نیازمند برنامه‌ریزی دقیق و راهبردهای هوشمندانه است. هر قدم که برمی‌داریم، هر تصمیمی که می‌گیریم، ما را به مقصد نهایی نزدیک‌تر می‌کند. آینده‌ای روشن با تلاش امروز ما ساخته می‌شود.</p>
+                <p>شناسایی دقیق مسیرهای مهاجرت و تحرک جمعیت‌ها یکی از مهم‌ترین ابعاد مطالعات جمعیت‌شناختی و برنامه‌ریزی شهری است. با استفاده از روش‌های پیشرفته تحلیل داده‌ها و فناوری‌های مدرن، می‌توانیم الگوهای مهاجرت را شناسایی کنیم و برای آینده برنامه‌ریزی کنیم.</p>
+                <p>با ترکیب دانش و تجربه، می‌توانیم بهترین راهکارها را برای چالش‌های پیش رو پیدا کنیم. حرکت به سوی آینده و شناسایی مسیرهای صحیح، رمز موفقیت در دنیای امروز است.</p>
+            </div>
+        </div>
     );
 };
 

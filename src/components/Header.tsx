@@ -12,13 +12,11 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
     
     const { scrollY } = useScroll();
     const [hidden, setHidden] = useState(false);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useMotionValueEvent(scrollY, "change", (latest) => {
         const previous = scrollY.getPrevious() || 0;
         // Hide header when scrolling down past a threshold, show when scrolling up
-        // Don't hide if mobile menu is open
-        if (!isMobileMenuOpen && latest > previous && latest > 150) {
+        if (latest > previous && latest > 150) {
             setHidden(true);
         } else {
             setHidden(false);
@@ -28,15 +26,6 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, page: PageKey) => {
         e.preventDefault();
         setCurrentPage(page);
-        setIsMobileMenuOpen(false); // Close mobile menu when navigating
-    };
-
-    const toggleMobileMenu = () => {
-        setIsMobileMenuOpen(prev => !prev);
-        // Prevent header from hiding when menu is toggled
-        if (!isMobileMenuOpen) {
-            setHidden(false);
-        }
     };
 
     const navLinks = [
@@ -84,58 +73,7 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
                             </a>
                         ))}
                     </nav>
-                    
-                    {/* Mobile Menu Button */}
-                    <button
-                        onClick={toggleMobileMenu}
-                        className="md:hidden p-2 rounded-md text-foreground hover:bg-muted transition-colors"
-                        aria-label="Toggle menu"
-                    >
-                        <svg
-                            className="w-6 h-6"
-                            fill="none"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            {isMobileMenuOpen ? (
-                                <path d="M6 18L18 6M6 6l12 12" />
-                            ) : (
-                                <path d="M4 6h16M4 12h16M4 18h16" />
-                            )}
-                        </svg>
-                    </button>
                 </div>
-                
-                {/* Mobile Menu */}
-                <motion.nav
-                    initial={false}
-                    animate={{
-                        height: isMobileMenuOpen ? 'auto' : 0,
-                        opacity: isMobileMenuOpen ? 1 : 0,
-                    }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    className="md:hidden overflow-hidden"
-                >
-                    <div className="py-4 space-y-2 text-center">
-                        {navLinks.map((link) => (
-                            <a
-                                key={link.id}
-                                href="#"
-                                onClick={(e) => handleNavClick(e, link.id as PageKey)}
-                                className={`block px-4 py-2 rounded-md font-medium transition-colors duration-200 ${
-                                    currentPage === link.id
-                                        ? 'bg-primary text-primary-foreground'
-                                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                                }`}
-                            >
-                                {link.text as string}
-                            </a>
-                        ))}
-                    </div>
-                </motion.nav>
             </div>
         </motion.header>
     );
