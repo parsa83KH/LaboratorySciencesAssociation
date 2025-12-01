@@ -136,7 +136,6 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
                         ))}
                     </div>
                 </motion.nav>
-                </div>
             </div>
         </motion.header>
     );
