@@ -119,7 +119,7 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
                     className="md:hidden overflow-hidden"
                 >
-                    <div className="py-4 space-y-2">
+                    <div className="py-4 space-y-2 text-center">
                         {navLinks.map((link) => (
                             <a
                                 key={link.id}

@@ -117,7 +117,6 @@ const App: React.FC = () => {
             case 'coursesAndWorkshops':
                  return (
                     <Page key="coursesAndWorkshops" title={t.coursesAndWorkshops as string} isNewsPage={true} theme={theme}>
-                         <FilterControls filters={coursesFilters as {key: string, label: string}[]} activeFilter={coursesFilter} setActiveFilter={setCoursesFilter} />
                         <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
                             <AnimatePresence>
                                 {filteredCourses.map(item => (
