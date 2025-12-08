@@ -53,6 +53,8 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             preventClicks: false,
             preventClicksPropagation: false,
             pagination: null,
+            // Disable all touch interactions that might interfere with page scrolling
+            touchEventsTarget: 'container',
             onSlideChangeEnd: () => {
                 if (inViewRef.current) {
                     startAutoplay();
@@ -61,6 +63,31 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
         });
 
         swiperRef.current = swiperInstance;
+
+        // On mobile, ensure Swiper doesn't interfere with page scrolling
+        if (isMobile) {
+            const sliderElement = document.getElementById('home-slider');
+            const swiperContainer = sliderElement?.querySelector('.swiper-container') as HTMLElement;
+            const swiperWrapper = sliderElement?.querySelector('.swiper-wrapper') as HTMLElement;
+            
+            if (swiperContainer) {
+                // Ensure Swiper container doesn't block touch events for page scrolling
+                swiperContainer.style.touchAction = 'pan-y';
+                swiperContainer.style.pointerEvents = 'auto';
+                // Prevent Swiper from capturing touch events
+                swiperContainer.style.userSelect = 'none';
+            }
+            
+            if (swiperWrapper) {
+                swiperWrapper.style.touchAction = 'pan-y';
+                swiperWrapper.style.pointerEvents = 'auto';
+            }
+            
+            // Disable Swiper's touch handling completely on mobile
+            if (swiperInstance.touch) {
+                swiperInstance.touch.disable();
+            }
+        }
 
         return () => {
             if (swiperRef.current) {
@@ -100,6 +127,7 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
         let touchStartY = 0;
         let touchStartX = 0;
         let isVerticalScroll = false;
+        let touchMoved = false;
 
         const handleTouchStart = (e: TouchEvent) => {
             // Don't interfere with button clicks
@@ -109,6 +137,7 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             touchStartY = e.touches[0].clientY;
             touchStartX = e.touches[0].clientX;
             isVerticalScroll = false;
+            touchMoved = false;
         };
 
         const handleTouchMove = (e: TouchEvent) => {
@@ -118,6 +147,7 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             
             if (!touchStartY || !touchStartX) return;
             
+            touchMoved = true;
             const touchCurrentY = e.touches[0].clientY;
             const touchCurrentX = e.touches[0].clientX;
             const deltaY = touchCurrentY - touchStartY;
@@ -126,16 +156,16 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             const absDeltaX = Math.abs(deltaX);
 
             // Determine if this is a vertical scroll gesture
-            if (absDeltaY > absDeltaX && absDeltaY > 10) {
+            if (absDeltaY > absDeltaX && absDeltaY > 5) {
                 isVerticalScroll = true;
                 // Disable swiper to allow page scroll
                 if (swiperRef.current) {
                     swiperRef.current.disable();
                 }
-                // Don't prevent default - let browser handle vertical scroll naturally
-                return;
-            } else if (absDeltaX > absDeltaY && absDeltaX > 10) {
-                // Horizontal swipe - keep swiper enabled
+                // Allow the browser to handle vertical scroll naturally
+                // Don't prevent default - this allows page scrolling
+            } else if (absDeltaX > absDeltaY && absDeltaX > 5) {
+                // Horizontal swipe - keep swiper enabled but don't prevent default
                 isVerticalScroll = false;
             }
         };
@@ -147,12 +177,21 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             touchStartY = 0;
             touchStartX = 0;
             isVerticalScroll = false;
+            touchMoved = false;
         };
 
         // Use passive listeners to allow native scrolling
+        // touchmove needs to be non-passive only if we might preventDefault, but we don't
         sliderElement.addEventListener('touchstart', handleTouchStart, { passive: true });
         sliderElement.addEventListener('touchmove', handleTouchMove, { passive: true });
         sliderElement.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+        // Also ensure the swiper container doesn't block scrolling
+        const swiperContainer = sliderElement.querySelector('.swiper-container') as HTMLElement;
+        if (swiperContainer) {
+            swiperContainer.style.touchAction = 'pan-y';
+            swiperContainer.style.pointerEvents = 'auto';
+        }
 
         return () => {
             sliderElement.removeEventListener('touchstart', handleTouchStart);
@@ -163,9 +202,9 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
 
     return (
         <motion.div
-            className="w-full h-full"
+            className="w-full h-full touch-pan-y"
         >
-            <div id="home-slider" className="w-full h-full relative">
+            <div id="home-slider" className="w-full h-full relative touch-pan-y">
                 <div className="swiper-container">
                     <div className="swiper-wrapper">
                         {/* Slide 1 */}

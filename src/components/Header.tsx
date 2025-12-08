@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 import type { Translation, PageKey } from '../types';
 
 interface HeaderProps {
@@ -12,6 +12,7 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
     
     const { scrollY } = useScroll();
     const [hidden, setHidden] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     useMotionValueEvent(scrollY, "change", (latest) => {
         const previous = scrollY.getPrevious() || 0;
@@ -26,6 +27,7 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, page: PageKey) => {
         e.preventDefault();
         setCurrentPage(page);
+        setMobileMenuOpen(false);
     };
 
     const navLinks = [
@@ -47,14 +49,18 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
-                    <div className="flex-shrink-0 flex items-center gap-3 font-bold text-xl tracking-wider">
+                    <div className="flex-shrink-0 flex items-center gap-2 sm:gap-3 min-w-0">
                         <img 
                             src={`${import.meta.env.BASE_URL || '/'}university.png`.replace(/\/\//g, '/')}
                             alt="University Logo" 
-                            className="h-12 w-auto object-contain"
+                            className="h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 object-contain"
                         />
-                        <span>{translations.appName as string}</span>
+                        <span className="font-bold text-sm sm:text-lg md:text-xl tracking-wider truncate overflow-hidden">
+                            {translations.appName as string}
+                        </span>
                     </div>
+                    
+                    {/* Desktop Navigation */}
                     <nav className="hidden md:flex md:items-center md:space-x-8 rtl:space-x-reverse">
                         {navLinks.map((link) => (
                             <a
@@ -73,8 +79,61 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
                             </a>
                         ))}
                     </nav>
+
+                    {/* Mobile Hamburger Menu Button */}
+                    <button
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-foreground hover:bg-muted/50 transition-colors"
+                        aria-label="Toggle menu"
+                    >
+                        <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            {mobileMenuOpen ? (
+                                <path d="M6 18L18 6M6 6l12 12" />
+                            ) : (
+                                <path d="M4 6h16M4 12h16M4 18h16" />
+                            )}
+                        </svg>
+                    </button>
                 </div>
             </div>
+
+            {/* Mobile Navigation Menu */}
+            <AnimatePresence>
+                {mobileMenuOpen && (
+                    <motion.nav
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="md:hidden border-t border-border overflow-hidden"
+                    >
+                        <div className="container mx-auto px-4 py-4 space-y-2">
+                            {navLinks.map((link) => (
+                                <a
+                                    key={link.id}
+                                    href="#"
+                                    onClick={(e) => handleNavClick(e, link.id as PageKey)}
+                                    className={`block py-3 px-4 rounded-lg font-medium transition-colors duration-200 ${
+                                        currentPage === link.id
+                                            ? 'bg-primary/10 text-primary'
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                                    }`}
+                                >
+                                    {link.text as string}
+                                </a>
+                            ))}
+                        </div>
+                    </motion.nav>
+                )}
+            </AnimatePresence>
         </motion.header>
     );
 };

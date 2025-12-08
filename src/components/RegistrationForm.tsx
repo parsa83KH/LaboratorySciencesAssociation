@@ -6,9 +6,10 @@ import type { ContentItem, Translation } from '../types';
 interface RegistrationFormProps {
     course: ContentItem;
     translations: Translation;
+    price?: string;
 }
 
-const RegistrationForm: React.FC<RegistrationFormProps> = ({ course, translations }) => {
+const RegistrationForm: React.FC<RegistrationFormProps> = ({ course, translations, price }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [submitted, setSubmitted] = useState(false);
 
@@ -69,7 +70,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ course, translation
                     className="w-full py-2.5 sm:py-3 px-5 sm:px-6 text-sm sm:text-base"
                     isLoading={isLoading}
                 >
-                    {translations.formSubmit as string}
+                    {price === 'رایگان' ? 'ثبت نام' : 'ثبت نام و پرداخت'}
                 </Button>
             </form>
         </div>

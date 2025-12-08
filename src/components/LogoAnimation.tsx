@@ -70,15 +70,15 @@ const LogoAnimation: React.FC = () => {
                     </defs>
 
                     <path id="outerCircle" d="M 120,580 A 325,325 0 1,1 580,580" 
-                            fill="none" stroke="url(#blueGradient)" stroke-width="8" 
-                            opacity="0" stroke-dasharray="0 2042" stroke-linecap="round">
+                            fill="none" stroke="url(#blueGradient)" strokeWidth="8" 
+                            opacity="0" strokeDasharray="0 2042" strokeLinecap="round">
                         <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.5s" fill="freeze" />
                         <animate attributeName="stroke-dasharray" from="0 2042" to="2025 17" dur="2.5s" begin="0.7s" fill="freeze" />
                     </path>
 
                     <circle id="innerCircle" cx="350" cy="350" r="235" fill="none" 
-                            stroke="url(#blueGradient)" stroke-width="3" opacity="0"
-                            stroke-dasharray="0 1500">
+                            stroke="url(#blueGradient)" strokeWidth="3" opacity="0"
+                            strokeDasharray="0 1500">
                         <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.8s" fill="freeze" />
                         <animate attributeName="stroke-dasharray" from="0 1500" to="1476 0" dur="2s" begin="1s" fill="freeze" />
                     </circle>
@@ -89,27 +89,27 @@ const LogoAnimation: React.FC = () => {
                     </image>
 
                     <path id="topArcPath" fill="none" d="M 80,350 A 270,270 0 0,1 620,350" />
-                    <text font-family="Vazirmatn, Arial, sans-serif" font-size="26" font-weight="900" 
+                    <text fontFamily="Vazirmatn, Arial, sans-serif" fontSize="26" fontWeight="900" 
                           fill="url(#blueGradient)" opacity="0" filter="url(#textGlow)">
-                        <textPath href="#topArcPath" startOffset="50%" text-anchor="middle">
+                        <textPath href="#topArcPath" startOffset="50%" textAnchor="middle">
                             انجمن علمی علوم آزمایشگاهی دانشگاه علوم پزشکی آزاد اسلامی تهران
                         </textPath>
                         <animate attributeName="opacity" from="0" to="1" dur="1.2s" begin="2.5s" fill="freeze" />
                     </text>
 
                     <path id="bottomArcPath" fill="none" d="M 70,350 A 280,280 0 0,0 630,350" />
-                    <text font-family="Arial, sans-serif" font-size="26" font-weight="900" 
+                    <text fontFamily="Arial, sans-serif" fontSize="26" fontWeight="900" 
                           fill="url(#blueGradient)" opacity="0" filter="url(#textGlow)">
-                        <textPath href="#bottomArcPath" startOffset="50%" text-anchor="middle">
+                        <textPath href="#bottomArcPath" startOffset="50%" textAnchor="middle">
                             SCIENTIFIC ASSOCIATION OF LABORATORY SCIENCES
                         </textPath>
                         <animate attributeName="opacity" from="0" to="1" dur="1.2s" begin="2.5s" fill="freeze" />
                     </text>
 
                     <path id="universityTextPath" fill="none" d="M 120,580 A 325,325 0 0,0 580,580" />
-                    <text font-family="Arial, sans-serif" font-size="22" font-weight="700" 
+                    <text fontFamily="Arial, sans-serif" fontSize="22" fontWeight="700" 
                           fill="url(#blueGradient)" opacity="0" filter="url(#textGlow)">
-                        <textPath href="#universityTextPath" startOffset="50%" text-anchor="middle">
+                        <textPath href="#universityTextPath" startOffset="50%" textAnchor="middle">
                             ISLAMIC AZAD UNIVERSITY, TEHRAN
                         </textPath>
                         <animate attributeName="opacity" from="0" to="1" dur="1s" begin="3.5s" fill="freeze" />

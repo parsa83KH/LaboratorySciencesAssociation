@@ -11,7 +11,6 @@ import Modal from './components/Modal';
 import RegistrationForm from './components/RegistrationForm';
 import Footer from './components/Footer';
 import MembersPage from './pages/MembersPage';
-import FilterControls from './components/FilterControls';
 import ParticleBackground from './components/ParticleBackground';
 
 // Import data and types
@@ -35,7 +34,6 @@ const App: React.FC = () => {
 
     // State for filtering
     const [newsFilter, setNewsFilter] = useState<string>('all');
-    const [coursesFilter, setCoursesFilter] = useState<string>('all');
 
     const lenisRef = useRef<Lenis | null>(null);
 
@@ -95,14 +93,8 @@ const App: React.FC = () => {
         { key: 'announcement', label: t.filterAnnouncements },
     ];
 
-    const coursesFilters = [
-        { key: 'all', label: t.filterAll },
-        { key: 'course', label: t.filterCourses },
-        { key: 'workshop', label: t.filterWorkshops },
-    ];
-
     const filteredNews = mockData.newsAndAnnouncements.filter(item => newsFilter === 'all' || item.type === newsFilter);
-    const filteredCourses = mockData.coursesAndWorkshops.filter(item => coursesFilter === 'all' || item.type === coursesFilter);
+    const filteredCourses = mockData.coursesAndWorkshops;
 
 
     const renderPageContent = () => {
@@ -112,27 +104,33 @@ const App: React.FC = () => {
             case 'newsAndAnnouncements':
                 return (
                     <Page key="newsAndAnnouncements" title={t.newsAndAnnouncements as string} isNewsPage={true} theme={theme}>
-                        <ContentCard />
                     </Page>
                 );
             case 'coursesAndWorkshops':
                  return (
-                    <Page key="coursesAndWorkshops" title={t.coursesAndWorkshops as string}>
-                         <FilterControls filters={coursesFilters as {key: string, label: string}[]} activeFilter={coursesFilter} setActiveFilter={setCoursesFilter} />
-                        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-                            <AnimatePresence>
-                                {filteredCourses.map(item => (
-                                    <ContentCard 
-                                        key={item.id} 
-                                        item={item} 
-                                        onImageClick={() => openModal('image', { src: item.image, title: item.title })}
-                                        onVideoClick={item.video ? () => openModal('video', { src: item.video, title: item.title }) : undefined}
-                                        onRegisterClick={() => openModal('form', { course: item })}
-                                        translations={t}
-                                    />
-                                ))}
-                            </AnimatePresence>
-                        </motion.div>
+                    <Page key="coursesAndWorkshops" title={t.coursesAndWorkshops as string} isNewsPage={true} theme={theme}>
+                        <div className="courses-page-container">
+                            <div className="courses-grid-container" role="region" aria-label="Courses list">
+                                <ContentCard 
+                                    cardType="database-workshop" 
+                                    posterImage="/data_searching.jpg"
+                                    price="رایگان"
+                                    translations={t}
+                                />
+                                <ContentCard 
+                                    price="500,000 تومان"
+                                    translations={t}
+                                />
+                                <ContentCard 
+                                    price="750,000 تومان"
+                                    translations={t}
+                                />
+                                <ContentCard 
+                                    price="1,000,000 تومان"
+                                    translations={t}
+                                />
+                            </div>
+                        </div>
                     </Page>
                 );
             case 'members':
