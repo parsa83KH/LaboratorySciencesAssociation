@@ -1823,7 +1823,7 @@
         transition: transform 0.1s ease-out;
         transform-origin: center center;
         will-change: transform;
-        border: 3px solid #F37021;
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 1.5rem;
       }
 
@@ -2070,17 +2070,17 @@
       .course-card-wrap::before {
         content: "";
         position: absolute;
-        inset: -3px;
+        inset: -1px;
         border-radius: inherit;
-        padding: 4px;
-        background: radial-gradient(
-          600px circle at var(--mouse-x, -200px) var(--mouse-y, -200px),
-          rgba(243, 112, 33, 1),
-          rgba(243, 112, 33, 0.8) 30%,
-          rgba(243, 112, 33, 0.5) 50%,
-          rgba(243, 112, 33, 0.2) 65%,
-          transparent 75%
-        );
+        padding: 2px;
+        background: 
+          radial-gradient(
+            farthest-side at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(243, 112, 33, 0.5) 0%,
+            rgba(243, 112, 33, 0.3) 30%,
+            rgba(243, 112, 33, 0.1) 50%,
+            transparent 70%
+          );
         -webkit-mask:
           linear-gradient(#fff 0 0) content-box,
           linear-gradient(#fff 0 0);
@@ -2088,16 +2088,14 @@
         mask-composite: exclude;
         pointer-events: none;
         opacity: 0;
-        transition: opacity 0.2s ease-in-out;
+        transition: opacity 0.3s ease-in-out;
         z-index: 1;
-        filter: blur(1px);
       }
 
       .course-card-inner.is-hovering::before,
       .modern-course-card-inner.is-hovering::before,
       .course-card-wrap.is-hovering::before {
         opacity: 1;
-        filter: blur(0.5px);
       }
     </style>
   <script type="importmap">
