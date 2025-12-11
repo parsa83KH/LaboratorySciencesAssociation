@@ -325,21 +325,30 @@
       }
       @media screen and (max-width: 768px) {
         #home-slider {
-          touch-action: pan-y; /* Allow vertical scrolling on mobile */
+          touch-action: pan-y !important; /* Allow vertical scrolling on mobile */
           pointer-events: auto;
           -webkit-overflow-scrolling: touch;
+          overscroll-behavior: contain;
         }
         #home-slider .swiper-container {
-          touch-action: pan-y; /* Allow vertical scrolling on mobile */
+          touch-action: pan-y !important; /* Allow vertical scrolling on mobile */
           pointer-events: auto;
           -webkit-overflow-scrolling: touch;
+          overscroll-behavior: contain;
         }
         #home-slider .swiper-wrapper {
-          touch-action: pan-y;
+          touch-action: pan-y !important;
           pointer-events: auto;
+          overscroll-behavior: contain;
         }
         #home-slider .swiper-slide {
-          touch-action: pan-y;
+          touch-action: pan-y !important;
+          pointer-events: auto;
+          overscroll-behavior: contain;
+        }
+        #home-slider .swiper-image,
+        #home-slider .swiper-image-inner {
+          touch-action: pan-y !important;
           pointer-events: auto;
         }
       }
@@ -1814,7 +1823,7 @@
         transition: transform 0.1s ease-out;
         transform-origin: center center;
         will-change: transform;
-        border: 3px solid hsl(var(--primary));
+        border: 3px solid #F37021;
         border-radius: 1.5rem;
       }
 
@@ -2061,13 +2070,16 @@
       .course-card-wrap::before {
         content: "";
         position: absolute;
-        inset: -1px;
+        inset: -3px;
         border-radius: inherit;
-        padding: 2px;
+        padding: 4px;
         background: radial-gradient(
-          350px circle at var(--mouse-x, -200px) var(--mouse-y, -200px),
-          rgba(243, 112, 33, 0.6),
-          transparent 80%
+          600px circle at var(--mouse-x, -200px) var(--mouse-y, -200px),
+          rgba(243, 112, 33, 1),
+          rgba(243, 112, 33, 0.8) 30%,
+          rgba(243, 112, 33, 0.5) 50%,
+          rgba(243, 112, 33, 0.2) 65%,
+          transparent 75%
         );
         -webkit-mask:
           linear-gradient(#fff 0 0) content-box,
@@ -2076,14 +2088,16 @@
         mask-composite: exclude;
         pointer-events: none;
         opacity: 0;
-        transition: opacity 0.3s ease-in-out;
+        transition: opacity 0.2s ease-in-out;
         z-index: 1;
+        filter: blur(1px);
       }
 
       .course-card-inner.is-hovering::before,
       .modern-course-card-inner.is-hovering::before,
       .course-card-wrap.is-hovering::before {
         opacity: 1;
+        filter: blur(0.5px);
       }
     </style>
   <script type="importmap">

@@ -69,11 +69,18 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             const sliderElement = document.getElementById('home-slider');
             const swiperContainer = sliderElement?.querySelector('.swiper-container') as HTMLElement;
             const swiperWrapper = sliderElement?.querySelector('.swiper-wrapper') as HTMLElement;
+            const swiperSlides = sliderElement?.querySelectorAll('.swiper-slide') as NodeListOf<HTMLElement>;
+            
+            if (sliderElement) {
+                sliderElement.style.touchAction = 'pan-y';
+                sliderElement.style.overscrollBehavior = 'contain';
+            }
             
             if (swiperContainer) {
                 // Ensure Swiper container doesn't block touch events for page scrolling
                 swiperContainer.style.touchAction = 'pan-y';
                 swiperContainer.style.pointerEvents = 'auto';
+                swiperContainer.style.overscrollBehavior = 'contain';
                 // Prevent Swiper from capturing touch events
                 swiperContainer.style.userSelect = 'none';
             }
@@ -81,6 +88,15 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             if (swiperWrapper) {
                 swiperWrapper.style.touchAction = 'pan-y';
                 swiperWrapper.style.pointerEvents = 'auto';
+                swiperWrapper.style.overscrollBehavior = 'contain';
+            }
+            
+            // Set touchAction for all slides
+            if (swiperSlides) {
+                swiperSlides.forEach(slide => {
+                    slide.style.touchAction = 'pan-y';
+                    slide.style.pointerEvents = 'auto';
+                });
             }
             
             // Disable Swiper's touch handling completely on mobile
@@ -186,11 +202,28 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
         sliderElement.addEventListener('touchmove', handleTouchMove, { passive: true });
         sliderElement.addEventListener('touchend', handleTouchEnd, { passive: true });
 
-        // Also ensure the swiper container doesn't block scrolling
+        // Also ensure the swiper container and all child elements don't block scrolling
         const swiperContainer = sliderElement.querySelector('.swiper-container') as HTMLElement;
+        const swiperWrapper = sliderElement.querySelector('.swiper-wrapper') as HTMLElement;
+        const swiperSlides = sliderElement.querySelectorAll('.swiper-slide') as NodeListOf<HTMLElement>;
+        
         if (swiperContainer) {
             swiperContainer.style.touchAction = 'pan-y';
             swiperContainer.style.pointerEvents = 'auto';
+            swiperContainer.style.overscrollBehavior = 'contain';
+        }
+        
+        if (swiperWrapper) {
+            swiperWrapper.style.touchAction = 'pan-y';
+            swiperWrapper.style.pointerEvents = 'auto';
+            swiperWrapper.style.overscrollBehavior = 'contain';
+        }
+        
+        if (swiperSlides) {
+            swiperSlides.forEach(slide => {
+                slide.style.touchAction = 'pan-y';
+                slide.style.pointerEvents = 'auto';
+            });
         }
 
         return () => {
