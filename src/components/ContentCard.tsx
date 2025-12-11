@@ -44,7 +44,7 @@ const ContentCard: React.FC<ContentCardProps> = ({
             title: cardType === 'database-workshop' ? 'جستجوی پیشرفته در پایگاه های داده' : 'به سوی آینده',
             description: '',
             date: cardType === 'database-workshop' ? '1404/09/10' : '1403/05/15',
-            image: cardType === 'database-workshop' ? '/data_searching.jpg' : '/immagration_2.png'
+            image: cardType === 'database-workshop' ? `${import.meta.env.BASE_URL || '/'}data_searching.jpg`.replace(/\/\//g, '/') : `${import.meta.env.BASE_URL || '/'}immagration_2.png`.replace(/\/\//g, '/')
         };
 
         if (cardType === 'database-workshop') {
@@ -55,7 +55,7 @@ const ContentCard: React.FC<ContentCardProps> = ({
                         data-lenis-prevent
                     >
                         <div className="course-card-image">
-                            <img src="/data_searching.jpg" alt="Database Search Workshop" />
+                            <img src={`${import.meta.env.BASE_URL || '/'}data_searching.jpg`.replace(/\/\//g, '/')} alt="Database Search Workshop" />
                         </div>
                         <div className="course-card-info">
                             <h2 className="course-card-title">جستجوی پیشرفته در پایگاه های داده</h2>
@@ -136,7 +136,7 @@ const ContentCard: React.FC<ContentCardProps> = ({
                         data-lenis-prevent
                     >
                     <div className="course-card-image">
-                        <img src="/immagration_2.png" alt="Course" />
+                        <img src={`${import.meta.env.BASE_URL || '/'}immagration_2.png`.replace(/\/\//g, '/')} alt="Course" />
                     </div>
                     <div className="course-card-info">
                         <h2 className="course-card-title">به سوی آینده</h2>

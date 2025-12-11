@@ -113,7 +113,7 @@ const App: React.FC = () => {
                             <div className="courses-grid-container" role="region" aria-label="Courses list">
                                 <ContentCard 
                                     cardType="database-workshop" 
-                                    posterImage="/data_searching.jpg"
+                                    posterImage={`${import.meta.env.BASE_URL || '/'}data_searching.jpg`.replace(/\/\//g, '/')}
                                     price="رایگان"
                                     translations={t}
                                 />
