@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { Translation, PageKey } from '../types';
 
 interface HeaderProps {
@@ -9,20 +9,8 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPage }) => {
-    
-    const { scrollY } = useScroll();
-    const [hidden, setHidden] = useState(false);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    useMotionValueEvent(scrollY, "change", (latest) => {
-        const previous = scrollY.getPrevious() || 0;
-        // Hide header when scrolling down past a threshold, show when scrolling up
-        if (latest > previous && latest > 150) {
-            setHidden(true);
-        } else {
-            setHidden(false);
-        }
-    });
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, page: PageKey) => {
         e.preventDefault();
@@ -39,13 +27,10 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
 
     return (
         <motion.header
-            variants={{
-                visible: { y: 0 },
-                hidden: { y: '-100%' },
-            }}
-            animate={hidden ? 'hidden' : 'visible'}
-            transition={{ duration: 0.35, ease: 'easeInOut' }}
-            className="w-full backdrop-blur-md bg-background/50 sticky top-0 z-50 border-b border-border"
+            initial={{ y: 0 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.2 }}
+            className="w-full backdrop-blur-md bg-background/60 fixed top-0 left-0 right-0 z-50 border-b border-border shadow-sm"
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">

@@ -10,6 +10,8 @@ export interface ContentItem {
     date: string;
     image: string;
     video?: string;
+    price?: string;
+    location?: string;
 }
 
 export interface Member {

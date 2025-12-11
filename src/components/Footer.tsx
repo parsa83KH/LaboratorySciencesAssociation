@@ -126,8 +126,8 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                             <span className="absolute bottom-0 right-0 w-full h-0.5 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                         </h3>
                         <div className="mb-4 sm:mb-6">
-                            <h4 className="text-xl sm:text-2xl font-bold text-blue-400">
-                                پارسا خسروانی
+                            <h4 className="text-xl sm:text-2xl font-bold text-white">
+                                Parsa Khosravani
                             </h4>
                         </div>
                         <div className="flex flex-wrap gap-2 sm:gap-3 justify-center md:justify-end rtl:md:justify-start">

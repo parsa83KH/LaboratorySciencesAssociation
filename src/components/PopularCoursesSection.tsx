@@ -238,6 +238,20 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
         });
     };
 
+    const formatToJalali = (dateString: string) => {
+        try {
+            const date = new Date(dateString);
+            if (Number.isNaN(date.getTime())) return dateString;
+            return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+            }).format(date);
+        } catch {
+            return dateString;
+        }
+    };
+
 
     return (
 
@@ -260,6 +274,8 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
                 <div className="courses-scroll-wrapper">
 
                     {popularItems.map((item, index) => {
+                        const price = item.price ?? 'نامشخص';
+                        const jalaliDate = formatToJalali(item.date);
 
                         return (
 
@@ -317,13 +333,13 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
 
                                         <div className="course-meta">
 
-                                            <span className="course-type">
+                                            <span className="course-price">
 
-                                                {item.type === 'course' ? '📚 دوره' : '🔬 کارگاه'}
+                                                💰 {price}
 
                                             </span>
 
-                                            <span className="course-date">📅 {item.date}</span>
+                                            <span className="course-date">📅 {jalaliDate}</span>
 
                                         </div>
 

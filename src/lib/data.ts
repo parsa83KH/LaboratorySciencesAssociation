@@ -70,33 +70,48 @@ const allContent: ContentItem[] = [
         id: 6, type: 'course',
         title: 'دوره جامع کشت سلولی',
         description: 'یک دوره ۴۰ ساعته شامل مباحث تئوری و عملی کشت انواع سلول‌های جانوری.',
-        date: '2024-08-01', image: 'https://picsum.photos/seed/cell/600/400',
+        date: '2024-08-01',
+        image: 'https://picsum.photos/seed/cell/600/400',
+        price: '۱,۲۰۰,۰۰۰ تومان',
+        location: 'تهران، آزمایشگاه مرکزی',
     },
     {
         id: 7, type: 'workshop',
         title: 'کارگاه عملی ELISA',
         description: 'در این کارگاه یک روزه، شرکت‌کنندگان به صورت عملی تکنیک ELISA را فرا خواهند گرفت.',
-        date: '2024-07-25', image: 'https://picsum.photos/seed/elisa/600/400',
+        date: '2024-07-25',
+        image: 'https://picsum.photos/seed/elisa/600/400',
+        price: '۴۵۰,۰۰۰ تومان',
+        location: 'تهران، سالن سمینار دانشکده',
         video: 'https://www.youtube.com/embed/7o_o_yI8T74'
     },
     {
         id: 8, type: 'workshop',
         title: 'کارگاه اصول کار با میکروسکوپ الکترونی',
         description: 'آشنایی با مبانی و تکنیک‌های کار با میکروسکوپ الکترونی (SEM و TEM).',
-        date: '2024-09-10', image: 'https://picsum.photos/seed/microscope/600/400',
+        date: '2024-09-10',
+        image: 'https://picsum.photos/seed/microscope/600/400',
+        price: 'رایگان',
+        location: 'تبریز، مرکز تحقیقات نانو',
     },
     {
         id: 9, type: 'course',
         title: 'دوره پیشرفته بیوانفورماتیک',
         description: 'تحلیل داده‌های ژنومی و پروتئومی با استفاده از ابزارهای نرم‌افزاری مدرن مانند Python و R.',
-        date: '2024-09-15', image: 'https://picsum.photos/seed/bioinformatics/600/400',
+        date: '2024-09-15',
+        image: 'https://picsum.photos/seed/bioinformatics/600/400',
+        price: '۲,۰۰۰,۰۰۰ تومان',
+        location: 'آنلاین',
         video: 'https://www.youtube.com/embed/7o_o_yI8T74'
     },
     {
         id: 10, type: 'workshop',
         title: 'کارگاه مقاله‌نویسی علمی',
         description: 'از ایده تا انتشار: چگونه یک مقاله علمی استاندارد بنویسیم و در مجلات معتبر منتشر کنیم.',
-        date: '2024-08-20', image: 'https://picsum.photos/seed/writing/600/400',
+        date: '2024-08-20',
+        image: 'https://picsum.photos/seed/writing/600/400',
+        price: '۳۵۰,۰۰۰ تومان',
+        location: 'مشهد، کتابخانه مرکزی',
     }
 ];
 

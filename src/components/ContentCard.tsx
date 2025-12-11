@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import type { ContentItem, Translation } from '../types';
 import Button from './Button';
@@ -26,110 +26,15 @@ const ContentCard: React.FC<ContentCardProps> = ({
     posterImage,
     price
 }) => {
-    const scrollRef = useRef<HTMLDivElement>(null);
     const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
-    const scrollAnimationRef = useRef<number | null>(null);
-    const queuedDeltaRef = useRef<number>(0);
-
-    // Smooth, self-contained scrolling that yields to the main page at bounds
-    useEffect(() => {
-        const scrollElement = scrollRef.current;
-        if (!scrollElement) return;
-
-        const stepScroll = () => {
-            const element = scrollRef.current;
-            if (!element) return;
-
-            const delta = queuedDeltaRef.current * 0.2;
-            if (Math.abs(delta) < 0.5) {
-                element.scrollTop += queuedDeltaRef.current;
-                queuedDeltaRef.current = 0;
-                scrollAnimationRef.current = null;
-                return;
-            }
-
-            element.scrollTop += delta;
-            queuedDeltaRef.current -= delta;
-            scrollAnimationRef.current = requestAnimationFrame(stepScroll);
-        };
-
-        const scheduleScroll = (delta: number) => {
-            queuedDeltaRef.current += delta;
-            if (scrollAnimationRef.current === null) {
-                scrollAnimationRef.current = requestAnimationFrame(stepScroll);
-            }
-        };
-
-        const handleWheel = (e: WheelEvent) => {
-            const { scrollTop, scrollHeight, clientHeight } = scrollElement;
-            const maxScroll = scrollHeight - clientHeight;
-            const isAtTop = scrollTop <= 0;
-            const isAtBottom = scrollTop >= maxScroll;
-            const deltaY = e.deltaY;
-
-            // If content cannot scroll, give control to the page
-            if (maxScroll <= 0) {
-                return;
-            }
-
-            // At boundary and moving outward: let the main page handle it
-            if ((deltaY < 0 && isAtTop) || (deltaY > 0 && isAtBottom)) {
-                return;
-            }
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            const nextScrollTop = Math.max(0, Math.min(maxScroll, scrollTop + deltaY));
-            const clampedDelta = nextScrollTop - scrollTop;
-            if (clampedDelta !== 0) {
-                scheduleScroll(clampedDelta);
-            }
-        };
-
-        scrollElement.addEventListener('wheel', handleWheel, { passive: false });
-
-        return () => {
-            scrollElement.removeEventListener('wheel', handleWheel);
-            if (scrollAnimationRef.current !== null) {
-                cancelAnimationFrame(scrollAnimationRef.current);
-            }
-            scrollAnimationRef.current = null;
-            queuedDeltaRef.current = 0;
-        };
-    }, []);
-
-    const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-        const target = e.currentTarget;
-        const touch = e.touches[0];
-        (target as any).touchStartY = touch.clientY;
-        (target as any).touchStartScrollTop = target.scrollTop;
-    };
-
-    const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-        const target = e.currentTarget;
-        const touch = e.touches[0];
-        const touchStartY = (target as any).touchStartY;
-        const touchStartScrollTop = (target as any).touchStartScrollTop;
-        
-        if (touchStartY === undefined) return;
-        
-        const deltaY = touchStartY - touch.clientY;
-        const { scrollTop, scrollHeight, clientHeight } = target;
-        const isAtTop = scrollTop <= 0;
-        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
-        
-        // If at boundaries and trying to scroll further, allow page scroll
-        if ((deltaY < 0 && isAtTop) || (deltaY > 0 && isAtBottom)) {
-            return;
-        }
-        
-        // Otherwise, prevent page scroll
-        e.stopPropagation();
-        e.preventDefault();
-        
-        // Manually scroll the element
-        target.scrollTop = touchStartScrollTop + deltaY;
+    const handlePosterDownload = (imageSrc?: string) => {
+        if (!imageSrc) return;
+        const link = document.createElement('a');
+        link.href = imageSrc;
+        link.download = '';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     // If no item provided, render the course card
@@ -146,7 +51,10 @@ const ContentCard: React.FC<ContentCardProps> = ({
         if (cardType === 'database-workshop') {
             return (
                 <>
-                    <div className="course-card-wrap">
+                    <div 
+                        className="course-card-wrap"
+                        data-lenis-prevent
+                    >
                         <div className="course-card-image">
                             <img src="/data_searching.jpg" alt="Database Search Workshop" />
                         </div>
@@ -180,24 +88,18 @@ const ContentCard: React.FC<ContentCardProps> = ({
                             </div>
                         </div>
                         <div 
-                            ref={scrollRef}
                             className="course-card-full-text"
-                            style={{ scrollBehavior: 'smooth' }}
+                            style={{ scrollBehavior: 'auto' }}
                             data-lenis-prevent
-                            onWheel={(e) => e.stopPropagation()}
-                            onTouchStart={handleTouchStart}
-                            onTouchMove={handleTouchMove}
                         >
                             <div className="course-card-actions-top">
-                                <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
+                                <Button
+                                    variant="primary"
+                                    className="w-full py-3 px-6 text-base"
                                     onClick={() => setIsRegistrationModalOpen(true)}
-                                    className="modern-course-btn modern-course-btn-primary"
                                 >
-                                    <span className="modern-btn-icon">✨</span>
-                                    {price === 'رایگان' ? 'ثبت نام' : 'ثبت نام و پرداخت'}
-                                </motion.button>
+                                    ثبت نام
+                                </Button>
                             </div>
                             <p><strong>ویژگی‌های یک استراتژی جستجوی علمی حرفه‌ای:</strong> در این بخش با اصول و مبانی طراحی یک استراتژی جستجوی مؤثر و حرفه‌ای در پایگاه‌های داده علمی آشنا می‌شوید. یاد می‌گیرید چگونه یک جستجوی هدفمند و دقیق طراحی کنید که نتایج مرتبط و با کیفیت را به شما ارائه دهد.</p>
                             <p><strong>ساختاردهی سؤال با PICO؛ ساده‌ترین راه برای جستجوی استاندارد:</strong> PICO یک روش ساختاریافته برای فرموله‌سازی سؤالات پژوهشی است که شامل Population (جمعیت)، Intervention (مداخله)، Comparison (مقایسه) و Outcome (نتیجه) می‌شود. این روش به شما کمک می‌کند سؤالات خود را به صورت استاندارد و قابل جستجو فرموله کنید.</p>
@@ -205,17 +107,13 @@ const ContentCard: React.FC<ContentCardProps> = ({
                             <p><strong>آشنایی با MeSH و نقش آن در جستجوی دقیق‌تر:</strong> Medical Subject Headings (MeSH) یک سیستم اصطلاحنامه کنترل‌شده است که در پایگاه‌های داده پزشکی استفاده می‌شود. در این بخش با ساختار MeSH و نحوه استفاده از آن برای بهبود دقت جستجوهای خود آشنا می‌شوید.</p>
                             <p><strong>مهارت نوشتن Search Syntax: هنر ترکیب کلیدواژه‌ها و عملگرها:</strong> یادگیری نحوه نوشتن دستورات جستجوی پیشرفته با استفاده از عملگرهای بولی (AND, OR, NOT) و سایر عملگرهای جستجو. این مهارت به شما امکان می‌دهد جستجوهای پیچیده و دقیق‌تری انجام دهید که نتایج بهتری را به همراه دارد.</p>
                             <div className="course-card-actions-bottom">
-                                <motion.a
-                                    href={posterImage}
-                                    download
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className="modern-course-btn modern-course-btn-secondary"
-                                    style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                <Button
+                                    variant="primary"
+                                    className="w-full py-3 px-6 text-base"
+                                    onClick={() => handlePosterDownload(posterImage)}
                                 >
-                                    <span className="modern-btn-icon">⬇️</span>
                                     دانلود پوستر
-                                </motion.a>
+                                </Button>
                             </div>
                         </div>
                     </div>
@@ -230,7 +128,10 @@ const ContentCard: React.FC<ContentCardProps> = ({
 
         return (
             <>
-                <div className="course-card-wrap">
+                    <div 
+                        className="course-card-wrap"
+                        data-lenis-prevent
+                    >
                     <div className="course-card-image">
                         <img src="/immagration_2.png" alt="Course" />
                     </div>
@@ -264,39 +165,31 @@ const ContentCard: React.FC<ContentCardProps> = ({
                         </div>
                     </div>
                     <div 
-                        ref={scrollRef}
                         className="course-card-full-text"
-                        style={{ scrollBehavior: 'smooth' }}
-                        onTouchStart={handleTouchStart}
-                        onTouchMove={handleTouchMove}
+                        style={{ scrollBehavior: 'auto' }}
+                        data-lenis-prevent
                     >
                         <div className="course-card-actions-top">
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
+                            <Button
+                                variant="primary"
+                                className="w-full py-3 px-6 text-base"
                                 onClick={() => setIsRegistrationModalOpen(true)}
-                                className="modern-course-btn modern-course-btn-primary"
                             >
-                                <span className="modern-btn-icon">✨</span>
-                                {price === 'رایگان' ? 'ثبت نام' : 'ثبت نام و پرداخت'}
-                            </motion.button>
+                                ثبت نام
+                            </Button>
                         </div>
                         <p>در مسیر پیشرفت و تعالی، حرکت به سوی آینده نیازمند برنامه‌ریزی دقیق و راهبردهای هوشمندانه است. هر قدم که برمی‌داریم، هر تصمیمی که می‌گیریم، ما را به مقصد نهایی نزدیک‌تر می‌کند. آینده‌ای روشن با تلاش امروز ما ساخته می‌شود.</p>
                         <p>شناسایی دقیق مسیرهای مهاجرت و تحرک جمعیت‌ها یکی از مهم‌ترین ابعاد مطالعات جمعیت‌شناختی و برنامه‌ریزی شهری است. با استفاده از روش‌های پیشرفته تحلیل داده‌ها و فناوری‌های مدرن، می‌توانیم الگوهای مهاجرت را شناسایی کنیم و برای آینده برنامه‌ریزی کنیم.</p>
                         <p>با ترکیب دانش و تجربه، می‌توانیم بهترین راهکارها را برای چالش‌های پیش رو پیدا کنیم. حرکت به سوی آینده و شناسایی مسیرهای صحیح، رمز موفقیت در دنیای امروز است.</p>
                         {posterImage && (
                             <div className="course-card-actions-bottom">
-                                <motion.a
-                                    href={posterImage}
-                                    download
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className="modern-course-btn modern-course-btn-secondary"
-                                    style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                <Button
+                                    variant="primary"
+                                    className="w-full py-3 px-6 text-base"
+                                    onClick={() => handlePosterDownload(posterImage)}
                                 >
-                                    <span className="modern-btn-icon">⬇️</span>
                                     دانلود پوستر
-                                </motion.a>
+                                </Button>
                             </div>
                         )}
                     </div>

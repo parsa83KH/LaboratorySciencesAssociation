@@ -149,7 +149,7 @@ const App: React.FC = () => {
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
                 />
-                <main className="flex-grow">
+                <main className="flex-grow pt-24 md:pt-28">
                     <AnimatePresence mode="wait">
                         {renderPageContent()}
                     </AnimatePresence>
