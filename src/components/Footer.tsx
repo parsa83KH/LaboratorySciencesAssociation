@@ -170,7 +170,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                 {/* Bottom Bar */}
                 <div className="mt-6 sm:mt-10 pt-6 sm:pt-8 border-t border-slate-700/50 text-center">
                     <p className="text-xs sm:text-sm text-slate-400 px-2">
-                        © ۱۴۰۴ انجمن علوم آزمایشگاهی دانشگاه آزاد علوم پزشکی تهران
+                        © ۱۴۰۴ انجمن علمی علوم آزمایشگاهی دانشگاه آزاد علوم پزشکی تهران
                     </p>
                     <p className="text-xs sm:text-sm text-slate-400 px-2 mt-2">
                         تحت نظر باشگاه پژوهشگران جوان

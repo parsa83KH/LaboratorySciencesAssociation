@@ -1,7 +1,7 @@
 import type { Translation } from '../types';
 
 export const translations: Translation = {
-    appName: 'انجمن علوم آزمایشگاهی',
+    appName: 'انجمن علمی علوم آزمایشگاهی',
     navHome: 'خانه',
     navNewsAndAnnouncements: 'اخبار و اطلاعیه‌ها',
     navCoursesAndWorkshops: 'دوره‌ها و کارگاه‌ها',

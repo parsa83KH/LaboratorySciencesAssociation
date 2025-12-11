@@ -13,13 +13,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/swiper@3.4.2/dist/css/swiper.min.css">
     <script>
-      // Set theme on initial load
+      // Always set dark theme on initial load, ignore system preference
       (function() {
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
       })();
     </script>
     <script>
@@ -2049,6 +2046,44 @@
           padding: 0.625rem 0.875rem;
           font-size: 0.85rem;
         }
+      }
+    </style>
+    <style>
+      /* Orange Gradient Border Animation for Course Cards */
+      .course-card-inner,
+      .modern-course-card-inner,
+      .course-card-wrap {
+        position: relative;
+      }
+
+      .course-card-inner::before,
+      .modern-course-card-inner::before,
+      .course-card-wrap::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        padding: 2px;
+        background: radial-gradient(
+          350px circle at var(--mouse-x, -200px) var(--mouse-y, -200px),
+          rgba(243, 112, 33, 0.6),
+          transparent 80%
+        );
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        z-index: 1;
+      }
+
+      .course-card-inner.is-hovering::before,
+      .modern-course-card-inner.is-hovering::before,
+      .course-card-wrap.is-hovering::before {
+        opacity: 1;
       }
     </style>
   <script type="importmap">

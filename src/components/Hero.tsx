@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import LogoAnimation from './LogoAnimation';
 import Button from './Button';
 import type { Translation, PageKey } from '../types';
@@ -11,13 +11,41 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ translations, setCurrentPage }) => {
     const descriptionText = translations.heroDescription as string;
     const words = descriptionText.split(' ');
+    
+    const heroTitle = translations.heroTitle as string;
+    const titleWords = heroTitle.split(' ');
+    const [titleWordOpacities, setTitleWordOpacities] = useState<number[]>(new Array(titleWords.length).fill(0));
+
+    useEffect(() => {
+        // Trigger fade-in animation for title words
+        titleWords.forEach((_, index) => {
+            setTimeout(() => {
+                setTitleWordOpacities(prev => {
+                    const newOpacities = [...prev];
+                    newOpacities[index] = 1;
+                    return newOpacities;
+                });
+            }, 50 + index * 80);
+        });
+    }, []);
 
     return (
         <section className="relative h-screen min-h-[500px] md:min-h-[600px] flex items-start justify-center text-center text-foreground overflow-visible pt-4 md:pt-8 px-4">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 w-full">
                 <LogoAnimation />
-                <h1 className="main-title-anim text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight drop-shadow-lg mt-2 px-2" style={{color: '#F37021', textShadow: '0 0 30px hsla(var(--primary), 0.5)'}}>
-                    {translations.heroTitle as string}
+                <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight drop-shadow-lg mt-2 px-2" style={{color: '#F37021', textShadow: '0 0 30px hsla(var(--primary), 0.5)', opacity: 1}}>
+                    {titleWords.map((word, index) => (
+                        <span
+                            key={index}
+                            style={{
+                                opacity: titleWordOpacities[index],
+                                transition: 'opacity 0.6s ease-in-out',
+                                transitionDelay: `${index * 80}ms`,
+                            }}
+                        >
+                            {word}{index < titleWords.length - 1 ? ' ' : ''}
+                        </span>
+                    ))}
                 </h1>
                 
                 <h2 className="subtitle-anim mt-4 md:mt-6 text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-primary drop-shadow-md px-2" style={{textShadow: '0 0 20px hsla(var(--primary), 0.4)'}}>

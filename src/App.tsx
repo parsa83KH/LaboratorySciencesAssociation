@@ -20,14 +20,8 @@ import type { ContentItem, PageKey } from './types';
 
 
 const App: React.FC = () => {
-    const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-        if (typeof window !== 'undefined') {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) return savedTheme as 'light' | 'dark';
-            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
-        return 'dark';
-    });
+    // Always use dark theme, ignore system preference
+    const theme: 'light' | 'dark' = 'dark';
     const [currentPage, setCurrentPage] = useState<PageKey>('home');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState<{ type: 'image' | 'video' | 'form'; src?: string; title?: string, course?: ContentItem }>({ type: 'form' });
@@ -71,10 +65,11 @@ const App: React.FC = () => {
 
     useEffect(() => {
         const root = window.document.documentElement;
-        root.classList.remove(theme === 'light' ? 'dark' : 'light');
-        root.classList.add(theme);
-        localStorage.setItem('theme', theme);
-    }, [theme]);
+        // Always set dark theme
+        root.classList.remove('light');
+        root.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+    }, []);
     
     const openModal = useCallback((type: 'image' | 'video' | 'form', data?: { src?: string, title?: string, course?: ContentItem }) => {
         setModalContent({ type, ...data });

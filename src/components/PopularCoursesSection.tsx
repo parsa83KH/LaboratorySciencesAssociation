@@ -17,65 +17,8 @@ interface PopularCoursesSectionProps {
 
 const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translations, setCurrentPage }) => {
 
-    const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-
-        if (typeof window !== 'undefined') {
-
-            const savedTheme = localStorage.getItem('theme');
-
-            if (savedTheme) return savedTheme as 'light' | 'dark';
-
-            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-
-        }
-
-        return 'dark';
-
-    });
-
-    useEffect(() => {
-
-        const updateTheme = () => {
-
-            const savedTheme = localStorage.getItem('theme');
-
-            if (savedTheme) {
-
-                setTheme(savedTheme as 'light' | 'dark');
-
-            } else {
-
-                setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-
-            }
-
-        };
-
-        updateTheme();
-
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-        mediaQuery.addEventListener('change', updateTheme);
-
-        
-
-        const handleStorageChange = () => updateTheme();
-
-        window.addEventListener('storage', handleStorageChange);
-
-        document.addEventListener('themechange', handleStorageChange);
-
-        return () => {
-
-            mediaQuery.removeEventListener('change', updateTheme);
-
-            window.removeEventListener('storage', handleStorageChange);
-
-            document.removeEventListener('themechange', handleStorageChange);
-
-        };
-
-    }, []);
+    // Always use dark theme, ignore system preference
+    const theme: 'light' | 'dark' = 'dark';
 
     const popularItems = mockData.coursesAndWorkshops.slice(0, 6);
 
@@ -238,6 +181,23 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
         });
     };
 
+    const handleGlowMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
+        const el = e.currentTarget;
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        el.style.setProperty('--mouse-x', `${x}px`);
+        el.style.setProperty('--mouse-y', `${y}px`);
+    };
+
+    const handleGlowMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.currentTarget.classList.add('is-hovering');
+    };
+
+    const handleGlowMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.currentTarget.classList.remove('is-hovering');
+    };
+
     const formatToJalali = (dateString: string) => {
         try {
             const date = new Date(dateString);
@@ -294,6 +254,9 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
                                 <div 
                                     className="course-card-inner"
                                     style={tiltStyles[index]}
+                                    onMouseMove={(e) => handleGlowMouseMove(e, index)}
+                                    onMouseEnter={handleGlowMouseEnter}
+                                    onMouseLeave={handleGlowMouseLeave}
                                 >
 
                                     <div className="course-image-wrapper">

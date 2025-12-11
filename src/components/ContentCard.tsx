@@ -36,6 +36,23 @@ const ContentCard: React.FC<ContentCardProps> = ({
         document.body.removeChild(link);
     };
 
+    const handleGlowMouseMoveWrap = (e: React.MouseEvent<HTMLDivElement>) => {
+        const el = e.currentTarget;
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        el.style.setProperty('--mouse-x', `${x}px`);
+        el.style.setProperty('--mouse-y', `${y}px`);
+    };
+
+    const handleGlowMouseEnterWrap = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.currentTarget.classList.add('is-hovering');
+    };
+
+    const handleGlowMouseLeaveWrap = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.currentTarget.classList.remove('is-hovering');
+    };
+
     // If no item provided, render the course card
     if (!item) {
         const mockCourse: ContentItem = {
@@ -53,6 +70,9 @@ const ContentCard: React.FC<ContentCardProps> = ({
                     <div 
                         className="course-card-wrap"
                         data-lenis-prevent
+                        onMouseMove={handleGlowMouseMoveWrap}
+                        onMouseEnter={handleGlowMouseEnterWrap}
+                        onMouseLeave={handleGlowMouseLeaveWrap}
                     >
                         <div className="course-card-image">
                             <img src={`${import.meta.env.BASE_URL || '/'}data_searching.jpg`.replace(/\/\//g, '/')} alt="Database Search Workshop" />
@@ -134,6 +154,9 @@ const ContentCard: React.FC<ContentCardProps> = ({
                     <div 
                         className="course-card-wrap"
                         data-lenis-prevent
+                        onMouseMove={handleGlowMouseMoveWrap}
+                        onMouseEnter={handleGlowMouseEnterWrap}
+                        onMouseLeave={handleGlowMouseLeaveWrap}
                     >
                     <div className="course-card-image">
                         <img src={`${import.meta.env.BASE_URL || '/'}immagration_2.png`.replace(/\/\//g, '/')} alt="Course" />
@@ -247,6 +270,23 @@ const ContentCard: React.FC<ContentCardProps> = ({
         setTiltStyle({});
     };
 
+    const handleGlowMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        const el = e.currentTarget;
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        el.style.setProperty('--mouse-x', `${x}px`);
+        el.style.setProperty('--mouse-y', `${y}px`);
+    };
+
+    const handleGlowMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.currentTarget.classList.add('is-hovering');
+    };
+
+    const handleGlowMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.currentTarget.classList.remove('is-hovering');
+    };
+
     const handleImageClick = (e: React.MouseEvent) => {
         e.preventDefault();
         if (onImageClick) {
@@ -279,6 +319,9 @@ const ContentCard: React.FC<ContentCardProps> = ({
             <div 
                 className="modern-course-card-inner"
                 style={tiltStyle}
+                onMouseMove={handleGlowMouseMove}
+                onMouseEnter={handleGlowMouseEnter}
+                onMouseLeave={handleGlowMouseLeave}
             >
                 <div className="modern-course-image-container">
                     <div className="modern-course-image-overlay"></div>
