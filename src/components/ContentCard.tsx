@@ -26,6 +26,8 @@ const ContentCard: React.FC<ContentCardProps> = ({
     price
 }) => {
     const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
+    const [hasAnimated, setHasAnimated] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
     const handlePosterDownload = (imageSrc?: string) => {
         if (!imageSrc) return;
         const link = document.createElement('a');
@@ -53,6 +55,23 @@ const ContentCard: React.FC<ContentCardProps> = ({
         e.currentTarget.classList.remove('is-hovering');
     };
 
+    const handleCardWrapMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+        handleGlowMouseEnterWrap(e);
+        if (!hasAnimated) {
+            setIsHovered(true);
+            // Set hasAnimated after a short delay to allow animation to start
+            setTimeout(() => {
+                setHasAnimated(true);
+            }, 100);
+        }
+    };
+
+    const handleCardWrapMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+        handleGlowMouseLeaveWrap(e);
+        // Don't reset isHovered - keep it true once animation has been triggered
+        // This ensures the animation only happens once
+    };
+
     // If no item provided, render the course card
     if (!item) {
         const mockCourse: ContentItem = {
@@ -71,8 +90,8 @@ const ContentCard: React.FC<ContentCardProps> = ({
                         className="course-card-wrap"
                         data-lenis-prevent
                         onMouseMove={handleGlowMouseMoveWrap}
-                        onMouseEnter={handleGlowMouseEnterWrap}
-                        onMouseLeave={handleGlowMouseLeaveWrap}
+                        onMouseEnter={handleCardWrapMouseEnter}
+                        onMouseLeave={handleCardWrapMouseLeave}
                     >
                         <div className="course-card-image">
                             <img src={`${import.meta.env.BASE_URL || '/'}data_searching.jpg`.replace(/\/\//g, '/')} alt="Database Search Workshop" />
@@ -107,7 +126,7 @@ const ContentCard: React.FC<ContentCardProps> = ({
                             </div>
                         </div>
                         <div 
-                            className="course-card-full-text"
+                            className={`course-card-full-text ${hasAnimated ? 'has-animated' : ''} ${isHovered ? 'is-hovering-first' : ''}`}
                             style={{ scrollBehavior: 'auto' }}
                             data-lenis-prevent
                         >
@@ -120,11 +139,35 @@ const ContentCard: React.FC<ContentCardProps> = ({
                                     ثبت نام
                                 </Button>
                             </div>
-                            <p><strong>ویژگی‌های یک استراتژی جستجوی علمی حرفه‌ای:</strong> در این بخش با اصول و مبانی طراحی یک استراتژی جستجوی مؤثر و حرفه‌ای در پایگاه‌های داده علمی آشنا می‌شوید. یاد می‌گیرید چگونه یک جستجوی هدفمند و دقیق طراحی کنید که نتایج مرتبط و با کیفیت را به شما ارائه دهد.</p>
-                            <p><strong>ساختاردهی سؤال با PICO؛ ساده‌ترین راه برای جستجوی استاندارد:</strong> PICO یک روش ساختاریافته برای فرموله‌سازی سؤالات پژوهشی است که شامل Population (جمعیت)، Intervention (مداخله)، Comparison (مقایسه) و Outcome (نتیجه) می‌شود. این روش به شما کمک می‌کند سؤالات خود را به صورت استاندارد و قابل جستجو فرموله کنید.</p>
-                            <p><strong>انتخاب کلیدواژه‌های هوشمندانه از واژه اصلی تا Entry Terms:</strong> یادگیری نحوه شناسایی و انتخاب کلیدواژه‌های مناسب از واژه اصلی تا اصطلاحات ورودی (Entry Terms) در پایگاه‌های داده. این مهارت به شما کمک می‌کند جستجوهای دقیق‌تر و جامع‌تری انجام دهید.</p>
-                            <p><strong>آشنایی با MeSH و نقش آن در جستجوی دقیق‌تر:</strong> Medical Subject Headings (MeSH) یک سیستم اصطلاحنامه کنترل‌شده است که در پایگاه‌های داده پزشکی استفاده می‌شود. در این بخش با ساختار MeSH و نحوه استفاده از آن برای بهبود دقت جستجوهای خود آشنا می‌شوید.</p>
-                            <p><strong>مهارت نوشتن Search Syntax: هنر ترکیب کلیدواژه‌ها و عملگرها:</strong> یادگیری نحوه نوشتن دستورات جستجوی پیشرفته با استفاده از عملگرهای بولی (AND, OR, NOT) و سایر عملگرهای جستجو. این مهارت به شما امکان می‌دهد جستجوهای پیچیده و دقیق‌تری انجام دهید که نتایج بهتری را به همراه دارد.</p>
+                            <div className="course-rich-text-content">
+                                <h2 className="course-rich-h2">ویژگی‌های یک استراتژی جستجوی علمی حرفه‌ای</h2>
+                                <p className="course-rich-paragraph">در این بخش با اصول و مبانی طراحی یک استراتژی جستجوی مؤثر و حرفه‌ای در پایگاه‌های داده علمی آشنا می‌شوید. یاد می‌گیرید چگونه یک جستجوی هدفمند و دقیق طراحی کنید که نتایج مرتبط و با کیفیت را به شما ارائه دهد.</p>
+                                
+                                <h2 className="course-rich-h2">ساختاردهی سؤال با PICO؛ ساده‌ترین راه برای جستجوی استاندارد</h2>
+                                <p className="course-rich-paragraph">PICO یک روش ساختاریافته برای فرموله‌سازی سؤالات پژوهشی است که شامل:</p>
+                                <ul className="course-rich-list">
+                                    <li className="course-rich-list-item">Population (جمعیت)</li>
+                                    <li className="course-rich-list-item">Intervention (مداخله)</li>
+                                    <li className="course-rich-list-item">Comparison (مقایسه)</li>
+                                    <li className="course-rich-list-item">Outcome (نتیجه)</li>
+                                </ul>
+                                <p className="course-rich-paragraph">این روش به شما کمک می‌کند سؤالات خود را به صورت استاندارد و قابل جستجو فرموله کنید.</p>
+                                
+                                <h2 className="course-rich-h2">انتخاب کلیدواژه‌های هوشمندانه</h2>
+                                <p className="course-rich-paragraph">یادگیری نحوه شناسایی و انتخاب کلیدواژه‌های مناسب از واژه اصلی تا اصطلاحات ورودی (Entry Terms) در پایگاه‌های داده. این مهارت به شما کمک می‌کند جستجوهای دقیق‌تر و جامع‌تری انجام دهید.</p>
+                                
+                                <h2 className="course-rich-h2">آشنایی با MeSH و نقش آن در جستجوی دقیق‌تر</h2>
+                                <p className="course-rich-paragraph">Medical Subject Headings (MeSH) یک سیستم اصطلاحنامه کنترل‌شده است که در پایگاه‌های داده پزشکی استفاده می‌شود. در این بخش با ساختار MeSH و نحوه استفاده از آن برای بهبود دقت جستجوهای خود آشنا می‌شوید.</p>
+                                
+                                <h2 className="course-rich-h2">مهارت نوشتن Search Syntax: هنر ترکیب کلیدواژه‌ها و عملگرها</h2>
+                                <p className="course-rich-paragraph">یادگیری نحوه نوشتن دستورات جستجوی پیشرفته با استفاده از عملگرهای بولی:</p>
+                                <ol className="course-rich-list">
+                                    <li className="course-rich-list-item">AND - برای ترکیب شرایط</li>
+                                    <li className="course-rich-list-item">OR - برای گزینه‌های جایگزین</li>
+                                    <li className="course-rich-list-item">NOT - برای حذف شرایط</li>
+                                </ol>
+                                <p className="course-rich-paragraph">این مهارت به شما امکان می‌دهد جستجوهای پیچیده و دقیق‌تری انجام دهید که نتایج بهتری را به همراه دارد.</p>
+                            </div>
                             <div className="course-card-actions-bottom">
                                 <Button
                                     variant="primary"
@@ -155,8 +198,8 @@ const ContentCard: React.FC<ContentCardProps> = ({
                         className="course-card-wrap"
                         data-lenis-prevent
                         onMouseMove={handleGlowMouseMoveWrap}
-                        onMouseEnter={handleGlowMouseEnterWrap}
-                        onMouseLeave={handleGlowMouseLeaveWrap}
+                        onMouseEnter={handleCardWrapMouseEnter}
+                        onMouseLeave={handleCardWrapMouseLeave}
                     >
                     <div className="course-card-image">
                         <img src={`${import.meta.env.BASE_URL || '/'}immagration_2.png`.replace(/\/\//g, '/')} alt="Course" />
@@ -191,7 +234,7 @@ const ContentCard: React.FC<ContentCardProps> = ({
                         </div>
                     </div>
                     <div 
-                        className="course-card-full-text"
+                        className={`course-card-full-text ${hasAnimated ? 'has-animated' : ''} ${isHovered ? 'is-hovering-first' : ''}`}
                         style={{ scrollBehavior: 'auto' }}
                         data-lenis-prevent
                     >
@@ -204,9 +247,16 @@ const ContentCard: React.FC<ContentCardProps> = ({
                                 ثبت نام
                             </Button>
                         </div>
-                        <p>در مسیر پیشرفت و تعالی، حرکت به سوی آینده نیازمند برنامه‌ریزی دقیق و راهبردهای هوشمندانه است. هر قدم که برمی‌داریم، هر تصمیمی که می‌گیریم، ما را به مقصد نهایی نزدیک‌تر می‌کند. آینده‌ای روشن با تلاش امروز ما ساخته می‌شود.</p>
-                        <p>شناسایی دقیق مسیرهای مهاجرت و تحرک جمعیت‌ها یکی از مهم‌ترین ابعاد مطالعات جمعیت‌شناختی و برنامه‌ریزی شهری است. با استفاده از روش‌های پیشرفته تحلیل داده‌ها و فناوری‌های مدرن، می‌توانیم الگوهای مهاجرت را شناسایی کنیم و برای آینده برنامه‌ریزی کنیم.</p>
-                        <p>با ترکیب دانش و تجربه، می‌توانیم بهترین راهکارها را برای چالش‌های پیش رو پیدا کنیم. حرکت به سوی آینده و شناسایی مسیرهای صحیح، رمز موفقیت در دنیای امروز است.</p>
+                        <div className="course-rich-text-content">
+                            <h2 className="course-rich-h2">حرکت به سوی آینده</h2>
+                            <p className="course-rich-paragraph">در مسیر پیشرفت و تعالی، حرکت به سوی آینده نیازمند برنامه‌ریزی دقیق و راهبردهای هوشمندانه است. هر قدم که برمی‌داریم، هر تصمیمی که می‌گیریم، ما را به مقصد نهایی نزدیک‌تر می‌کند. آینده‌ای روشن با تلاش امروز ما ساخته می‌شود.</p>
+                            
+                            <h3 className="course-rich-h3">شناسایی مسیرهای مهاجرت</h3>
+                            <p className="course-rich-paragraph">شناسایی دقیق مسیرهای مهاجرت و تحرک جمعیت‌ها یکی از مهم‌ترین ابعاد مطالعات جمعیت‌شناختی و برنامه‌ریزی شهری است. با استفاده از روش‌های پیشرفته تحلیل داده‌ها و فناوری‌های مدرن، می‌توانیم الگوهای مهاجرت را شناسایی کنیم و برای آینده برنامه‌ریزی کنیم.</p>
+                            
+                            <h3 className="course-rich-h3">ترکیب دانش و تجربه</h3>
+                            <p className="course-rich-paragraph">با ترکیب دانش و تجربه، می‌توانیم بهترین راهکارها را برای چالش‌های پیش رو پیدا کنیم. حرکت به سوی آینده و شناسایی مسیرهای صحیح، رمز موفقیت در دنیای امروز است.</p>
+                        </div>
                         {posterImage && (
                             <div className="course-card-actions-bottom">
                                 <Button

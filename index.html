@@ -1117,7 +1117,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: flex-start;
+        align-items: center;
         direction: rtl;
         background: hsl(var(--background));
         transition: transform 0.4s ease-in-out;
@@ -1137,6 +1137,8 @@
         color: #F37021;
         margin: 0 0 1.5rem 0;
         line-height: 1.3;
+        text-align: center;
+        width: 100%;
       }
 
       @media screen and (min-width: 768px) {
@@ -1150,15 +1152,18 @@
         flex-direction: column;
         gap: 1rem;
         width: 100%;
+        align-items: center;
       }
 
       .course-meta-item {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 0.75rem;
         font-family: 'Vazirmatn', sans-serif;
         font-size: 1rem;
         color: hsl(var(--foreground));
+        width: 100%;
       }
 
       .course-meta-icon {
@@ -1244,6 +1249,180 @@
 
       .course-card-full-text p:last-child {
         margin-bottom: 0;
+      }
+
+      /* Override for rich text content - must be after general p styles */
+      .course-card-full-text .course-rich-text-content {
+        text-align: center !important;
+        direction: rtl;
+      }
+
+      .course-card-full-text .course-rich-text-content * {
+        text-align: center !important;
+      }
+
+      /* Rich Text Content Styles */
+      .course-rich-text-content {
+        font-family: 'Vazirmatn', sans-serif;
+        direction: rtl;
+        text-align: center !important;
+        width: 100%;
+      }
+
+      .course-rich-text-content > * {
+        opacity: 0;
+      }
+
+      .course-card-full-text.is-hovering-first .course-rich-text-content > * {
+        animation: fadeInSimple 0.6s ease-out forwards;
+      }
+
+      .course-card-full-text.has-animated .course-rich-text-content > * {
+        opacity: 1;
+        animation: none;
+      }
+
+      @keyframes fadeInSimple {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* Stagger animation for children - only apply when hovering first time */
+      .course-card-full-text.is-hovering-first .course-rich-text-content > *:nth-child(1) {
+        animation-delay: 0.05s;
+      }
+      .course-card-full-text.is-hovering-first .course-rich-text-content > *:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      .course-card-full-text.is-hovering-first .course-rich-text-content > *:nth-child(3) {
+        animation-delay: 0.15s;
+      }
+      .course-card-full-text.is-hovering-first .course-rich-text-content > *:nth-child(4) {
+        animation-delay: 0.2s;
+      }
+      .course-card-full-text.is-hovering-first .course-rich-text-content > *:nth-child(5) {
+        animation-delay: 0.25s;
+      }
+      .course-card-full-text.is-hovering-first .course-rich-text-content > *:nth-child(6) {
+        animation-delay: 0.3s;
+      }
+      .course-card-full-text.is-hovering-first .course-rich-text-content > *:nth-child(7) {
+        animation-delay: 0.35s;
+      }
+      .course-card-full-text.is-hovering-first .course-rich-text-content > *:nth-child(8) {
+        animation-delay: 0.4s;
+      }
+      .course-card-full-text.is-hovering-first .course-rich-text-content > *:nth-child(9) {
+        animation-delay: 0.45s;
+      }
+      .course-card-full-text.is-hovering-first .course-rich-text-content > *:nth-child(10) {
+        animation-delay: 0.5s;
+      }
+      .course-card-full-text.is-hovering-first .course-rich-text-content > *:nth-child(n+11) {
+        animation-delay: 0.55s;
+      }
+
+      /* Rich Text Typography */
+      .course-rich-h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #F37021;
+        margin: 0 0 1rem 0;
+        line-height: 1.4;
+        text-align: center !important;
+      }
+
+      .course-rich-h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #F37021;
+        margin: 1.5rem 0 0.75rem 0;
+        line-height: 1.4;
+        text-align: center !important;
+      }
+
+      .course-rich-h2:first-child {
+        margin-top: 0;
+      }
+
+      .course-rich-h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: hsl(var(--foreground));
+        margin: 1.25rem 0 0.5rem 0;
+        line-height: 1.4;
+        text-align: center !important;
+      }
+
+      .course-rich-paragraph {
+        font-size: 1rem;
+        color: hsl(var(--foreground));
+        margin: 0 0 1rem 0;
+        line-height: 1.8;
+        text-align: center !important;
+        text-align-last: center !important;
+      }
+
+      .course-rich-paragraph strong {
+        color: #F37021;
+        font-weight: 700;
+      }
+
+      .course-rich-paragraph em {
+        font-style: italic;
+        color: hsl(var(--muted-foreground));
+      }
+
+      .course-rich-list {
+        margin: 0.75rem auto 1rem auto;
+        padding-right: 0;
+        padding-left: 0;
+        list-style: none !important;
+        list-style-type: none !important;
+        direction: rtl;
+        text-align: center;
+        display: inline-block;
+        min-width: 200px;
+        width: auto;
+      }
+
+      .course-rich-text-content ul.course-rich-list {
+        list-style-type: none !important;
+        display: block;
+        margin: 0.75rem auto 1rem auto;
+        padding-right: 0;
+        padding-left: 0;
+      }
+
+      .course-rich-text-content ol.course-rich-list {
+        list-style-type: none !important;
+        display: block;
+        margin: 0.75rem auto 1rem auto;
+        padding-right: 0;
+        padding-left: 0;
+      }
+
+      .course-rich-list-item {
+        font-size: 1rem;
+        color: hsl(var(--foreground));
+        margin: 0.5rem 0;
+        line-height: 1.7;
+        text-align: right;
+        padding-right: 0;
+        display: list-item;
+        list-style: none !important;
+      }
+
+      .course-rich-text-content ul.course-rich-list .course-rich-list-item {
+        list-style-type: none !important;
+      }
+
+      .course-rich-text-content ol.course-rich-list .course-rich-list-item {
+        list-style-type: none !important;
       }
 
       .course-card-actions-top {
