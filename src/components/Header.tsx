@@ -32,9 +32,9 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
             transition={{ duration: 0.2 }}
             className="w-full backdrop-blur-md bg-background/60 fixed top-0 left-0 right-0 z-50 border-b border-border shadow-sm"
         >
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="container mx-auto pl-4 sm:pl-6 lg:pl-8 pr-0 sm:pr-1 lg:pr-2">
                 <div className="flex items-center justify-between h-20">
-                    <div className="flex-shrink-0 flex items-center gap-2 sm:gap-3 min-w-0">
+                    <div className="flex-shrink-0 flex items-center gap-4 sm:gap-5 min-w-0">
                         <img 
                             src={`${import.meta.env.BASE_URL || '/'}university.png`.replace(/\/\//g, '/')}
                             alt="University Logo" 
@@ -45,7 +45,7 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
                             alt="Club Logo" 
                             className="h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 object-contain"
                         />
-                        <span className="font-bold text-sm sm:text-lg md:text-xl tracking-wider truncate overflow-hidden">
+                        <span className="font-bold text-base sm:text-xl md:text-2xl tracking-wider truncate overflow-hidden">
                             {translations.appName as string}
                         </span>
                     </div>

@@ -16,7 +16,7 @@ const Hero: React.FC<HeroProps> = ({ translations, setCurrentPage }) => {
         <section className="relative h-screen min-h-[500px] md:min-h-[600px] flex items-start justify-center text-center text-foreground overflow-visible pt-4 md:pt-8 px-4">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 w-full">
                 <LogoAnimation />
-                <h1 className="main-title-anim text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight drop-shadow-lg mt-2 px-2" style={{textShadow: '0 0 30px hsla(var(--primary), 0.5)'}}>
+                <h1 className="main-title-anim text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight drop-shadow-lg mt-2 px-2" style={{color: '#F37021', textShadow: '0 0 30px hsla(var(--primary), 0.5)'}}>
                     {translations.heroTitle as string}
                 </h1>
                 
