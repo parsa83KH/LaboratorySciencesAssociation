@@ -328,28 +328,34 @@
           touch-action: pan-y !important; /* Allow vertical scrolling on mobile */
           pointer-events: auto;
           -webkit-overflow-scrolling: touch;
-          overscroll-behavior: contain;
         }
         #home-slider .swiper-container {
           touch-action: pan-y !important; /* Allow vertical scrolling on mobile */
           pointer-events: auto;
           -webkit-overflow-scrolling: touch;
-          overscroll-behavior: contain;
         }
         #home-slider .swiper-wrapper {
           touch-action: pan-y !important;
           pointer-events: auto;
-          overscroll-behavior: contain;
         }
         #home-slider .swiper-slide {
           touch-action: pan-y !important;
           pointer-events: auto;
-          overscroll-behavior: contain;
         }
         #home-slider .swiper-image,
         #home-slider .swiper-image-inner {
           touch-action: pan-y !important;
           pointer-events: auto;
+        }
+        #home-slider * {
+          touch-action: pan-y !important;
+        }
+        /* Ensure buttons remain clickable */
+        #home-slider button {
+          touch-action: manipulation !important;
+          pointer-events: auto !important;
+          z-index: 100 !important;
+          position: relative;
         }
       }
 

@@ -53,8 +53,10 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
             preventClicks: false,
             preventClicksPropagation: false,
             pagination: null,
-            // Disable all touch interactions that might interfere with page scrolling
+            // Completely disable all touch interactions
             touchEventsTarget: 'container',
+            noSwiping: true, // Disable swiping completely
+            noSwipingClass: 'swiper-no-swiping',
             onSlideChangeEnd: () => {
                 if (inViewRef.current) {
                     startAutoplay();
@@ -64,44 +66,60 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
 
         swiperRef.current = swiperInstance;
 
-        // On mobile, ensure Swiper doesn't interfere with page scrolling
+        // On mobile, completely disable Swiper touch handling and allow page scroll
         if (isMobile) {
             const sliderElement = document.getElementById('home-slider');
             const swiperContainer = sliderElement?.querySelector('.swiper-container') as HTMLElement;
             const swiperWrapper = sliderElement?.querySelector('.swiper-wrapper') as HTMLElement;
             const swiperSlides = sliderElement?.querySelectorAll('.swiper-slide') as NodeListOf<HTMLElement>;
+            const swiperImages = sliderElement?.querySelectorAll('.swiper-image, .swiper-image-inner') as NodeListOf<HTMLElement>;
             
+            // Add no-swiping class to all elements
             if (sliderElement) {
+                sliderElement.classList.add('swiper-no-swiping');
                 sliderElement.style.touchAction = 'pan-y';
-                sliderElement.style.overscrollBehavior = 'contain';
             }
             
             if (swiperContainer) {
-                // Ensure Swiper container doesn't block touch events for page scrolling
+                swiperContainer.classList.add('swiper-no-swiping');
                 swiperContainer.style.touchAction = 'pan-y';
                 swiperContainer.style.pointerEvents = 'auto';
-                swiperContainer.style.overscrollBehavior = 'contain';
-                // Prevent Swiper from capturing touch events
                 swiperContainer.style.userSelect = 'none';
             }
             
             if (swiperWrapper) {
+                swiperWrapper.classList.add('swiper-no-swiping');
                 swiperWrapper.style.touchAction = 'pan-y';
                 swiperWrapper.style.pointerEvents = 'auto';
-                swiperWrapper.style.overscrollBehavior = 'contain';
             }
             
-            // Set touchAction for all slides
+            // Set touchAction for all slides and images
             if (swiperSlides) {
                 swiperSlides.forEach(slide => {
+                    slide.classList.add('swiper-no-swiping');
                     slide.style.touchAction = 'pan-y';
                     slide.style.pointerEvents = 'auto';
                 });
             }
             
-            // Disable Swiper's touch handling completely on mobile
+            if (swiperImages) {
+                swiperImages.forEach(img => {
+                    img.classList.add('swiper-no-swiping');
+                    img.style.touchAction = 'pan-y';
+                    img.style.pointerEvents = 'auto';
+                });
+            }
+            
+            // Completely disable Swiper's touch handling
             if (swiperInstance.touch) {
                 swiperInstance.touch.disable();
+            }
+            
+            // Also disable all touch event listeners
+            if (swiperInstance.off) {
+                swiperInstance.off('touchStart');
+                swiperInstance.off('touchMove');
+                swiperInstance.off('touchEnd');
             }
         }
 
@@ -133,105 +151,7 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
         };
     }, [startAutoplay, stopAutoplay]);
 
-    // Allow vertical scroll on mobile when touching the slider
-    useEffect(() => {
-        if (window.innerWidth >= 768) return; // Only for mobile
-        
-        const sliderElement = document.getElementById('home-slider');
-        if (!sliderElement) return;
 
-        let touchStartY = 0;
-        let touchStartX = 0;
-        let isVerticalScroll = false;
-        let touchMoved = false;
-
-        const handleTouchStart = (e: TouchEvent) => {
-            // Don't interfere with button clicks
-            const target = e.target as HTMLElement;
-            if (target.closest('button')) return;
-            
-            touchStartY = e.touches[0].clientY;
-            touchStartX = e.touches[0].clientX;
-            isVerticalScroll = false;
-            touchMoved = false;
-        };
-
-        const handleTouchMove = (e: TouchEvent) => {
-            // Don't interfere with button clicks
-            const target = e.target as HTMLElement;
-            if (target.closest('button')) return;
-            
-            if (!touchStartY || !touchStartX) return;
-            
-            touchMoved = true;
-            const touchCurrentY = e.touches[0].clientY;
-            const touchCurrentX = e.touches[0].clientX;
-            const deltaY = touchCurrentY - touchStartY;
-            const deltaX = touchCurrentX - touchStartX;
-            const absDeltaY = Math.abs(deltaY);
-            const absDeltaX = Math.abs(deltaX);
-
-            // Determine if this is a vertical scroll gesture
-            if (absDeltaY > absDeltaX && absDeltaY > 5) {
-                isVerticalScroll = true;
-                // Disable swiper to allow page scroll
-                if (swiperRef.current) {
-                    swiperRef.current.disable();
-                }
-                // Allow the browser to handle vertical scroll naturally
-                // Don't prevent default - this allows page scrolling
-            } else if (absDeltaX > absDeltaY && absDeltaX > 5) {
-                // Horizontal swipe - keep swiper enabled but don't prevent default
-                isVerticalScroll = false;
-            }
-        };
-
-        const handleTouchEnd = () => {
-            if (swiperRef.current) {
-                swiperRef.current.enable();
-            }
-            touchStartY = 0;
-            touchStartX = 0;
-            isVerticalScroll = false;
-            touchMoved = false;
-        };
-
-        // Use passive listeners to allow native scrolling
-        // touchmove needs to be non-passive only if we might preventDefault, but we don't
-        sliderElement.addEventListener('touchstart', handleTouchStart, { passive: true });
-        sliderElement.addEventListener('touchmove', handleTouchMove, { passive: true });
-        sliderElement.addEventListener('touchend', handleTouchEnd, { passive: true });
-
-        // Also ensure the swiper container and all child elements don't block scrolling
-        const swiperContainer = sliderElement.querySelector('.swiper-container') as HTMLElement;
-        const swiperWrapper = sliderElement.querySelector('.swiper-wrapper') as HTMLElement;
-        const swiperSlides = sliderElement.querySelectorAll('.swiper-slide') as NodeListOf<HTMLElement>;
-        
-        if (swiperContainer) {
-            swiperContainer.style.touchAction = 'pan-y';
-            swiperContainer.style.pointerEvents = 'auto';
-            swiperContainer.style.overscrollBehavior = 'contain';
-        }
-        
-        if (swiperWrapper) {
-            swiperWrapper.style.touchAction = 'pan-y';
-            swiperWrapper.style.pointerEvents = 'auto';
-            swiperWrapper.style.overscrollBehavior = 'contain';
-        }
-        
-        if (swiperSlides) {
-            swiperSlides.forEach(slide => {
-                slide.style.touchAction = 'pan-y';
-                slide.style.pointerEvents = 'auto';
-            });
-        }
-
-        return () => {
-            sliderElement.removeEventListener('touchstart', handleTouchStart);
-            sliderElement.removeEventListener('touchmove', handleTouchMove);
-            sliderElement.removeEventListener('touchend', handleTouchEnd);
-        };
-    }, []);
 
     return (
         <motion.div
