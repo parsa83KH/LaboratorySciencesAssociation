@@ -1,11 +1,22 @@
 import React from 'react';
-import type { Translation } from '../types';
+import type { Translation, PageKey } from '../types';
 
 interface FooterProps {
     translations: Translation;
+    setCurrentPage: (page: PageKey) => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ translations: t }) => {
+const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
+    const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, page: PageKey) => {
+        e.preventDefault();
+        setCurrentPage(page);
+        // Scroll to top when navigating
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Also use Lenis if available for smooth scrolling
+        if ((window as any).lenis) {
+            (window as any).lenis.scrollTo(0, { immediate: false });
+        }
+    };
     return (
         <footer className="relative text-muted-foreground mt-auto border-t border-slate-700/50 overflow-hidden">
             {/* Background Image */}
@@ -28,25 +39,25 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                         </h3>
                         <ul className="space-y-2 sm:space-y-3">
                             <li>
-                                <a href="#" className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium relative group/link">
+                                <a href="#" onClick={(e) => handleNavClick(e, 'home')} className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium relative group/link">
                                     <span className="relative z-10">{t.navHome as string}</span>
                                     <span className="absolute bottom-0 right-0 w-0 h-0.5 bg-orange-500 group-hover/link:w-full transition-all duration-300"></span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium relative group/link">
+                                <a href="#" onClick={(e) => handleNavClick(e, 'newsAndAnnouncements')} className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium relative group/link">
                                     <span className="relative z-10">{t.navNewsAndAnnouncements as string}</span>
                                     <span className="absolute bottom-0 right-0 w-0 h-0.5 bg-orange-500 group-hover/link:w-full transition-all duration-300"></span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium relative group/link">
+                                <a href="#" onClick={(e) => handleNavClick(e, 'coursesAndWorkshops')} className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium relative group/link">
                                     <span className="relative z-10">{t.navCoursesAndWorkshops as string}</span>
                                     <span className="absolute bottom-0 right-0 w-0 h-0.5 bg-orange-500 group-hover/link:w-full transition-all duration-300"></span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium relative group/link">
+                                <a href="#" onClick={(e) => handleNavClick(e, 'members')} className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium relative group/link">
                                     <span className="relative z-10">{t.navMembers as string}</span>
                                     <span className="absolute bottom-0 right-0 w-0 h-0.5 bg-orange-500 group-hover/link:w-full transition-all duration-300"></span>
                                 </a>
@@ -71,7 +82,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                                     </div>
                                     <span className="font-medium group-hover/link:text-pink-500 transition-colors duration-300">پیج اینستاگرام</span>
                                 </a>
-                                <a href="mailto:labsciences.scls.iautms@gmail.com" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
+                                <a href="https://mail.google.com/mail/?view=cm&to=labsciences.scls.iautms@gmail.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-red-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-red-500/20 group-hover/link:scale-110 transition-all duration-300">
                                         <svg className="w-4 h-4 sm:w-5 sm:h-5 text-red-400 group-hover/link:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -90,14 +101,13 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                             </div>
                             {/* Second Row - 4 links: Location, Young Researchers Club, Secretary, Public Relations (mobile: horizontal, desktop: wrap) */}
                             <div className="flex flex-row flex-wrap gap-2 sm:gap-3 justify-center md:justify-start">
-                                <a href="https://share.google/iOCzViLBnLZTpeZp4" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
+                                <a href="https://tms.iau.ir/fa" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-green-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-green-500/20 group-hover/link:scale-110 transition-all duration-300">
                                         <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-400 group-hover/link:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                                         </svg>
                                     </div>
-                                    <span className="font-medium group-hover/link:text-green-400 transition-colors duration-300">لوکیشن دانشگاه</span>
+                                    <span className="font-medium group-hover/link:text-green-400 transition-colors duration-300">سایت دانشگاه</span>
                                 </a>
                                 <a href="https://bpj.iau.ir/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-purple-500/20 group-hover/link:scale-110 transition-all duration-300">
@@ -139,7 +149,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                             </h4>
                         </div>
                         <div className="flex flex-wrap gap-2 sm:gap-3 justify-center md:justify-end rtl:md:justify-start">
-                            <a href="mailto:parsakhosravani83@gmail.com" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
+                            <a href="https://mail.google.com/mail/?view=cm&to=parsakhosravani83@gmail.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-red-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-red-500/20 group-hover/link:scale-110 transition-all duration-300">
                                     <svg className="w-4 h-4 sm:w-5 sm:h-5 text-red-400 group-hover/link:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />

@@ -149,7 +149,7 @@ const App: React.FC = () => {
                         {renderPageContent()}
                     </AnimatePresence>
                 </main>
-                <Footer translations={t} />
+                <Footer translations={t} setCurrentPage={setCurrentPage} />
             </div>
 
             <AnimatePresence>
