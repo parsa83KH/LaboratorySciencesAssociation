@@ -38,6 +38,11 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
                         <img 
                             src={`${import.meta.env.BASE_URL || '/'}university.png`.replace(/\/\//g, '/')}
                             alt="University Logo" 
+                            className="h-14 w-14 sm:h-16 sm:w-16 flex-shrink-0 object-contain"
+                        />
+                        <img 
+                            src={`${import.meta.env.BASE_URL || '/'}club.png`.replace(/\/\//g, '/')}
+                            alt="Club Logo" 
                             className="h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 object-contain"
                         />
                         <span className="font-bold text-sm sm:text-lg md:text-xl tracking-wider truncate overflow-hidden">

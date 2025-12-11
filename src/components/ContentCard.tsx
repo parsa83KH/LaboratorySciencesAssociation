@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import type { ContentItem, Translation } from '../types';
 import Button from './Button';
 import Modal from './Modal';
-import RegistrationForm from './RegistrationForm';
 
 interface ContentCardProps {
     item?: ContentItem;
@@ -117,9 +116,13 @@ const ContentCard: React.FC<ContentCardProps> = ({
                             </div>
                         </div>
                     </div>
-                    {isRegistrationModalOpen && translations && (
+                    {isRegistrationModalOpen && (
                         <Modal onClose={() => setIsRegistrationModalOpen(false)}>
-                            <RegistrationForm course={mockCourse} translations={translations} price={price} />
+                            <div className="text-center py-8">
+                                <p className="text-lg sm:text-xl font-medium text-foreground">
+                                    هنوز فرم ثبت نام وجود ندارد
+                                </p>
+                            </div>
                         </Modal>
                     )}
                 </>
@@ -194,9 +197,13 @@ const ContentCard: React.FC<ContentCardProps> = ({
                         )}
                     </div>
                 </div>
-                {isRegistrationModalOpen && translations && (
+                {isRegistrationModalOpen && (
                     <Modal onClose={() => setIsRegistrationModalOpen(false)}>
-                        <RegistrationForm course={mockCourse} translations={translations} price={price} />
+                        <div className="text-center py-8">
+                            <p className="text-lg sm:text-xl font-medium text-foreground">
+                                هنوز فرم ثبت نام وجود ندارد
+                            </p>
+                        </div>
                     </Modal>
                 )}
             </>

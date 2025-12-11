@@ -88,7 +88,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                                     <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">کانال تلگرام</span>
                                 </a>
                             </div>
-                            {/* Second Row - 3 links: Location, Secretary, Public Relations (mobile: horizontal, desktop: wrap) */}
+                            {/* Second Row - 4 links: Location, Young Researchers Club, Secretary, Public Relations (mobile: horizontal, desktop: wrap) */}
                             <div className="flex flex-row flex-wrap gap-2 sm:gap-3 justify-center md:justify-start">
                                 <a href="https://share.google/iOCzViLBnLZTpeZp4" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-green-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-green-500/20 group-hover/link:scale-110 transition-all duration-300">
@@ -98,6 +98,14 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                                         </svg>
                                     </div>
                                     <span className="font-medium group-hover/link:text-green-400 transition-colors duration-300">لوکیشن دانشگاه</span>
+                                </a>
+                                <a href="https://bpj.iau.ir/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
+                                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-purple-500/20 group-hover/link:scale-110 transition-all duration-300">
+                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400 group-hover/link:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        </svg>
+                                    </div>
+                                    <span className="font-medium group-hover/link:text-purple-400 transition-colors duration-300">باشگاه پژوهشگران جوان</span>
                                 </a>
                                 <a href="https://t.me/sclsiautms_bot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-blue-500/20 group-hover/link:scale-110 transition-all duration-300">
@@ -126,7 +134,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                             <span className="absolute bottom-0 right-0 w-full h-0.5 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                         </h3>
                         <div className="mb-4 sm:mb-6">
-                            <h4 className="text-xl sm:text-2xl font-bold text-white">
+                            <h4 className="text-xl sm:text-2xl font-bold text-[#F37021]">
                                 Parsa Khosravani
                             </h4>
                         </div>
@@ -163,6 +171,9 @@ const Footer: React.FC<FooterProps> = ({ translations: t }) => {
                 <div className="mt-6 sm:mt-10 pt-6 sm:pt-8 border-t border-slate-700/50 text-center">
                     <p className="text-xs sm:text-sm text-slate-400 px-2">
                         © ۱۴۰۴ انجمن علوم آزمایشگاهی دانشگاه آزاد علوم پزشکی تهران
+                    </p>
+                    <p className="text-xs sm:text-sm text-slate-400 px-2 mt-2">
+                        تحت نظر باشگاه پژوهشگران جوان
                     </p>
                 </div>
             </div>
