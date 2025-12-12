@@ -83,7 +83,7 @@ const Hero: React.FC<HeroProps> = ({ translations, setCurrentPage }) => {
                             }
                         }}
                     >
-                        ارتباط با ما
+                        {translations.heroContactUs as string}
                     </Button>
                     <div className="flex flex-col gap-3 w-full justify-center items-center md:hidden">
                         <Button
@@ -91,17 +91,17 @@ const Hero: React.FC<HeroProps> = ({ translations, setCurrentPage }) => {
                             className="w-full py-2.5 px-5 text-sm max-w-xs"
                             onClick={() => setCurrentPage('coursesAndWorkshops')}
                         >
-                            دوره‌ها
+                            {translations.heroCourses as string}
                         </Button>
                         <Button
                             variant="primary"
                             className="w-full py-2.5 px-5 text-sm max-w-xs"
                             onClick={() => setCurrentPage('newsAndAnnouncements')}
                         >
-                            اخبار
+                            {translations.heroNews as string}
                         </Button>
                     </div>
-                    <p className="text-xs sm:text-sm md:text-lg font-medium mt-2 md:mt-4" style={{ color: '#2563eb' }}>حرکت کنید</p>
+                    <p className="text-xs sm:text-sm md:text-lg font-medium mt-2 md:mt-4" style={{ color: '#2563eb' }}>{translations.heroScrollHint as string}</p>
                     <div className="scroll-indicator">
                         <div className="scroll-arrow"></div>
                     </div>

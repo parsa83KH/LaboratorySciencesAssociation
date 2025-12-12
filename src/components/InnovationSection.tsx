@@ -2,76 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import type { Translation } from '../types';
 
-// Component to highlight keywords with animated red underline
+// Simple text component without highlighting
 const HighlightedText: React.FC<{ text: string }> = ({ text }) => {
-    const keywords = [
-        'کارگاه',
-        'سمینار',
-        'تحقیقاتی',
-        'توانمندسازی',
-        'توانمند سازی',
-        'آکادمیک',
-        'صنعت'
-    ];
-
-    // Sort keywords by length (longest first) to match longer phrases first
-    const sortedKeywords = [...keywords].sort((a, b) => b.length - a.length);
-    
-    const parts: Array<{ text: string; isKeyword: boolean }> = [];
-    let remainingText = text;
-
-    // Find all keyword matches with their positions
-    const matches: Array<{ keyword: string; index: number; length: number }> = [];
-    sortedKeywords.forEach(keyword => {
-        let searchIndex = 0;
-        while (true) {
-            const index = remainingText.indexOf(keyword, searchIndex);
-            if (index === -1) break;
-            matches.push({ keyword, index, length: keyword.length });
-            searchIndex = index + 1;
-        }
-    });
-
-    // Sort matches by position
-    matches.sort((a, b) => a.index - b.index);
-
-    // Remove overlapping matches (keep first match if overlap)
-    const nonOverlappingMatches: Array<{ keyword: string; index: number; length: number }> = [];
-    matches.forEach(match => {
-        const overlaps = nonOverlappingMatches.some(existing => 
-            (match.index >= existing.index && match.index < existing.index + existing.length) ||
-            (match.index + match.length > existing.index && match.index + match.length <= existing.index + existing.length) ||
-            (match.index <= existing.index && match.index + match.length >= existing.index + existing.length)
-        );
-        if (!overlaps) {
-            nonOverlappingMatches.push(match);
-        }
-    });
-
-    // Build parts array
-    let currentIndex = 0;
-    nonOverlappingMatches.forEach(match => {
-        // Add text before keyword
-        if (match.index > currentIndex) {
-            parts.push({ text: remainingText.substring(currentIndex, match.index), isKeyword: false });
-        }
-        // Add keyword
-        parts.push({ text: remainingText.substring(match.index, match.index + match.length), isKeyword: true });
-        currentIndex = match.index + match.length;
-    });
-
-    // Add remaining text
-    if (currentIndex < remainingText.length) {
-        parts.push({ text: remainingText.substring(currentIndex), isKeyword: false });
-    }
-
-    // If no keywords found, return original text
-    if (parts.length === 0) {
-        parts.push({ text, isKeyword: false });
-    }
-
-    let keywordIndex = 0;
-
     return (
         <motion.span
             initial={{ opacity: 0 }}
@@ -80,19 +12,7 @@ const HighlightedText: React.FC<{ text: string }> = ({ text }) => {
             transition={{ duration: 1, ease: "easeOut" }}
             className="block"
         >
-            {parts.map((part, index) => {
-                if (part.isKeyword) {
-                    return (
-                        <span
-                            key={index}
-                            className="text-white font-semibold"
-                        >
-                            {part.text}
-                        </span>
-                    );
-                }
-                return <span key={index} className="text-white">{part.text}</span>;
-            })}
+            {text}
         </motion.span>
     );
 };

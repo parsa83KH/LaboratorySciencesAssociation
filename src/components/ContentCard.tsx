@@ -13,6 +13,7 @@ interface ContentCardProps {
     cardType?: 'default' | 'database-workshop';
     posterImage?: string;
     price?: string;
+    useLegacyStyle?: boolean; // Use legacy course-card-wrap style even with item prop
 }
 
 const ContentCard: React.FC<ContentCardProps> = ({ 
@@ -23,11 +24,13 @@ const ContentCard: React.FC<ContentCardProps> = ({
     translations,
     cardType = 'default',
     posterImage,
-    price
+    price,
+    useLegacyStyle = false
 }) => {
     const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
     const [hasAnimated, setHasAnimated] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
     const handlePosterDownload = (imageSrc?: string) => {
         if (!imageSrc) return;
         const link = document.createElement('a');
@@ -55,8 +58,10 @@ const ContentCard: React.FC<ContentCardProps> = ({
         e.currentTarget.classList.remove('is-hovering');
     };
 
-    const handleCardWrapMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-        handleGlowMouseEnterWrap(e);
+    const handleMoreButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsExpanded(true);
         if (!hasAnimated) {
             setIsHovered(true);
             // Set hasAnimated after a short delay to allow animation to start
@@ -66,11 +71,163 @@ const ContentCard: React.FC<ContentCardProps> = ({
         }
     };
 
-    const handleCardWrapMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-        handleGlowMouseLeaveWrap(e);
-        // Don't reset isHovered - keep it true once animation has been triggered
-        // This ensures the animation only happens once
+    const handleBackButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsExpanded(false);
     };
+
+    // If useLegacyStyle is true and item is provided, render legacy style
+    if (item && useLegacyStyle) {
+        const formatToJalali = (dateString: string) => {
+            try {
+                const date = new Date(dateString);
+                if (Number.isNaN(date.getTime())) return dateString;
+                return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                }).format(date);
+            } catch {
+                return dateString;
+            }
+        };
+
+        // Use date directly if it's already in Persian format (contains Persian digits), otherwise convert
+        const jalaliDate = item.date.includes('۱۴') || item.date.includes('۱۳') || item.date.includes('۱۴۰') 
+            ? item.date 
+            : formatToJalali(item.date);
+        const displayPrice = price || item.price || translations?.priceUnknown as string || 'نامشخص';
+
+        return (
+            <>
+                <div 
+                    className={`course-card-wrap ${isExpanded ? 'is-expanded' : ''}`}
+                    data-lenis-prevent
+                >
+                    <div className="course-card-image">
+                        <img src={item.image} alt={item.title} />
+                    </div>
+                    <div className="course-card-info">
+                        <h2 className="course-card-title">{item.title}</h2>
+                        {item.description && (
+                            <p className="course-card-summary">
+                                {item.description.length > 120 
+                                    ? item.description.substring(0, 120) + '...' 
+                                    : item.description}
+                            </p>
+                        )}
+                        <div className="course-card-meta">
+                            <div className="course-meta-row">
+                                {item.instructor && (
+                                    <div className="course-meta-item-box">
+                                        <span className="course-meta-icon">👤</span>
+                                        <span className="course-meta-text">{item.instructor}</span>
+                                    </div>
+                                )}
+                                {displayPrice && (
+                                    <div className="course-meta-item-box">
+                                        <span className="course-meta-icon">💰</span>
+                                        <span className="course-meta-text">{displayPrice}</span>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="course-meta-row">
+                                {item.time && (
+                                    <div className="course-meta-item-box">
+                                        <span className="course-meta-icon">🕐</span>
+                                        <span className="course-meta-text">{item.time}</span>
+                                    </div>
+                                )}
+                                <div className="course-meta-item-box">
+                                    <span className="course-meta-icon">📅</span>
+                                    <span className="course-meta-text">{jalaliDate}</span>
+                                </div>
+                            </div>
+                            <div className="course-meta-row">
+                                {item.location && (
+                                    <div className="course-meta-item-box">
+                                        <svg className="course-meta-icon location-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z" fill="currentColor"/>
+                                        </svg>
+                                        <span className="course-meta-text">{item.location}</span>
+                                    </div>
+                                )}
+                                {item.dayOfWeek && (
+                                    <div className="course-meta-item-box">
+                                        <span className="course-meta-icon">🗓️</span>
+                                        <span className="course-meta-text">{item.dayOfWeek}</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="course-card-more-button-container">
+                            <Button
+                                variant="primary"
+                                className="course-card-register-button course-card-more-button"
+                                onClick={() => setIsRegistrationModalOpen(true)}
+                            >
+                                {translations?.cardRegister as string || 'ثبت نام'}
+                            </Button>
+                            <Button
+                                variant="primary"
+                                className="course-card-more-button"
+                                onClick={handleMoreButtonClick}
+                            >
+                                {translations?.cardMore as string || 'بیشتر'}
+                            </Button>
+                        </div>
+                    </div>
+                    <div 
+                        className={`course-card-full-text ${hasAnimated ? 'has-animated' : ''} ${isHovered ? 'is-hovering-first' : ''}`}
+                        style={{ scrollBehavior: 'auto' }}
+                        data-lenis-prevent
+                    >
+                        <div className="course-card-actions-top">
+                            <div className="course-card-actions-buttons">
+                                <Button
+                                    variant="primary"
+                                    className="course-card-register-button w-full py-3 px-6 text-base"
+                                    onClick={() => setIsRegistrationModalOpen(true)}
+                                >
+                                    {translations?.cardRegister as string || 'ثبت نام'}
+                                </Button>
+                                {item.image && (
+                                    <Button
+                                        variant="primary"
+                                        className="w-full py-3 px-6 text-base"
+                                        onClick={() => handlePosterDownload(item.image)}
+                                    >
+                                        {translations?.cardDownloadPoster as string || 'دانلود پوستر'}
+                                    </Button>
+                                )}
+                                <Button
+                                    variant="primary"
+                                    className="w-full py-3 px-6 text-base"
+                                    onClick={handleBackButtonClick}
+                                >
+                                    {translations?.cardBack as string || 'برگشت'}
+                                </Button>
+                            </div>
+                        </div>
+                        <div className="course-rich-text-content">
+                            <h2 className="course-rich-h2">{item.title}</h2>
+                            <p className="course-rich-paragraph">{item.description}</p>
+                        </div>
+                    </div>
+                </div>
+                {isRegistrationModalOpen && (
+                    <Modal onClose={() => setIsRegistrationModalOpen(false)}>
+                        <div className="text-center py-8">
+                            <p className="text-lg sm:text-xl font-medium text-foreground">
+                                {translations?.cardNoFormYet as string || 'هنوز فرم ثبت نام وجود ندارد'}
+                            </p>
+                        </div>
+                    </Modal>
+                )}
+            </>
+        );
+    }
 
     // If no item provided, render the course card
     if (!item) {
@@ -87,11 +244,8 @@ const ContentCard: React.FC<ContentCardProps> = ({
             return (
                 <>
                     <div 
-                        className="course-card-wrap"
+                        className={`course-card-wrap ${isExpanded ? 'is-expanded' : ''}`}
                         data-lenis-prevent
-                        onMouseMove={handleGlowMouseMoveWrap}
-                        onMouseEnter={handleCardWrapMouseEnter}
-                        onMouseLeave={handleCardWrapMouseLeave}
                     >
                         <div className="course-card-image">
                             <img src={`${import.meta.env.BASE_URL || '/'}data_searching.jpg`.replace(/\/\//g, '/')} alt="Database Search Workshop" />
@@ -124,6 +278,15 @@ const ContentCard: React.FC<ContentCardProps> = ({
                                     </div>
                                 )}
                             </div>
+                            <div className="course-card-more-button-container">
+                                <Button
+                                    variant="primary"
+                                    className="course-card-more-button"
+                                    onClick={handleMoreButtonClick}
+                                >
+                                    {translations?.cardMore as string || 'بیشتر'}
+                                </Button>
+                            </div>
                         </div>
                         <div 
                             className={`course-card-full-text ${hasAnimated ? 'has-animated' : ''} ${isHovered ? 'is-hovering-first' : ''}`}
@@ -131,13 +294,31 @@ const ContentCard: React.FC<ContentCardProps> = ({
                             data-lenis-prevent
                         >
                             <div className="course-card-actions-top">
-                                <Button
-                                    variant="primary"
-                                    className="w-full py-3 px-6 text-base"
-                                    onClick={() => setIsRegistrationModalOpen(true)}
-                                >
-                                    ثبت نام
-                                </Button>
+                                <div className="course-card-actions-buttons">
+                                    <Button
+                                        variant="primary"
+                                        className="course-card-register-button w-full py-3 px-6 text-base"
+                                        onClick={() => setIsRegistrationModalOpen(true)}
+                                    >
+                                        ثبت نام
+                                    </Button>
+                                    {posterImage && (
+                                        <Button
+                                            variant="primary"
+                                            className="w-full py-3 px-6 text-base"
+                                            onClick={() => handlePosterDownload(posterImage)}
+                                        >
+                                            {translations?.cardDownloadPoster as string || 'دانلود پوستر'}
+                                        </Button>
+                                    )}
+                                    <Button
+                                        variant="primary"
+                                        className="w-full py-3 px-6 text-base"
+                                        onClick={handleBackButtonClick}
+                                    >
+                                        {translations?.cardBack as string || 'برگشت'}
+                                    </Button>
+                                </div>
                             </div>
                             <div className="course-rich-text-content">
                                 <h2 className="course-rich-h2">ویژگی‌های یک استراتژی جستجوی علمی حرفه‌ای</h2>
@@ -168,15 +349,6 @@ const ContentCard: React.FC<ContentCardProps> = ({
                                 </ol>
                                 <p className="course-rich-paragraph">این مهارت به شما امکان می‌دهد جستجوهای پیچیده و دقیق‌تری انجام دهید که نتایج بهتری را به همراه دارد.</p>
                             </div>
-                            <div className="course-card-actions-bottom">
-                                <Button
-                                    variant="primary"
-                                    className="w-full py-3 px-6 text-base"
-                                    onClick={() => handlePosterDownload(posterImage)}
-                                >
-                                    دانلود پوستر
-                                </Button>
-                            </div>
                         </div>
                     </div>
                     {isRegistrationModalOpen && (
@@ -195,11 +367,8 @@ const ContentCard: React.FC<ContentCardProps> = ({
         return (
             <>
                     <div 
-                        className="course-card-wrap"
+                        className={`course-card-wrap ${isExpanded ? 'is-expanded' : ''}`}
                         data-lenis-prevent
-                        onMouseMove={handleGlowMouseMoveWrap}
-                        onMouseEnter={handleCardWrapMouseEnter}
-                        onMouseLeave={handleCardWrapMouseLeave}
                     >
                     <div className="course-card-image">
                         <img src={`${import.meta.env.BASE_URL || '/'}immagration_2.png`.replace(/\/\//g, '/')} alt="Course" />
@@ -232,6 +401,15 @@ const ContentCard: React.FC<ContentCardProps> = ({
                                 </div>
                             )}
                         </div>
+                        <div className="course-card-more-button-container">
+                            <Button
+                                variant="primary"
+                                className="course-card-more-button"
+                                onClick={handleMoreButtonClick}
+                            >
+                                {translations?.cardMore as string || 'بیشتر'}
+                            </Button>
+                        </div>
                     </div>
                     <div 
                         className={`course-card-full-text ${hasAnimated ? 'has-animated' : ''} ${isHovered ? 'is-hovering-first' : ''}`}
@@ -239,42 +417,49 @@ const ContentCard: React.FC<ContentCardProps> = ({
                         data-lenis-prevent
                     >
                         <div className="course-card-actions-top">
-                            <Button
-                                variant="primary"
-                                className="w-full py-3 px-6 text-base"
-                                onClick={() => setIsRegistrationModalOpen(true)}
-                            >
-                                ثبت نام
-                            </Button>
-                        </div>
-                        <div className="course-rich-text-content">
-                            <h2 className="course-rich-h2">حرکت به سوی آینده</h2>
-                            <p className="course-rich-paragraph">در مسیر پیشرفت و تعالی، حرکت به سوی آینده نیازمند برنامه‌ریزی دقیق و راهبردهای هوشمندانه است. هر قدم که برمی‌داریم، هر تصمیمی که می‌گیریم، ما را به مقصد نهایی نزدیک‌تر می‌کند. آینده‌ای روشن با تلاش امروز ما ساخته می‌شود.</p>
-                            
-                            <h3 className="course-rich-h3">شناسایی مسیرهای مهاجرت</h3>
-                            <p className="course-rich-paragraph">شناسایی دقیق مسیرهای مهاجرت و تحرک جمعیت‌ها یکی از مهم‌ترین ابعاد مطالعات جمعیت‌شناختی و برنامه‌ریزی شهری است. با استفاده از روش‌های پیشرفته تحلیل داده‌ها و فناوری‌های مدرن، می‌توانیم الگوهای مهاجرت را شناسایی کنیم و برای آینده برنامه‌ریزی کنیم.</p>
-                            
-                            <h3 className="course-rich-h3">ترکیب دانش و تجربه</h3>
-                            <p className="course-rich-paragraph">با ترکیب دانش و تجربه، می‌توانیم بهترین راهکارها را برای چالش‌های پیش رو پیدا کنیم. حرکت به سوی آینده و شناسایی مسیرهای صحیح، رمز موفقیت در دنیای امروز است.</p>
-                        </div>
-                        {posterImage && (
-                            <div className="course-card-actions-bottom">
+                            <div className="course-card-actions-buttons">
+                                <Button
+                                    variant="primary"
+                                    className="course-card-register-button w-full py-3 px-6 text-base"
+                                    onClick={() => setIsRegistrationModalOpen(true)}
+                                >
+                                    {translations?.cardRegister as string || 'ثبت نام'}
+                                </Button>
+                                {posterImage && (
+                                    <Button
+                                        variant="primary"
+                                        className="w-full py-3 px-6 text-base"
+                                        onClick={() => handlePosterDownload(posterImage)}
+                                    >
+                                        {translations?.cardDownloadPoster as string || 'دانلود پوستر'}
+                                    </Button>
+                                )}
                                 <Button
                                     variant="primary"
                                     className="w-full py-3 px-6 text-base"
-                                    onClick={() => handlePosterDownload(posterImage)}
+                                    onClick={handleBackButtonClick}
                                 >
-                                    دانلود پوستر
+                                    {translations?.cardBack as string || 'برگشت'}
                                 </Button>
                             </div>
-                        )}
+                        </div>
+                        <div className="course-rich-text-content">
+                            <h2 className="course-rich-h2">{translations?.cardMoveToFuture as string || 'حرکت به سوی آینده'}</h2>
+                            <p className="course-rich-paragraph">{translations?.cardMoveToFutureDescription as string || 'در مسیر پیشرفت و تعالی، حرکت به سوی آینده نیازمند برنامه‌ریزی دقیق و راهبردهای هوشمندانه است. هر قدم که برمی‌داریم، هر تصمیمی که می‌گیریم، ما را به مقصد نهایی نزدیک‌تر می‌کند. آینده‌ای روشن با تلاش امروز ما ساخته می‌شود.'}</p>
+                            
+                            <h3 className="course-rich-h3">{translations?.cardMigrationPaths as string || 'شناسایی مسیرهای مهاجرت'}</h3>
+                            <p className="course-rich-paragraph">{translations?.cardMigrationPathsDescription as string || 'شناسایی دقیق مسیرهای مهاجرت و تحرک جمعیت‌ها یکی از مهم‌ترین ابعاد مطالعات جمعیت‌شناختی و برنامه‌ریزی شهری است. با استفاده از روش‌های پیشرفته تحلیل داده‌ها و فناوری‌های مدرن، می‌توانیم الگوهای مهاجرت را شناسایی کنیم و برای آینده برنامه‌ریزی کنیم.'}</p>
+                            
+                            <h3 className="course-rich-h3">{translations?.cardKnowledgeExperience as string || 'ترکیب دانش و تجربه'}</h3>
+                            <p className="course-rich-paragraph">{translations?.cardKnowledgeExperienceDescription as string || 'با ترکیب دانش و تجربه، می‌توانیم بهترین راهکارها را برای چالش‌های پیش رو پیدا کنیم. حرکت به سوی آینده و شناسایی مسیرهای صحیح، رمز موفقیت در دنیای امروز است.'}</p>
+                        </div>
                     </div>
                 </div>
                 {isRegistrationModalOpen && (
                     <Modal onClose={() => setIsRegistrationModalOpen(false)}>
                         <div className="text-center py-8">
                             <p className="text-lg sm:text-xl font-medium text-foreground">
-                                هنوز فرم ثبت نام وجود ندارد
+                                {translations?.cardNoFormYet as string || 'هنوز فرم ثبت نام وجود ندارد'}
                             </p>
                         </div>
                     </Modal>

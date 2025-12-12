@@ -9,13 +9,16 @@ interface PageProps {
     theme?: 'light' | 'dark';
 }
 
+const containerTransition = { duration: 0.4, ease: 'easeInOut' as const };
+const titleTransition = { duration: 0.5 };
+
 const Page: React.FC<PageProps> = ({ title, children, isNewsPage = false, theme = 'dark' }) => {
     return (
         <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.4, ease: 'easeInOut' }}
+            transition={containerTransition}
         >
             {isNewsPage ? (
                 <div className="news-page-container relative">
@@ -34,7 +37,7 @@ const Page: React.FC<PageProps> = ({ title, children, isNewsPage = false, theme 
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, amount: 0.5 }}
-                            transition={{ duration: 0.5 }}
+                            transition={titleTransition}
                             className="text-center mb-6 sm:mb-8 md:mb-12"
                         >
                             <h2 

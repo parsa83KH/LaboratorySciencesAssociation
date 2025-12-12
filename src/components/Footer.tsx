@@ -68,7 +68,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
                     {/* Communication Channels - Second on mobile */}
                     <div className="group order-2 md:order-1">
                         <h3 className="text-base sm:text-lg font-bold text-white mb-4 sm:mb-6 relative inline-block text-center w-full md:text-right md:w-auto md:mr-auto rtl:md:ml-auto rtl:md:mr-0">
-                            راه‌های ارتباطی
+                            {t.footerContactChannels as string}
                             <span className="absolute bottom-0 right-0 w-full h-0.5 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                         </h3>
                         <div className="space-y-3 sm:space-y-3">
@@ -80,7 +80,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
                                             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                                         </svg>
                                     </div>
-                                    <span className="font-medium group-hover/link:text-pink-500 transition-colors duration-300">پیج اینستاگرام</span>
+                                    <span className="font-medium group-hover/link:text-pink-500 transition-colors duration-300">{t.footerInstagramPage as string}</span>
                                 </a>
                                 <a href="https://mail.google.com/mail/?view=cm&to=labsciences.scls.iautms@gmail.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-red-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-red-500/20 group-hover/link:scale-110 transition-all duration-300">
@@ -88,7 +88,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                         </svg>
                                     </div>
-                                    <span className="font-medium group-hover/link:text-red-400 transition-colors duration-300">ایمیل</span>
+                                    <span className="font-medium group-hover/link:text-red-400 transition-colors duration-300">{t.footerEmail as string}</span>
                                 </a>
                                 <a href="https://t.me/scls_iautms" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-blue-500/20 group-hover/link:scale-110 transition-all duration-300">
@@ -96,7 +96,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
                                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.13-.31-1.09-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
                                         </svg>
                                     </div>
-                                    <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">کانال تلگرام</span>
+                                    <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">{t.footerTelegramChannel as string}</span>
                                 </a>
                             </div>
                             {/* Second Row - 4 links: Location, Young Researchers Club, Secretary, Public Relations (mobile: horizontal, desktop: wrap) */}
@@ -107,7 +107,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                                         </svg>
                                     </div>
-                                    <span className="font-medium group-hover/link:text-green-400 transition-colors duration-300">سایت دانشگاه</span>
+                                    <span className="font-medium group-hover/link:text-green-400 transition-colors duration-300">{t.footerUniversityWebsite as string}</span>
                                 </a>
                                 <a href="https://bpj.iau.ir/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-purple-500/20 group-hover/link:scale-110 transition-all duration-300">
@@ -115,7 +115,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                         </svg>
                                     </div>
-                                    <span className="font-medium group-hover/link:text-purple-400 transition-colors duration-300">باشگاه پژوهشگران جوان</span>
+                                    <span className="font-medium group-hover/link:text-purple-400 transition-colors duration-300">{t.footerYoungResearchersClub as string}</span>
                                 </a>
                                 <a href="https://t.me/sclsiautms_bot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-blue-500/20 group-hover/link:scale-110 transition-all duration-300">
@@ -123,7 +123,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
                                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.13-.31-1.09-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
                                         </svg>
                                     </div>
-                                    <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">دبیر</span>
+                                    <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">{t.footerSecretary as string}</span>
                                 </a>
                                 <a href="https://t.me/scls_iautms_admin" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-blue-500/20 group-hover/link:scale-110 transition-all duration-300">
@@ -131,7 +131,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
                                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.13-.31-1.09-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
                                         </svg>
                                     </div>
-                                    <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">روابط عمومی</span>
+                                    <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">{t.footerPublicRelations as string}</span>
                                 </a>
                             </div>
                         </div>
@@ -140,7 +140,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
                     {/* Developer Info - Third on mobile */}
                     <div className="text-center md:ml-auto md:mr-0 rtl:md:ml-0 rtl:md:mr-auto group order-3 md:order-3">
                         <h3 className="text-base sm:text-lg font-bold text-white mb-4 sm:mb-6 relative inline-block md:ml-auto rtl:md:mr-auto rtl:md:ml-0">
-                            طراح و توسعه دهنده
+                            {t.footerDesignerDeveloper as string}
                             <span className="absolute bottom-0 right-0 w-full h-0.5 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                         </h3>
                         <div className="mb-4 sm:mb-6">
@@ -155,7 +155,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                     </svg>
                                 </div>
-                                <span className="font-medium group-hover/link:text-red-400 transition-colors duration-300">ایمیل</span>
+                                <span className="font-medium group-hover/link:text-red-400 transition-colors duration-300">{t.footerEmail as string}</span>
                             </a>
                             <a href="https://t.me/ParsaKh_83" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-blue-500/20 group-hover/link:scale-110 transition-all duration-300">
@@ -163,7 +163,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
                                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.13-.31-1.09-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
                                     </svg>
                                 </div>
-                                <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">تلگرام</span>
+                                <span className="font-medium group-hover/link:text-blue-400 transition-colors duration-300">{t.footerTelegram as string}</span>
                             </a>
                             <a href="https://github.com/parsa83KH" target="_blank" rel="noopener noreferrer" className="inline-flex items-center group/link text-slate-300 transition-all duration-300 hover:translate-x-1 rtl:hover:translate-x-[-4px] text-sm sm:text-base">
                                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-slate-700/50 flex items-center justify-center mr-2 sm:mr-3 rtl:ml-2 rtl:sm:ml-3 rtl:mr-0 group-hover/link:bg-slate-600 group-hover/link:scale-110 transition-all duration-300">
@@ -171,7 +171,7 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
                                         <path fillRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" clipRule="evenodd"/>
                                     </svg>
                                 </div>
-                                <span className="font-medium group-hover/link:text-white transition-colors duration-300">گیت‌هاب</span>
+                                <span className="font-medium group-hover/link:text-white transition-colors duration-300">{t.footerGitHub as string}</span>
                             </a>
                         </div>
                     </div>
@@ -180,10 +180,10 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
                 {/* Bottom Bar */}
                 <div className="mt-6 sm:mt-10 pt-6 sm:pt-8 border-t border-slate-700/50 text-center">
                     <p className="text-xs sm:text-sm text-slate-400 px-2">
-                        © ۱۴۰۴ انجمن علمی علوم آزمایشگاهی دانشگاه آزاد علوم پزشکی تهران
+                        {t.footerCopyright as string}
                     </p>
                     <p className="text-xs sm:text-sm text-slate-400 px-2 mt-2">
-                        تحت نظر باشگاه پژوهشگران جوان
+                        {t.footerUnderSupervision as string}
                     </p>
                 </div>
             </div>

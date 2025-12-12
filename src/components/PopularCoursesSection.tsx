@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 
 import type { Translation, ContentItem, PageKey } from '../types';
 
@@ -20,7 +20,8 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
     // Always use dark theme, ignore system preference
     const theme: 'light' | 'dark' = 'dark';
 
-    const popularItems = mockData.coursesAndWorkshops.slice(0, 6);
+    // Memoize popular items to avoid recalculation on every render
+    const popularItems = useMemo(() => mockData.coursesAndWorkshops.slice(0, 6), []);
 
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const isDraggingRef = useRef(false);
@@ -126,21 +127,20 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
         };
     }, []);
 
-    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-
+    // Memoize handlers to prevent unnecessary re-renders
+    const handleClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
-
         setCurrentPage('coursesAndWorkshops');
+    }, [setCurrentPage]);
 
-    };
-
-    const handleRegisterClick = (e: React.MouseEvent<HTMLButtonElement>, item: ContentItem) => {
+    const handleRegisterClick = useCallback((e: React.MouseEvent<HTMLButtonElement>, item: ContentItem) => {
         e.preventDefault();
         e.stopPropagation();
         setCurrentPage('coursesAndWorkshops');
-    };
+    }, [setCurrentPage]);
 
-    const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
+    // Memoize mouse handlers to prevent unnecessary re-renders
+    const handleCardMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>, index: number) => {
         const card = cardRefs.current[index];
         if (!card) return;
 
@@ -171,34 +171,35 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
                 transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ}px) scale3d(1.05, 1.05, 1.05)`,
             }
         }));
-    };
+    }, []);
 
-    const handleCardMouseLeave = (index: number) => {
+    const handleCardMouseLeave = useCallback((index: number) => {
         setTiltStyles(prev => {
             const newStyles = {...prev};
             delete newStyles[index];
             return newStyles;
         });
-    };
+    }, []);
 
-    const handleGlowMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
+    const handleGlowMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>, index: number) => {
         const el = e.currentTarget;
         const rect = el.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         el.style.setProperty('--mouse-x', `${x}px`);
         el.style.setProperty('--mouse-y', `${y}px`);
-    };
+    }, []);
 
-    const handleGlowMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleGlowMouseEnter = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.currentTarget.classList.add('is-hovering');
-    };
+    }, []);
 
-    const handleGlowMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleGlowMouseLeave = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.currentTarget.classList.remove('is-hovering');
-    };
+    }, []);
 
-    const formatToJalali = (dateString: string) => {
+    // Memoize date formatter to avoid recreating on every render
+    const formatToJalali = useCallback((dateString: string) => {
         try {
             const date = new Date(dateString);
             if (Number.isNaN(date.getTime())) return dateString;
@@ -210,7 +211,7 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
         } catch {
             return dateString;
         }
-    };
+    }, []);
 
 
     return (
@@ -234,8 +235,11 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
                 <div className="courses-scroll-wrapper">
 
                     {popularItems.map((item, index) => {
-                        const price = item.price ?? 'نامشخص';
-                        const jalaliDate = formatToJalali(item.date);
+                        const price = item.price ?? (translations.priceUnknown as string);
+                        // Use date directly if it's already in Persian format (contains Persian digits or /), otherwise convert
+                        const jalaliDate = item.date.includes('۱۴') || item.date.includes('۱۳') || item.date.includes('۱۴۰') 
+                            ? item.date 
+                            : formatToJalali(item.date);
 
                         return (
 
@@ -292,8 +296,6 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
 
                                         <h3 className="course-title">{item.title}</h3>
 
-                                        <p className="course-description">{item.description}</p>
-
                                         <div className="course-meta">
 
                                             <span className="course-price">
@@ -303,6 +305,14 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
                                             </span>
 
                                             <span className="course-date">📅 {jalaliDate}</span>
+
+                                            {item.time && (
+                                                <span className="course-time">🕐 {item.time}</span>
+                                            )}
+
+                                            {item.location && (
+                                                <span className="course-location">📍 {item.location}</span>
+                                            )}
 
                                         </div>
 
@@ -316,7 +326,7 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
 
                                         >
 
-                                            مشاهده
+                                            {translations.popularCoursesView as string}
 
                                         </Button>
 

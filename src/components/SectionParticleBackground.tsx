@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 interface SectionParticleBackgroundProps {
     theme: 'light' | 'dark';
@@ -32,8 +32,6 @@ const SectionParticleBackground: React.FC<SectionParticleBackgroundProps> = ({ t
         let particles: Particle[] = [];
         // Same particle count for all devices
         const divisor = 14000;
-        const particleCount = Math.floor((width * height) / divisor);
-        const maxDistance = 220;
         const mouseRadius = 150;
 
         let scrollSpeedBoost = 1.0;
@@ -113,7 +111,6 @@ const SectionParticleBackground: React.FC<SectionParticleBackgroundProps> = ({ t
 
         function init() {
             particles = [];
-            const divisor = 14000;
             const count = Math.floor((width * height) / divisor);
             for (let i = 0; i < count; i++) {
                 particles.push(new Particle());

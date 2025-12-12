@@ -5,16 +5,15 @@ import Lenis from 'lenis';
 // Import components
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
-import Page from './components/Section';
-import ContentCard from './components/ContentCard';
+import NewsAndAnnouncementsPage from './pages/NewsAndAnnouncementsPage';
+import CoursesAndWorkshopsPage from './pages/CoursesAndWorkshopsPage';
+import MembersPage from './pages/MembersPage';
 import Modal from './components/Modal';
 import RegistrationForm from './components/RegistrationForm';
 import Footer from './components/Footer';
-import MembersPage from './pages/MembersPage';
 import ParticleBackground from './components/ParticleBackground';
 
 // Import data and types
-import { mockData } from './lib/data';
 import { translations } from './lib/i18n';
 import type { ContentItem, PageKey } from './types';
 
@@ -26,9 +25,6 @@ const App: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState<{ type: 'image' | 'video' | 'form'; src?: string; title?: string, course?: ContentItem }>({ type: 'form' });
 
-    // State for filtering
-    const [newsFilter, setNewsFilter] = useState<string>('all');
-
     const lenisRef = useRef<Lenis | null>(null);
 
     useEffect(() => {
@@ -39,7 +35,7 @@ const App: React.FC = () => {
             gestureOrientation: 'vertical',
             smoothWheel: true,
             wheelMultiplier: 1,
-            smoothTouch: false,
+            syncTouch: false,
             touchMultiplier: 2,
             infinite: false,
         });
@@ -82,52 +78,14 @@ const App: React.FC = () => {
 
     const t = translations;
 
-    const newsFilters = [
-        { key: 'all', label: t.filterAll },
-        { key: 'news', label: t.filterNews },
-        { key: 'announcement', label: t.filterAnnouncements },
-    ];
-
-    const filteredNews = mockData.newsAndAnnouncements.filter(item => newsFilter === 'all' || item.type === newsFilter);
-    const filteredCourses = mockData.coursesAndWorkshops;
-
-
     const renderPageContent = () => {
         switch (currentPage) {
             case 'home':
                 return <HomePage key="home" translations={t} setCurrentPage={setCurrentPage} openModal={openModal} />;
             case 'newsAndAnnouncements':
-                return (
-                    <Page key="newsAndAnnouncements" title={t.newsAndAnnouncements as string} isNewsPage={true} theme={theme}>
-                    </Page>
-                );
+                return <NewsAndAnnouncementsPage key="newsAndAnnouncements" translations={t} theme={theme} />;
             case 'coursesAndWorkshops':
-                 return (
-                    <Page key="coursesAndWorkshops" title={t.coursesAndWorkshops as string} isNewsPage={true} theme={theme}>
-                        <div className="courses-page-container">
-                            <div className="courses-grid-container" role="region" aria-label="Courses list">
-                                <ContentCard 
-                                    cardType="database-workshop" 
-                                    posterImage={`${import.meta.env.BASE_URL || '/'}data_searching.jpg`.replace(/\/\//g, '/')}
-                                    price="رایگان"
-                                    translations={t}
-                                />
-                                <ContentCard 
-                                    price="500,000 تومان"
-                                    translations={t}
-                                />
-                                <ContentCard 
-                                    price="750,000 تومان"
-                                    translations={t}
-                                />
-                                <ContentCard 
-                                    price="1,000,000 تومان"
-                                    translations={t}
-                                />
-                            </div>
-                        </div>
-                    </Page>
-                );
+                return <CoursesAndWorkshopsPage key="coursesAndWorkshops" translations={t} theme={theme} />;
             case 'members':
                 return <MembersPage key="members" translations={t} />;
             default:
