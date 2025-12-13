@@ -18,8 +18,9 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ theme }) => {
         let height = canvas.height = window.innerHeight;
 
         let particles: Particle[] = [];
-        // Same particle count for all devices
-        const divisor = 14000;
+        // Optimize particle count for mobile devices
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const divisor = isTouchDevice ? 18000 : 14000; // Fewer particles on touch devices
         const particleCount = Math.floor((width * height) / divisor);
         const maxDistance = 220;
         const mouseRadius = 150;
@@ -102,8 +103,12 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ theme }) => {
 
         function init() {
             particles = [];
-            const divisor = 14000;
+            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const divisor = isTouchDevice ? 18000 : 14000; // Fewer particles on touch devices
             const count = Math.floor((width * height) / divisor);
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/33b23cfa-c7a4-4dd9-b44a-3f684598eacc',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ParticleBackground.tsx:106',message:'Particle initialization',data:{particleCount:count,width,height,divisor,isTouchDevice:'ontouchstart' in window || navigator.maxTouchPoints > 0},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+            // #endregion
             for (let i = 0; i < count; i++) {
                 particles.push(new Particle());
             }
@@ -132,8 +137,20 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ theme }) => {
         }
 
         let animationFrameId: number;
+        let frameCount = 0;
+        let lastFpsCheck = Date.now();
         function animate() {
             if (!ctx) return;
+            frameCount++;
+            const now = Date.now();
+            if (now - lastFpsCheck > 1000) {
+                const fps = frameCount;
+                // #region agent log
+                fetch('http://127.0.0.1:7242/ingest/33b23cfa-c7a4-4dd9-b44a-3f684598eacc',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ParticleBackground.tsx:152',message:'FPS check',data:{fps,particleCount:particles.length,scrollSpeedBoost},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+                // #endregion
+                frameCount = 0;
+                lastFpsCheck = now;
+            }
             ctx.fillStyle = backgroundColor;
             ctx.fillRect(0, 0, width, height);
             

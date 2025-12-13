@@ -18,27 +18,9 @@ const LogoAnimation: React.FC = () => {
                 }
                 .logo-animation-container svg {
                     filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.4));
-                    width: 120px;
-                    height: 120px;
+                    width: 200px;
+                    height: 200px;
                     max-width: 100%;
-                }
-                @media (min-width: 640px) {
-                    .logo-animation-container svg {
-                        width: 160px;
-                        height: 160px;
-                    }
-                }
-                @media (min-width: 768px) {
-                    .logo-animation-container svg {
-                        width: 200px;
-                        height: 200px;
-                    }
-                }
-                @media (min-width: 1024px) {
-                    .logo-animation-container svg {
-                        width: 240px;
-                        height: 240px;
-                    }
                 }
             `;
             document.head.appendChild(style);

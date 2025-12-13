@@ -17,7 +17,7 @@ const HighlightedText: React.FC<{ text: string }> = ({ text }) => {
     );
 };
 
-interface InnovationSectionProps {
+interface IntroductionSectionProps {
     translations: Translation;
 }
 
@@ -65,7 +65,7 @@ const StatCard: React.FC<{ icon: React.ReactNode; value: string; label: string; 
     
     return (
     <motion.div
-        className="text-center p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg relative overflow-hidden group backdrop-blur-md bg-white/5 dark:bg-black/5 border border-white/20 dark:border-white/10"
+        className="text-center p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg relative overflow-hidden backdrop-blur-md bg-white/5 dark:bg-black/5 border border-white/20 dark:border-white/10"
         initial={{ opacity: 0, y: 50, scale: 0.9 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true, amount: 0.3 }}
@@ -75,23 +75,7 @@ const StatCard: React.FC<{ icon: React.ReactNode; value: string; label: string; 
             type: "spring",
             stiffness: 100
         }}
-        whileHover={{ 
-            scale: 1.05,
-            y: -10,
-            transition: { duration: 0.3 }
-        }}
     >
-        {/* Animated background gradient */}
-        <motion.div
-            className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileHover={{ scale: 1.2, opacity: 1 }}
-        />
-        
-        {/* Shine effect on hover */}
-        <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
-        />
         
         <div className="relative z-10">
             <motion.div 
@@ -143,13 +127,13 @@ const StatCard: React.FC<{ icon: React.ReactNode; value: string; label: string; 
     );
 };
 
-const InnovationSection: React.FC<InnovationSectionProps> = ({ translations: t }) => {
+const IntroductionSection: React.FC<IntroductionSectionProps> = ({ translations: t }) => {
     return (
-        <section className="py-12 sm:py-16 md:py-20 lg:py-28 innovation-parallax-section relative overflow-hidden" style={{ isolation: 'isolate' }}>
+        <section className="py-12 sm:py-16 md:py-20 lg:py-28 introduction-parallax-section relative overflow-hidden" style={{ isolation: 'isolate' }}>
             {/* Solid background to completely hide particles */}
             <div className="absolute inset-0 bg-background" style={{ zIndex: 0 }} />
             {/* Overlay to hide particle animation behind this section - matches parallax background */}
-            <div className="absolute inset-0 pointer-events-none innovation-parallax-overlay" style={{ zIndex: 1 }} />
+            <div className="absolute inset-0 pointer-events-none introduction-parallax-overlay" style={{ zIndex: 1 }} />
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative" style={{ zIndex: 10 }}>
                 <motion.div
                     className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 md:mb-16"
@@ -166,7 +150,7 @@ const InnovationSection: React.FC<InnovationSectionProps> = ({ translations: t }
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
                     >
-                        {t.innovationTitle as string}
+                        {t.introductionTitle as string}
                     </motion.h2>
                     <motion.p 
                         className="text-sm sm:text-base md:text-lg text-white font-medium leading-relaxed px-2"
@@ -175,11 +159,11 @@ const InnovationSection: React.FC<InnovationSectionProps> = ({ translations: t }
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
                     >
-                        <HighlightedText text={t.innovationDescription as string} />
+                        <HighlightedText text={t.introductionDescription as string} />
                     </motion.p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto">
                     <StatCard
                         delay={0.2}
                         icon={
@@ -216,4 +200,5 @@ const InnovationSection: React.FC<InnovationSectionProps> = ({ translations: t }
     );
 };
 
-export default InnovationSection;
+export default IntroductionSection;
+

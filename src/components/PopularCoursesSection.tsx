@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import type { Translation, ContentItem, PageKey } from '../types';
 
@@ -6,6 +7,7 @@ import { mockData } from '../lib/data';
 
 import SectionParticleBackground from './SectionParticleBackground';
 import Button from './Button';
+import Modal from './Modal';
 
 interface PopularCoursesSectionProps {
 
@@ -20,6 +22,11 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
     // Always use dark theme, ignore system preference
     const theme: 'light' | 'dark' = 'dark';
 
+    // Detect touch device to disable hover animations for better performance
+    const isTouchDevice = useMemo(() => {
+        return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    }, []);
+
     // Memoize popular items to avoid recalculation on every render
     const popularItems = useMemo(() => mockData.coursesAndWorkshops.slice(0, 6), []);
 
@@ -27,8 +34,11 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
     const isDraggingRef = useRef(false);
     const startXRef = useRef(0);
     const scrollLeftRef = useRef(0);
+    const dragStartTimeRef = useRef(0);
+    const dragStartPosRef = useRef({ x: 0, y: 0 });
     const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
     const [tiltStyles, setTiltStyles] = useState<{[key: number]: React.CSSProperties}>({});
+    const [selectedImage, setSelectedImage] = useState<{ src: string; title: string } | null>(null);
 
     useEffect(() => {
         const scrollContainer = scrollContainerRef.current;
@@ -39,28 +49,32 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
             if (e.button !== 0) return;
             
             const target = e.target as HTMLElement;
-            // If clicking on button, don't drag
-            if (target.closest('button')) return;
+            // If clicking on button or image, don't drag
+            if (target.closest('button') || target.closest('.course-image-clickable')) {
+                return;
+            }
 
             isDraggingRef.current = true;
             startXRef.current = e.pageX - scrollContainer.offsetLeft;
             scrollLeftRef.current = scrollContainer.scrollLeft;
+            dragStartTimeRef.current = Date.now();
+            dragStartPosRef.current = { x: e.pageX, y: e.pageY };
             scrollContainer.style.cursor = 'grabbing';
             scrollContainer.style.userSelect = 'none';
-            
-            // Prevent image drag
-            if (target.closest('img')) {
-                e.preventDefault();
-            }
         };
 
         const handleMouseMove = (e: MouseEvent) => {
             if (!isDraggingRef.current) return;
-            e.preventDefault();
             
             const x = e.pageX - scrollContainer.offsetLeft;
             const walk = (x - startXRef.current) * 1.5; // Speed multiplier
-            scrollContainer.scrollLeft = scrollLeftRef.current - walk;
+            
+            // Only start dragging if mouse moved significantly
+            const moveDistance = Math.abs(e.pageX - dragStartPosRef.current.x);
+            if (moveDistance > 5) {
+                e.preventDefault();
+                scrollContainer.scrollLeft = scrollLeftRef.current - walk;
+            }
         };
 
         const handleMouseUp = () => {
@@ -82,24 +96,33 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
         // Touch events for mobile
         const handleTouchStart = (e: TouchEvent) => {
             const target = e.target as HTMLElement;
-            if (target.closest('button')) return;
+            if (target.closest('button') || target.closest('.course-image-clickable')) {
+                return;
+            }
             
             isDraggingRef.current = true;
             startXRef.current = e.touches[0].pageX - scrollContainer.offsetLeft;
             scrollLeftRef.current = scrollContainer.scrollLeft;
+            dragStartTimeRef.current = Date.now();
+            dragStartPosRef.current = { x: e.touches[0].pageX, y: e.touches[0].pageY };
         };
 
         const handleTouchMove = (e: TouchEvent) => {
             if (!isDraggingRef.current) return;
             const target = e.target as HTMLElement;
-            if (target.closest('button')) {
+            if (target.closest('button') || target.closest('.course-image-clickable')) {
                 isDraggingRef.current = false;
                 return;
             }
             
             const x = e.touches[0].pageX - scrollContainer.offsetLeft;
             const walk = (x - startXRef.current) * 1.5;
-            scrollContainer.scrollLeft = scrollLeftRef.current - walk;
+            
+            // Only start dragging if touch moved significantly
+            const moveDistance = Math.abs(e.touches[0].pageX - dragStartPosRef.current.x);
+            if (moveDistance > 5) {
+                scrollContainer.scrollLeft = scrollLeftRef.current - walk;
+            }
         };
 
         const handleTouchEnd = () => {
@@ -139,8 +162,55 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
         setCurrentPage('coursesAndWorkshops');
     }, [setCurrentPage]);
 
+    const handleImageClick = useCallback((e: React.MouseEvent<HTMLImageElement>, item: ContentItem) => {
+        e.preventDefault();
+        e.stopPropagation();
+        // Prevent opening modal if user was dragging
+        const timeSinceDragStart = Date.now() - dragStartTimeRef.current;
+        const wasDragging = isDraggingRef.current && timeSinceDragStart > 100;
+        
+        if (wasDragging) {
+            isDraggingRef.current = false;
+            return;
+        }
+        setSelectedImage({ src: item.image, title: item.title });
+    }, []);
+
+    const handleImageTouchStart = useCallback((e: React.TouchEvent<HTMLImageElement>, item: ContentItem) => {
+        // Store touch start time to detect tap vs drag
+        const touchStartTime = Date.now();
+        const touchStartX = e.touches[0].clientX;
+        const touchStartY = e.touches[0].clientY;
+        
+        const handleTouchEnd = (e: TouchEvent) => {
+            const touchEndTime = Date.now();
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            
+            const timeDiff = touchEndTime - touchStartTime;
+            const xDiff = Math.abs(touchEndX - touchStartX);
+            const yDiff = Math.abs(touchEndY - touchStartY);
+            
+            // If it's a quick tap (not a drag), open modal
+            if (timeDiff < 300 && xDiff < 10 && yDiff < 10 && !isDraggingRef.current) {
+                setSelectedImage({ src: item.image, title: item.title });
+            }
+            
+            document.removeEventListener('touchend', handleTouchEnd);
+        };
+        
+        document.addEventListener('touchend', handleTouchEnd, { once: true });
+    }, []);
+
+    const handleCloseImageModal = useCallback(() => {
+        setSelectedImage(null);
+    }, []);
+
     // Memoize mouse handlers to prevent unnecessary re-renders
+    // Only enable hover animations on non-touch devices
     const handleCardMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>, index: number) => {
+        if (isTouchDevice) return; // Skip hover animations on touch devices
+        
         const card = cardRefs.current[index];
         if (!card) return;
 
@@ -171,7 +241,7 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
                 transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ}px) scale3d(1.05, 1.05, 1.05)`,
             }
         }));
-    }, []);
+    }, [isTouchDevice]);
 
     const handleCardMouseLeave = useCallback((index: number) => {
         setTiltStyles(prev => {
@@ -182,21 +252,25 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
     }, []);
 
     const handleGlowMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>, index: number) => {
+        if (isTouchDevice) return; // Skip hover animations on touch devices
+        
         const el = e.currentTarget;
         const rect = el.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         el.style.setProperty('--mouse-x', `${x}px`);
         el.style.setProperty('--mouse-y', `${y}px`);
-    }, []);
+    }, [isTouchDevice]);
 
     const handleGlowMouseEnter = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        if (isTouchDevice) return; // Skip hover animations on touch devices
         e.currentTarget.classList.add('is-hovering');
-    }, []);
+    }, [isTouchDevice]);
 
     const handleGlowMouseLeave = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        if (isTouchDevice) return; // Skip hover animations on touch devices
         e.currentTarget.classList.remove('is-hovering');
-    }, []);
+    }, [isTouchDevice]);
 
     // Memoize date formatter to avoid recreating on every render
     const formatToJalali = useCallback((dateString: string) => {
@@ -247,48 +321,47 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
 
                                 key={item.id} 
 
-                                className="course-card"
+                                className={`course-card ${isTouchDevice ? 'no-hover-animations' : ''}`}
                                 ref={(el) => {
                                     cardRefs.current[index] = el;
                                 }}
-                                onMouseMove={(e) => handleCardMouseMove(e, index)}
-                                onMouseLeave={() => handleCardMouseLeave(index)}
+                                onMouseMove={!isTouchDevice ? (e) => handleCardMouseMove(e, index) : undefined}
+                                onMouseLeave={!isTouchDevice ? () => handleCardMouseLeave(index) : undefined}
                             >
 
                                 <div 
                                     className="course-card-inner"
-                                    style={tiltStyles[index]}
-                                    onMouseMove={(e) => handleGlowMouseMove(e, index)}
-                                    onMouseEnter={handleGlowMouseEnter}
-                                    onMouseLeave={handleGlowMouseLeave}
+                                    style={!isTouchDevice ? tiltStyles[index] : undefined}
+                                    onMouseMove={!isTouchDevice ? (e) => handleGlowMouseMove(e, index) : undefined}
+                                    onMouseEnter={!isTouchDevice ? handleGlowMouseEnter : undefined}
+                                    onMouseLeave={!isTouchDevice ? handleGlowMouseLeave : undefined}
                                 >
 
                                     <div className="course-image-wrapper">
 
-                                        <a 
-
-                                            href="#" 
-
-                                            onClick={handleClick}
-
-                                            title={item.title}
-
-                                            className="course-image-link"
-
-                                        >
-
-                                            <img 
-                                                src={item.image} 
-                                                alt={item.title} 
-                                                className="course-image"
-                                                draggable="false"
-                                                onDragStart={(e) => {
-                                                    e.preventDefault();
-                                                    e.stopPropagation();
-                                                }}
-                                            />
-
-                                        </a>
+                                        <img 
+                                            src={item.image} 
+                                            alt={item.title} 
+                                            className="course-image course-image-clickable"
+                                            draggable="false"
+                                            loading="lazy"
+                                            onClick={(e) => handleImageClick(e, item)}
+                                            onTouchStart={(e) => handleImageTouchStart(e, item)}
+                                            onLoad={() => {
+                                                // #region agent log
+                                                fetch('http://127.0.0.1:7242/ingest/33b23cfa-c7a4-4dd9-b44a-3f684598eacc',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'PopularCoursesSection.tsx:292',message:'Image loaded',data:{imageSrc:item.image,title:item.title},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+                                                // #endregion
+                                            }}
+                                            onError={() => {
+                                                // #region agent log
+                                                fetch('http://127.0.0.1:7242/ingest/33b23cfa-c7a4-4dd9-b44a-3f684598eacc',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'PopularCoursesSection.tsx:292',message:'Image load error',data:{imageSrc:item.image,title:item.title},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+                                                // #endregion
+                                            }}
+                                            onDragStart={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                            }}
+                                        />
 
                                     </div>
 
@@ -343,6 +416,36 @@ const PopularCoursesSection: React.FC<PopularCoursesSectionProps> = ({ translati
                 </div>
 
             </div>
+
+            <AnimatePresence>
+                {selectedImage && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+                        onClick={handleCloseImageModal}
+                    >
+                        <button
+                            onClick={handleCloseImageModal}
+                            className="absolute top-4 right-4 rtl:left-4 rtl:right-auto text-white hover:text-gray-300 transition-colors p-2 rounded-full z-10 bg-black/50 hover:bg-black/70 backdrop-blur-sm"
+                            aria-label="Close modal"
+                        >
+                            <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                        <motion.img
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                            src={selectedImage.src} 
+                            alt={selectedImage.title}
+                            className="max-w-full max-h-[90vh] object-contain"
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
         </section>
 

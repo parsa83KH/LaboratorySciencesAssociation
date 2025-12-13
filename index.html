@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     <title>انجمن علوم آزمایشگاهی دانشگاه آزاد اسلامی تهران</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet" crossorigin>
     <link rel="stylesheet" href="https://unpkg.com/swiper@3.4.2/dist/css/swiper.min.css">
     <script>
       // Always set dark theme on initial load, ignore system preference
@@ -111,6 +111,9 @@
         width: 100%;
         overflow-x: hidden;
         box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
       }
 
       body {
@@ -119,10 +122,25 @@
         width: 100%;
         overflow-x: hidden;
         box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
       }
 
       *, *::before, *::after {
         box-sizing: inherit;
+      }
+
+      /* Respect user's motion preferences */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
       }
 
       #root {
@@ -379,7 +397,7 @@
         height: 100%;
         width: 100%;
       }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 1000px) {
         #home-slider {
           touch-action: pan-y !important; /* Allow vertical scrolling on mobile */
           pointer-events: auto;
@@ -542,7 +560,7 @@
         #home-slider h1 span:not(.emphasis) { font-size: 2.5rem; }
         #home-slider p.paragraph { max-width: 90%; }
       }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 1000px) {
         #home-slider h1 { font-size: 2rem; align-self: center; }
         #home-slider h1 span:not(.emphasis) { font-size: 1.5rem; }
         #home-slider h1 + p { font-size: 11px; padding-right: 2rem; }
@@ -1641,16 +1659,52 @@
         }
 
         .course-card-title {
-          font-size: 1.8rem;
+          font-size: 1.5rem;
+          margin-bottom: 1rem;
         }
 
+        .course-card-summary {
+          font-size: 0.875rem;
+          margin-bottom: 1rem;
+        }
 
         .course-card-meta {
-          gap: 0.75rem;
+          gap: 0.5rem;
+          margin-bottom: 1rem;
+        }
+
+        .course-meta-row {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .course-meta-item-box {
+          font-size: 0.85rem;
+          padding: 0.625rem 0.75rem;
         }
 
         .course-meta-item {
-          font-size: 0.9rem;
+          font-size: 0.85rem;
+        }
+
+        .course-card-actions-top {
+          flex-direction: column;
+          gap: 0.75rem;
+          margin-bottom: 1rem;
+        }
+
+        .course-card-actions-top .course-card-download-button,
+        .course-card-actions-top .course-card-more-button,
+        .course-card-actions-top .course-card-back-button {
+          width: 100%;
+          font-size: 0.875rem;
+          padding: 0.75rem 1rem;
+        }
+
+        .course-card-register-button {
+          width: 100%;
+          font-size: 0.875rem;
+          padding: 0.75rem 1rem;
         }
 
         .course-card-full-text {
@@ -1666,7 +1720,7 @@
         }
 
         .course-card-full-text p {
-          font-size: 0.9rem;
+          font-size: 0.875rem;
           margin-bottom: 1rem;
         }
 
@@ -1676,6 +1730,42 @@
 
         .course-card-wrap.is-expanded .course-card-info {
           transform: none;
+        }
+
+        .course-card-wrap.is-expanded .course-card-full-text {
+          width: 100%;
+        }
+      }
+
+      @media screen and (min-width: 641px) and (max-width: 1023px) {
+        .course-card-wrap {
+          height: 50vmin;
+          min-height: 450px;
+        }
+
+        .course-card-title {
+          font-size: 2rem;
+        }
+
+        .course-card-summary {
+          font-size: 0.9rem;
+        }
+
+        .course-meta-item-box {
+          font-size: 0.9rem;
+          padding: 0.625rem 0.875rem;
+        }
+
+        .course-card-actions-top {
+          flex-wrap: wrap;
+          gap: 0.75rem;
+        }
+
+        .course-card-actions-top .course-card-download-button,
+        .course-card-actions-top .course-card-more-button,
+        .course-card-actions-top .course-card-back-button {
+          flex: 1;
+          min-width: 120px;
         }
       }
 
@@ -2007,14 +2097,14 @@
 
     </style>
     <style>
-      /* Parallax Animation Style #3 for Innovation Section */
-      .innovation-parallax-section {
+      /* Parallax Animation Style #3 for Introduction Section */
+      .introduction-parallax-section {
         position: relative;
         transform-style: preserve-3d;
         min-height: 60vh;
       }
       
-      .innovation-parallax-section::before {
+      .introduction-parallax-section::before {
         content: "";
         position: absolute;
         top: 0;
@@ -2029,18 +2119,18 @@
         opacity: 0.3;
       }
       
-      .dark .innovation-parallax-section::before {
+      .dark .introduction-parallax-section::before {
         opacity: 0.2;
       }
       
       /* Ensure content is above parallax background */
-      .innovation-parallax-section > * {
+      .introduction-parallax-section > * {
         position: relative;
         z-index: 1;
       }
       
       /* Overlay to hide particle animation - matches parallax background */
-      .innovation-parallax-overlay {
+      .introduction-parallax-overlay {
         background-image: url("/what_to_do.png");
         background-size: cover;
         background-attachment: fixed;
@@ -2048,7 +2138,7 @@
         opacity: 0.3;
       }
       
-      .dark .innovation-parallax-overlay {
+      .dark .introduction-parallax-overlay {
         opacity: 0.2;
       }
     </style>
@@ -2197,6 +2287,20 @@
         animation: none;
       }
 
+      /* Disable hover animations on touch devices for better performance */
+      @media (hover: none) and (pointer: coarse) {
+        .popular-courses-horizontal-section .course-card.no-hover-animations .course-card-inner {
+          animation: none !important;
+          transform: none !important;
+        }
+        
+        .popular-courses-horizontal-section .course-card.no-hover-animations .course-card-inner::before,
+        .popular-courses-horizontal-section .course-card.no-hover-animations .course-card-inner.is-hovering::before {
+          opacity: 0 !important;
+          display: none !important;
+        }
+      }
+
       .popular-courses-horizontal-section .course-image-wrapper {
         width: 100%;
         height: 320px;
@@ -2216,6 +2320,22 @@
 
       .popular-courses-horizontal-section .course-image-link:active {
         pointer-events: none;
+      }
+
+      .popular-courses-horizontal-section .course-image-clickable {
+        cursor: pointer;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+      }
+
+      .popular-courses-horizontal-section .course-image-clickable:active {
+        transform: scale(0.98);
+        opacity: 0.9;
+      }
+
+      @media (hover: hover) {
+        .popular-courses-horizontal-section .course-image-clickable:hover {
+          opacity: 0.9;
+        }
       }
 
       .popular-courses-horizontal-section .course-image {
@@ -2450,6 +2570,50 @@
       .modern-course-card-inner.is-hovering::before,
       .course-card-wrap.is-hovering::before {
         opacity: 1;
+      }
+
+      /* Header Responsive Breakpoint - Show hamburger menu at 832px and below */
+      @media screen and (max-width: 832px) {
+        .header-desktop-nav {
+          display: none !important;
+        }
+        
+        .header-mobile-menu {
+          display: flex !important;
+        }
+      }
+
+      @media screen and (min-width: 833px) {
+        .header-desktop-nav {
+          display: flex !important;
+        }
+        
+        .header-mobile-menu {
+          display: none !important;
+        }
+      }
+
+      /* Responsive font size for app name - shrink slightly on very small screens */
+      .header-app-name {
+        font-size: 1.25rem !important; /* text-xl */
+      }
+
+      @media screen and (max-width: 415px) {
+        .header-app-name {
+          font-size: 1.125rem !important; /* text-lg - slightly smaller */
+        }
+      }
+
+      @media screen and (max-width: 390px) {
+        .header-app-name {
+          font-size: 1rem !important; /* text-base - smaller */
+        }
+      }
+
+      @media screen and (max-width: 365px) {
+        .header-app-name {
+          font-size: 0.875rem !important; /* text-sm - even smaller */
+        }
       }
     </style>
   <script type="importmap">

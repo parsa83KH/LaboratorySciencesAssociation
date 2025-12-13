@@ -33,7 +33,7 @@ const Button: React.FC<ButtonProps> = ({
         onClick?.(e);
     };
 
-    const baseClasses = "relative border-2 rounded-full font-semibold overflow-hidden group transition-all duration-500 ease-out disabled:opacity-60 disabled:cursor-not-allowed text-sm sm:text-base";
+    const baseClasses = "relative border-2 rounded-full font-semibold overflow-hidden group transition-all duration-500 ease-out disabled:opacity-60 disabled:cursor-not-allowed text-sm";
     
     const variantClasses = {
         primary: "border-[#F37021] text-[#F37021] hover:text-slate-900 dark:hover:text-foreground disabled:hover:text-[#F37021]",

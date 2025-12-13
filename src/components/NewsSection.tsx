@@ -5,11 +5,11 @@ import type { Translation } from '../types';
 // Let TypeScript know that Swiper is available on the global window object
 declare const Swiper: any;
 
-interface JoinUsSectionProps {
+interface NewsSectionProps {
     translations: Translation;
 }
 
-const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
+const NewsSection: React.FC<NewsSectionProps> = ({ translations }) => {
     const swiperRef = useRef<any>(null);
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const inViewRef = useRef(false);
@@ -37,7 +37,8 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
     }, []);
 
     useEffect(() => {
-        const isMobile = window.innerWidth < 768;
+        // Detect touch device properly (not just by screen width)
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         const swiperInstance = new Swiper('#home-slider .swiper-container', {
             direction: 'vertical',
             loop: true,
@@ -66,8 +67,8 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
 
         swiperRef.current = swiperInstance;
 
-        // On mobile, completely disable Swiper touch handling and allow page scroll
-        if (isMobile) {
+        // On touch devices, completely disable Swiper touch handling and allow page scroll
+        if (isTouchDevice) {
             const sliderElement = document.getElementById('home-slider');
             const swiperContainer = sliderElement?.querySelector('.swiper-container') as HTMLElement;
             const swiperWrapper = sliderElement?.querySelector('.swiper-wrapper') as HTMLElement;
@@ -236,4 +237,5 @@ const JoinUsSection: React.FC<JoinUsSectionProps> = ({ translations }) => {
     );
 };
 
-export default JoinUsSection;
+export default NewsSection;
+

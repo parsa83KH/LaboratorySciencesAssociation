@@ -33,33 +33,28 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
                     {/* Quick Links - First on mobile */}
                     <div className="text-center group order-1 md:order-2">
-                        <h3 className="text-base sm:text-lg font-bold text-white mb-4 sm:mb-6 relative inline-block">
+                        <h3 className="text-base sm:text-lg font-bold text-blue-400 mb-4 sm:mb-6 relative inline-block">
                             {t.footerQuickLinks as string}
-                            <span className="absolute bottom-0 right-0 w-full h-0.5 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                         </h3>
                         <ul className="space-y-2 sm:space-y-3">
                             <li>
-                                <a href="#" onClick={(e) => handleNavClick(e, 'home')} className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium relative group/link">
-                                    <span className="relative z-10">{t.navHome as string}</span>
-                                    <span className="absolute bottom-0 right-0 w-0 h-0.5 bg-orange-500 group-hover/link:w-full transition-all duration-300"></span>
+                                <a href="#" onClick={(e) => handleNavClick(e, 'home')} className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium">
+                                    {t.navHome as string}
                                 </a>
                             </li>
                             <li>
-                                <a href="#" onClick={(e) => handleNavClick(e, 'newsAndAnnouncements')} className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium relative group/link">
-                                    <span className="relative z-10">{t.navNewsAndAnnouncements as string}</span>
-                                    <span className="absolute bottom-0 right-0 w-0 h-0.5 bg-orange-500 group-hover/link:w-full transition-all duration-300"></span>
+                                <a href="#" onClick={(e) => handleNavClick(e, 'newsAndAnnouncements')} className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium">
+                                    {t.navNewsAndAnnouncements as string}
                                 </a>
                             </li>
                             <li>
-                                <a href="#" onClick={(e) => handleNavClick(e, 'coursesAndWorkshops')} className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium relative group/link">
-                                    <span className="relative z-10">{t.navCoursesAndWorkshops as string}</span>
-                                    <span className="absolute bottom-0 right-0 w-0 h-0.5 bg-orange-500 group-hover/link:w-full transition-all duration-300"></span>
+                                <a href="#" onClick={(e) => handleNavClick(e, 'coursesAndWorkshops')} className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium">
+                                    {t.navCoursesAndWorkshops as string}
                                 </a>
                             </li>
                             <li>
-                                <a href="#" onClick={(e) => handleNavClick(e, 'members')} className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium relative group/link">
-                                    <span className="relative z-10">{t.navMembers as string}</span>
-                                    <span className="absolute bottom-0 right-0 w-0 h-0.5 bg-orange-500 group-hover/link:w-full transition-all duration-300"></span>
+                                <a href="#" onClick={(e) => handleNavClick(e, 'members')} className="inline-block text-sm sm:text-base text-slate-300 hover:text-white transition-all duration-300 hover:translate-y-[-2px] font-medium">
+                                    {t.navMembers as string}
                                 </a>
                             </li>
                         </ul>
@@ -67,9 +62,8 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
 
                     {/* Communication Channels - Second on mobile */}
                     <div className="group order-2 md:order-1">
-                        <h3 className="text-base sm:text-lg font-bold text-white mb-4 sm:mb-6 relative inline-block text-center w-full md:text-right md:w-auto md:mr-auto rtl:md:ml-auto rtl:md:mr-0">
+                        <h3 className="text-base sm:text-lg font-bold text-blue-400 mb-4 sm:mb-6 relative inline-block text-center w-full md:text-right md:w-auto md:mr-auto rtl:md:ml-auto rtl:md:mr-0">
                             {t.footerContactChannels as string}
-                            <span className="absolute bottom-0 right-0 w-full h-0.5 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                         </h3>
                         <div className="space-y-3 sm:space-y-3">
                             {/* First Row - 3 links: Instagram, Email, Telegram Channel (mobile: horizontal, desktop: wrap) */}
@@ -139,13 +133,12 @@ const Footer: React.FC<FooterProps> = ({ translations: t, setCurrentPage }) => {
 
                     {/* Developer Info - Third on mobile */}
                     <div className="text-center md:ml-auto md:mr-0 rtl:md:ml-0 rtl:md:mr-auto group order-3 md:order-3">
-                        <h3 className="text-base sm:text-lg font-bold text-white mb-4 sm:mb-6 relative inline-block md:ml-auto rtl:md:mr-auto rtl:md:ml-0">
+                        <h3 className="text-base sm:text-lg font-bold text-blue-400 mb-4 sm:mb-6 relative inline-block md:ml-auto rtl:md:mr-auto rtl:md:ml-0">
                             {t.footerDesignerDeveloper as string}
-                            <span className="absolute bottom-0 right-0 w-full h-0.5 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                         </h3>
                         <div className="mb-4 sm:mb-6">
                             <h4 className="text-xl sm:text-2xl font-bold text-[#F37021]">
-                                Parsa Khosravani
+                                پارسا خسروانی
                             </h4>
                         </div>
                         <div className="flex flex-wrap gap-2 sm:gap-3 justify-center md:justify-end rtl:md:justify-start">

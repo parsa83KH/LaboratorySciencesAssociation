@@ -32,32 +32,36 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
             transition={{ duration: 0.2 }}
             className="w-full backdrop-blur-md bg-background/60 fixed top-0 left-0 right-0 z-50 border-b border-border shadow-sm"
         >
-            <div className="container mx-auto pl-2 sm:pl-6 lg:pl-8 pr-2 sm:pr-1 lg:pr-2">
-                <div className="flex items-center justify-between h-20 gap-2 sm:gap-0">
-                    <div className="flex-shrink-0 flex items-center gap-3 sm:gap-4 md:gap-5 min-w-0">
+            <div className="w-full">
+                <div className="flex items-center h-20 gap-2 sm:gap-0">
+                    <div className="flex-shrink flex items-center min-w-0 pl-2 sm:pl-4 md:pl-6 lg:pl-8 flex-1">
                         <img 
                             src={`${import.meta.env.BASE_URL || '/'}university.png`.replace(/\/\//g, '/')}
                             alt="University Logo" 
-                            className="h-14 w-14 sm:h-16 sm:w-16 flex-shrink-0 object-contain"
+                            className="h-16 w-16 flex-shrink-0 object-contain"
+                            loading="eager"
+                            fetchPriority="high"
                         />
                         <img 
                             src={`${import.meta.env.BASE_URL || '/'}club.png`.replace(/\/\//g, '/')}
                             alt="Club Logo" 
-                            className="h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 object-contain"
+                            className="h-12 w-12 flex-shrink-0 object-contain ml-0.5 sm:ml-4 md:ml-5"
+                            loading="eager"
+                            fetchPriority="high"
                         />
-                        <span className="font-bold text-base sm:text-xl md:text-2xl tracking-wider truncate overflow-hidden">
+                        <span className="header-app-name font-bold tracking-wider mr-2 sm:mr-0 rtl:ml-2 rtl:sm:ml-0" style={{ whiteSpace: 'nowrap' }}>
                             {translations.appName as string}
                         </span>
                     </div>
                     
                     {/* Desktop Navigation */}
-                    <nav className="hidden md:flex md:items-center md:space-x-8 rtl:space-x-reverse">
+                    <nav className="header-desktop-nav hidden md:flex md:items-center md:space-x-4 lg:space-x-6 xl:space-x-8 rtl:space-x-reverse pl-2 md:pl-3 lg:pl-4">
                         {navLinks.map((link) => (
                             <a
                                 key={link.id}
                                 href="#"
                                 onClick={(e) => handleNavClick(e, link.id as PageKey)}
-                                className={`relative font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 ${currentPage === link.id ? 'text-foreground' : ''}`}
+                                className={`relative font-medium text-sm md:text-base text-muted-foreground hover:text-foreground transition-colors duration-200 whitespace-nowrap ${currentPage === link.id ? 'text-foreground' : ''}`}
                             >
                                 {link.text as string}
                                 {currentPage === link.id && (
@@ -73,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
                     {/* Mobile Hamburger Menu Button */}
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-foreground hover:bg-muted/50 transition-colors"
+                        className="header-mobile-menu md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-foreground hover:bg-muted/50 transition-colors pl-4 sm:pl-5"
                         aria-label="Toggle menu"
                     >
                         <svg
@@ -103,9 +107,9 @@ const Header: React.FC<HeaderProps> = ({ translations, currentPage, setCurrentPa
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="md:hidden border-t border-border overflow-hidden"
+                        className="lg:hidden border-t border-border overflow-hidden"
                     >
-                        <div className="container mx-auto px-4 py-4 space-y-2">
+                        <div className="container mx-auto pl-5 pr-4 py-4 space-y-2">
                             {navLinks.map((link) => (
                                 <a
                                     key={link.id}

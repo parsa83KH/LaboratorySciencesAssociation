@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 
 // Import components that will be used
 import Hero from '../components/Hero';
-import InnovationSection from '../components/InnovationSection';
-import JoinUsSection from '../components/JoinUsSection';
+import IntroductionSection from '../components/IntroductionSection';
+import NewsSection from '../components/NewsSection';
 import PopularCoursesSection from '../components/PopularCoursesSection';
 
 
@@ -17,6 +17,12 @@ interface HomePageProps {
 }
 
 const HomePage: React.FC<HomePageProps> = ({ translations, setCurrentPage }) => {
+    // #region agent log
+    React.useEffect(() => {
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        fetch('http://127.0.0.1:7242/ingest/33b23cfa-c7a4-4dd9-b44a-3f684598eacc',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'HomePage.tsx:19',message:'HomePage mount',data:{isTouchDevice,windowWidth:window.innerWidth,windowHeight:window.innerHeight,userAgent:navigator.userAgent.substring(0,50)},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+    }, []);
+    // #endregion
 
     return (
         <motion.div 
@@ -27,9 +33,9 @@ const HomePage: React.FC<HomePageProps> = ({ translations, setCurrentPage }) => 
             transition={{ duration: 0.4, ease: 'easeInOut' }}
         >
             <Hero translations={translations} setCurrentPage={setCurrentPage} />
-            <InnovationSection translations={translations} />
+            <IntroductionSection translations={translations} />
             <section className="h-[70vh] sm:h-[80vh] md:h-screen relative min-h-[500px] touch-pan-y">
-              <JoinUsSection translations={translations} />
+              <NewsSection translations={translations} />
             </section>
             <PopularCoursesSection translations={translations} setCurrentPage={setCurrentPage} />
         </motion.div>
